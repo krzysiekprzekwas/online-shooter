@@ -23,6 +23,12 @@ namespace GameServer
 
         private void Tick(object state)
         {
+            foreach (var player in GameState.Instance.Players)
+            {
+                Random r = new Random();
+                player.X += r.NextDouble() - 0.5;
+            }
+
             SendGameState();
         }
 

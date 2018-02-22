@@ -60,12 +60,26 @@ namespace GameServer
         #region Echo
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
+            // Player connecting - sending connect request
             var buffer = new byte[Config.BUFFER_SIZE];
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
             string connectionRequest = Encoding.ASCII.GetString(buffer);
             Player player = _gameEngine.ConnectPlayer(connectionRequest);
 
+            // Send back initial status
+            var mapStateResponse = new
+            {
+                Type = "mapstate",
+                MapState = MapState.Instance,
+            };
+
+            string json = JsonConvert.SerializeObject(mapStateResponse);
+            ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
+            
+            await webSocket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
+
+            // Wait for other player messages
             while (!result.CloseStatus.HasValue)
             {
                 await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
@@ -74,6 +88,7 @@ namespace GameServer
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             }
 
+            // Player disconnected
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
 
             _gameEngine.DisconnectPlayer(player);
