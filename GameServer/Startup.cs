@@ -18,14 +18,11 @@ namespace GameServer
     public class Startup
     {
         private GameEngine _gameEngine;
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
+        
         public void ConfigureServices(IServiceCollection services)
         {
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             _gameEngine = new GameEngine();
@@ -68,7 +65,7 @@ namespace GameServer
 
             string connectionRequest = Encoding.ASCII.GetString(buffer);
             Player player = _gameEngine.ConnectPlayer(connectionRequest);
-                        
+
             while (!result.CloseStatus.HasValue)
             {
                 await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
@@ -79,7 +76,7 @@ namespace GameServer
 
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
 
-            //_gameEngine.DisconnectPlayer(player);
+            _gameEngine.DisconnectPlayer(player);
         }
         #endregion
     }

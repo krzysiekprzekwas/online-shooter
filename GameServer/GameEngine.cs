@@ -22,8 +22,6 @@ namespace GameServer
 
         private void Tick(object state)
         {
-            GameState.I++;
-
             SendGameState();
         }
 
@@ -50,17 +48,21 @@ namespace GameServer
                 Name = json.name
             };
             GameState.Players.Add(player);
-            Console.WriteLine("[INFO] Player connected.");
+            Console.WriteLine(String.Format("[INFO] Player #{0} ({1}) connected.", player.Id, player.Name));
+
+            GameEvents.OnPlayerConnected(player);
 
             return player;
         }
 
         public void DisconnectPlayer(Player player)
         {
-            Console.WriteLine("[INFO] Player disconnected.");
+            Console.WriteLine(String.Format("[INFO] Player #{0} disconnected.", player.Id));
+
+            GameEvents.OnPlayerDisconnected(player);
+
             GameState.Players.Remove(player);
         }
-
     }
 }
 

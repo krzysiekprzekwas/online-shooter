@@ -12,11 +12,11 @@ namespace GameServer
             _gameEngine = gameEngine;
         }
 
-        private void OnPlayerConnected()
+        public void OnPlayerConnected(Player player)
         {
         }
 
-        private void OnPlayerDisconnected()
+        public void OnPlayerDisconnected(Player player)
         {
 
         }

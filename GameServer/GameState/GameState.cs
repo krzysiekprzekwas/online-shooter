@@ -11,6 +11,7 @@ namespace GameServer
         public GameState()
         {
             Players = new List<Player>();
+            PlayerId = 1;
         }
         
         public static GameState Instance
@@ -23,8 +24,15 @@ namespace GameServer
                 return instance;
             }
         }
+
+        public int AssignPlayerId()
+        {
+            int id = PlayerId;
+            PlayerId++;
+            return id;
+        }
         
-        public int I { get; set; }
         public List<Player> Players { get; set; }
+        public int PlayerId { get; set; }
     }
 }
