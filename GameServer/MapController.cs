@@ -10,7 +10,7 @@ namespace GameServer
         {
             MapObject box = new MapBox(0, 0, 0, 3, 1, 3);
 
-            GameState.Instance.MapObjects.Add(box);
+            MapState.Instance.MapObjects.Add(box);
         }
 
     }

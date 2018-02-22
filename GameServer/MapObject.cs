@@ -8,7 +8,7 @@ namespace GameServer
     {
         public MapObject(double x, double y, double z)
         {
-            Id = GameState.Instance.AssingMapObjectId();
+            Id = MapState.Instance.AssingMapObjectId();
 
             X = x;
             Y = y;
