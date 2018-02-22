@@ -16,19 +16,19 @@ namespace GameServer
 {
     public class Startup
     {
+        private GameEngine _gameEngine;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
-        {
-        }
-                
-        public void Execute(Object stateInfo)
         {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            _gameEngine = new GameEngine();
+
             #region UseWebSocketsOptions
             var webSocketOptions = new WebSocketOptions()
             {
@@ -46,7 +46,7 @@ namespace GameServer
                     if (context.WebSockets.IsWebSocketRequest)
                     {
                         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        GameEngine.ClientSockets.Add(webSocket);
+                        _gameEngine.ClientSockets.Add(webSocket);
                         await Echo(context, webSocket);
                     }
                     else
@@ -62,6 +62,7 @@ namespace GameServer
             });
             #endregion
         }
+
         #region Echo
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
@@ -74,7 +75,7 @@ namespace GameServer
 
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 Console.WriteLine(Encoding.ASCII.GetString(buffer).Trim());
-                Console.WriteLine(GameEngine.ClientSockets.Count);
+                Console.WriteLine(_gameEngine.ClientSockets.Count);
             }
             Console.WriteLine(webSocket.State);
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);

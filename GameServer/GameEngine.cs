@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
@@ -6,23 +7,32 @@ using System.Threading;
 
 namespace GameServer
 {
-    static class GameEngine
+    class GameEngine
     {
-        private static Timer Ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
-        public static HashSet<WebSocket> ClientSockets = new HashSet<WebSocket>();
-        
-        private static void Tick(object state)
+        private Timer _ticker;
+        public HashSet<WebSocket> ClientSockets = new HashSet<WebSocket>();
+        public GameState GameState = GameState.Instance;
+
+        public GameEngine()
+        {
+            _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
+        }
+
+        private void Tick(object state)
         {
             GameState.i++;
 
             SendGameState();
         }
 
-        private static void SendGameState()
+        private void SendGameState()
         {
             foreach (var socket in ClientSockets)
             {
-                socket.SendAsync(new ArraySegment<byte>(BitConverter.GetBytes(GameState.i)), WebSocketMessageType.Text, true, CancellationToken.None);
+                string json = JsonConvert.SerializeObject(GameState);
+                ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
+
+                socket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
             }
         }
     }
