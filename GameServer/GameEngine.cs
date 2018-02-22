@@ -18,6 +18,7 @@ namespace GameServer
         {
             _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
             GameEvents = new GameEvents(this);
+            MapController.LoadMap();
         }
 
         private void Tick(object state)
@@ -47,10 +48,7 @@ namespace GameServer
 
             Player player = new Player
             {
-                X = 0.0,
-                Y = 0.0,
-                Z = 0.0,
-                Name = json.name
+                Name = json.Name
             };
             GameState.Players.Add(player);
             Console.WriteLine(String.Format("[INFO] Player #{0} ({1}) connected.", player.Id, player.Name));

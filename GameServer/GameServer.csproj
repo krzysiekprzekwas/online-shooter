@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="GameState\GameStateResponse.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.WebSockets.Server" Version="0.1.0" />
