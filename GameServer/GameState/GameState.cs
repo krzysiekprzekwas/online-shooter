@@ -10,7 +10,7 @@ namespace GameServer
         private static GameState instance;
         public GameState()
         {
-
+            Players = new List<Player>();
         }
         
         public static GameState Instance
@@ -24,6 +24,7 @@ namespace GameServer
             }
         }
         
-        public int i { get; set; }
+        public int I { get; set; }
+        public List<Player> Players { get; set; }
     }
 }
