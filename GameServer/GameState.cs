@@ -24,6 +24,6 @@ namespace GameServer
             }
         }
         
-        public static int i { get; set; }
+        public int i { get; set; }
     }
 }

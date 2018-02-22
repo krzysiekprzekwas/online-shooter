@@ -68,18 +68,20 @@ namespace GameServer
         {
             var buffer = new byte[Config.BUFFER_SIZE];
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            Console.WriteLine(webSocket.State);
+
+            Console.WriteLine("[INFO] Client connected.");
+            
             while (!result.CloseStatus.HasValue)
             {
                 await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-
+                
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                Console.WriteLine(Encoding.ASCII.GetString(buffer).Trim());
-                Console.WriteLine(_gameEngine.ClientSockets.Count);
+                //Console.WriteLine(Encoding.ASCII.GetString(buffer).Trim());
             }
-            Console.WriteLine(webSocket.State);
+
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-            Console.WriteLine(webSocket.State);
+
+            Console.WriteLine("[INFO] Client disconnected.");
         }
         #endregion
     }

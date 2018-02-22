@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
+    <PackageReference Include="Saritasa.Tools.NLog4" Version="0.1.1" />
     <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
   </ItemGroup>
 
