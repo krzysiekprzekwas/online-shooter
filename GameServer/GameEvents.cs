@@ -18,7 +18,6 @@ namespace GameServer
 
         public void OnPlayerDisconnected(Player player)
         {
-
         }
     }
 }

@@ -33,6 +33,8 @@ namespace GameServer
         }
         
         public List<Player> Players { get; set; }
+
+        [JsonIgnore]
         public int PlayerId { get; set; }
     }
 }

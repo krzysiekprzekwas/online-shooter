@@ -27,11 +27,16 @@ namespace GameServer
 
         private void SendGameState()
         {
+            var gameStateResponse = new {
+                Type = "gamestate",
+                GameState = GameState,
+            };
+            
+            string json = JsonConvert.SerializeObject(gameStateResponse);
+            ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
+
             foreach (var socket in ClientSockets)
             {
-                string json = JsonConvert.SerializeObject(GameState);
-                ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
-
                 socket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
             }
         }
@@ -40,7 +45,7 @@ namespace GameServer
         {
             dynamic json = JsonConvert.DeserializeObject(connectionRequest);
 
-            Player player = new Player()
+            Player player = new Player
             {
                 X = 0.0,
                 Y = 0.0,
