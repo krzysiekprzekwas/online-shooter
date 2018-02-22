@@ -1,12 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace GameServer
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
         }
     }
 }
