@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameServer
+namespace GameServer.States
 {
     public class GameState
     {

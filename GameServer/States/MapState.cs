@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using GameServer.MapObjects;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text;
 
-namespace GameServer
+namespace GameServer.States
 {
     public class MapState
     {

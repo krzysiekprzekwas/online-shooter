@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using GameServer.States;
+using GameServer.World;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 
-namespace GameServer
+namespace GameServer.Game
 {
     class GameEngine
     {
@@ -18,7 +20,7 @@ namespace GameServer
         {
             _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
             GameEvents = new GameEvents(this);
-            MapController.LoadMap();
+            WorldLoader.LoadMap();
         }
 
         private void Tick(object state)

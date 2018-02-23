@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GameServer.MapObjects;
+using GameServer.States;
 
-namespace GameServer
+namespace GameServer.World
 {
-    public static class MapController
+    public static class WorldLoader
     {
         public static void LoadMap()
         {

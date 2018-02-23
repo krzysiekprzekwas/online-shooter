@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GameServer.States;
 
-namespace GameServer
+namespace GameServer.MapObjects
 {
     public abstract class MapObject
     {
