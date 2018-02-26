@@ -55,6 +55,7 @@ namespace GameServer
 
             });
         }
+
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
             // Player connecting - sending connect request
@@ -70,8 +71,10 @@ namespace GameServer
             // Wait for other player messages
             while (!result.CloseStatus.HasValue)
             {
-                //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+
                 StateController.ReceiveState(buffer, player);
+                Array.Clear(buffer, 0, result.Count);
 
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             }
@@ -80,6 +83,7 @@ namespace GameServer
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
 
             _gameEngine.DisconnectPlayer(player);
+
         }
     }
 }

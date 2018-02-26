@@ -41,9 +41,10 @@ namespace GameServer.States
         
         public static void ReceiveState(byte[] buffer, Player player)
         {
-            string request = Encoding.ASCII.GetString(buffer).Trim();
+            string request = Encoding.ASCII.GetString(buffer).Trim((char)0);
+            dynamic jsonObject = JsonConvert.DeserializeObject(request);
 
-
+            Console.WriteLine("Received " + jsonObject.Type + " request from player #" + player.Id);
         }
     }
 }
