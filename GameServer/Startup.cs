@@ -71,7 +71,7 @@ namespace GameServer
             // Wait for other player messages
             while (!result.CloseStatus.HasValue)
             {
-                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+                //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
 
                 StateController.ReceiveState(buffer, player);
                 Array.Clear(buffer, 0, result.Count);
