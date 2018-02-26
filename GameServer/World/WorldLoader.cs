@@ -7,7 +7,7 @@ namespace GameServer.World
     {
         public static void LoadMap()
         {
-            MapObject box = new MapBox(0, 0, 0, 3, 1, 3);
+            MapObject box = new MapBox(0, -1, 0, 30, 0.1, 30);
 
             MapState.Instance.MapObjects.Add(box);
         }
