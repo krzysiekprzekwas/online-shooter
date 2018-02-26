@@ -29,26 +29,13 @@ namespace GameServer.Game
         {
             foreach (var player in GameState.Instance.Players)
             {
-                player.X += 2 * (random.NextDouble() - 0.5);
-                player.Z += 2 * (random.NextDouble() - 0.5);
+                player.X += (random.NextDouble() - 0.5);
+                player.Z += (random.NextDouble() - 0.5);
             }
-
-            SendGameState();
-        }
-
-        private void SendGameState()
-        {
-            var gameStateResponse = new {
-                Type = "gamestate",
-                GameState = GameState,
-            };
-            
-            string json = JsonConvert.SerializeObject(gameStateResponse);
-            ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
 
             foreach (var socket in ClientSockets)
             {
-                socket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
+                StateController.SendGameState(socket);
             }
         }
 

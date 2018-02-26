@@ -55,8 +55,6 @@ namespace GameServer
 
             });
         }
-
-        #region Echo
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
             // Player connecting - sending connect request
@@ -67,22 +65,13 @@ namespace GameServer
             Player player = _gameEngine.ConnectPlayer(connectionRequest);
 
             // Send back initial status
-            var mapStateResponse = new
-            {
-                Type = "mapstate",
-                MapState = MapState.Instance,
-            };
-
-            string json = JsonConvert.SerializeObject(mapStateResponse);
-            ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
-            
-            await webSocket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
+            StateController.SendMapState(webSocket);
 
             // Wait for other player messages
             while (!result.CloseStatus.HasValue)
             {
-                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-                Console.WriteLine(Encoding.ASCII.GetString(buffer).Trim());
+                //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+                StateController.ReceiveState(buffer, player);
 
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             }
@@ -92,6 +81,5 @@ namespace GameServer
 
             _gameEngine.DisconnectPlayer(player);
         }
-        #endregion
     }
 }
