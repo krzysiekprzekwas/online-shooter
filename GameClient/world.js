@@ -6,11 +6,13 @@ let world = {
         this.engine = new BABYLON.Engine(this.canvas, true);
         this.mapObjects = Array();
         this.playerObjects = Array();
+        this.fpsLabel = document.getElementById("fpsLabel");
 
         this.createScene();
         
         this.engine.runRenderLoop(function(){
             world.scene.render();
+            world.fpsLabel.innerHTML = world.engine.getFps().toFixed();
         });
 
         // the canvas/window resize event handler
