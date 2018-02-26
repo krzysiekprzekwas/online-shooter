@@ -15,11 +15,13 @@ namespace GameServer.Game
         public HashSet<WebSocket> ClientSockets = new HashSet<WebSocket>();
         public GameState GameState = GameState.Instance;
         public GameEvents GameEvents;
+        private Random random;
 
         public GameEngine()
         {
             _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
             GameEvents = new GameEvents(this);
+            random = new Random();
             WorldLoader.LoadMap();
         }
 
@@ -27,8 +29,8 @@ namespace GameServer.Game
         {
             foreach (var player in GameState.Instance.Players)
             {
-                Random r = new Random();
-                player.X += r.NextDouble() - 0.5;
+                player.X += 2 * (random.NextDouble() - 0.5);
+                player.Z += 2 * (random.NextDouble() - 0.5);
             }
 
             SendGameState();
