@@ -7,7 +7,7 @@ socket.addEventListener('open', function (event) {
 
     const connectionString = JSON.stringify({
         Type: "connect",
-        Name: "Player",
+        Name: "Player"
     });
 
     socket.send(connectionString);
@@ -18,16 +18,16 @@ socket.addEventListener('message', function (event) {
 
     let response = JSON.parse(event.data);
 
-    if(response.Type == "mapstate")
+    if (response.Type === "mapstate")
         world.loadMapObjects(response.MapState);
-    else if(response.Type == "gamestate")
+    else if (response.Type === "gamestate")
         world.updatePlayers(response.GameState);
-    else if(response.Type == "connect")
+    else if (response.Type === "connect")
         logger.info("Player connected");
     // else if(response.Type == "playerstate")
     //     calculatePing();
     else
-        logger.warn("Unknown message " + event.data)
+        logger.warn("Unknown message " + event.data);
 });
 
 setInterval(function() {
