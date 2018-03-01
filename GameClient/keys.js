@@ -2,10 +2,10 @@
 
     configuration: {
 
-        87: "forward",
-        83: "backward",
-        68: "right",
-        65: "left"
+        87: "w",
+        83: "s",
+        68: "d",
+        65: "a"
     },
 
     keysPressed: Array(),
