@@ -31,10 +31,13 @@ socket.addEventListener('message', function (event) {
 });
 
 setInterval(function() {
+    
+    if (socket.readyState !== socket.OPEN)
+        return;
 
     const playerStateString = JSON.stringify({
         Type: "playerstate",
-        Keys: keys
+        Keys: keys.getKeysState()
     });
 
     pingStart = new Date();
