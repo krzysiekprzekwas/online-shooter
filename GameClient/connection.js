@@ -17,6 +17,7 @@ socket.addEventListener('open', function (event) {
 socket.addEventListener('message', function (event) {
 
     let response = JSON.parse(event.data);
+    //console.log(response);
 
     if (response.Type === "mapstate")
         world.loadMapObjects(response.MapState);
@@ -31,17 +32,18 @@ socket.addEventListener('message', function (event) {
 });
 
 setInterval(function() {
-    
+
     if (socket.readyState !== socket.OPEN)
-        return;
+        return true;
 
     const playerStateString = JSON.stringify({
         Type: "playerstate",
         Keys: keys.getKeysState()
     });
 
-    pingStart = new Date();
+    //pingStart = new Date();
     socket.send(playerStateString);
+
 }, 50);
 
 function calculatePing() {

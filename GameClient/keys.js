@@ -14,11 +14,11 @@
     keyDown: function (keyCode) {
 
         let index = this.keysPressed.indexOf(keyCode);
-        if (index == -1) {
+        if (index === -1) {
             this.keysPressed.push(keyCode);
         }
 
-        console.log(this.getKeysState());
+        //console.log(this.getKeysState());
     },
 
     // Action on player key up
@@ -29,7 +29,7 @@
             this.keysPressed.splice(index, 1);
         }
 
-        console.log(this.getKeysState());
+        //console.log(this.getKeysState());
     },
 
     // Returns a list of all keys pressed
@@ -39,7 +39,7 @@
 
         for (let key of this.keysPressed) {
             
-            if (!key in this.configuration)
+            if (!(key in this.configuration))
                 continue;
             
             let keyCommand = this.configuration[key];

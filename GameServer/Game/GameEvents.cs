@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameServer.Game
 {
-    class GameEvents
+    public class GameEvents
     {
         private GameEngine _gameEngine;
         public GameEvents(GameEngine gameEngine)

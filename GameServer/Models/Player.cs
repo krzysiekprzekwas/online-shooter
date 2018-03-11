@@ -9,17 +9,20 @@ namespace GameServer
         public Player()
         {
             Id = GameState.Instance.AssignPlayerId();
-            Keys = new Dictionary<int, bool>();
+            Keys = new List<string>();
         }
 
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
+        public double SpeedX { get; set; }
+        public double SpeedY { get; set; }
+        public double SpeedZ { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
 
 
         [JsonIgnore]
-        public Dictionary<int, bool> Keys;
+        public List<string> Keys;
     }
 }

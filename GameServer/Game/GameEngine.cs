@@ -1,4 +1,5 @@
-﻿using GameServer.States;
+﻿using GameServer.Physics;
+using GameServer.States;
 using GameServer.World;
 using Newtonsoft.Json;
 using System;
@@ -9,29 +10,28 @@ using System.Threading;
 
 namespace GameServer.Game
 {
-    class GameEngine
+    public class GameEngine
     {
         private Timer _ticker;
         public HashSet<WebSocket> ClientSockets = new HashSet<WebSocket>();
         public GameState GameState = GameState.Instance;
         public GameEvents GameEvents;
+        public PhysicsEngine PhysicsEngine;
         private Random random;
-
+        
         public GameEngine()
         {
             _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
             GameEvents = new GameEvents(this);
+            PhysicsEngine = new PhysicsEngine(this);
             random = new Random();
+
             WorldLoader.LoadMap();
         }
 
         private void Tick(object state)
         {
-            foreach (var player in GameState.Instance.Players)
-            {
-                player.X += (random.NextDouble() - 0.5);
-                player.Z += (random.NextDouble() - 0.5);
-            }
+            PhysicsEngine.ApplyPhysics();
 
             foreach (var socket in ClientSockets)
             {
