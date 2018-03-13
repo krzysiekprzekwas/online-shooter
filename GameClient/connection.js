@@ -27,7 +27,8 @@ setInterval(function() {
 
     const playerStateString = JSON.stringify({
         Type: "playerstate",
-        Keys: keys.getKeysState()
+        Keys: keys.getKeysState(),
+        Angles: mouse.getCurrentAngles()
     });
 
     pingStart = new Date();

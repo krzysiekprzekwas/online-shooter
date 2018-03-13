@@ -59,7 +59,8 @@ namespace GameServer.States
                 Console.WriteLine("key pressed " + key.Value);
             }
 
-
+            player.Angles.X = (double)playerState.Angles.X.Value;
+            player.Angles.Y = (double)playerState.Angles.Y.Value;
         }
 
         public static void SendConnectedConfirmation(WebSocket webSocket, Player player)

@@ -1,4 +1,5 @@
 ﻿using GameServer.Game;
+using GameServer.Models;
 using GameServer.States;
 using System;
 using System.Collections.Generic;
@@ -39,14 +40,29 @@ namespace GameServer.Physics
 
         public void ProcessPlayerInput(Player player)
         {
+            Angle2 forwardAngle = new Angle2(Math.Sin(player.Angles.Y), Math.Cos(player.Angles.Y));
+            Angle2 leftAngle = new Angle2(Math.Sin(player.Angles.Y - Math.PI / 2), Math.Cos(player.Angles.Y - Math.PI / 2));
+
             if (player.Keys.Contains("w"))
-                player.SpeedX += 0.1;
+            {
+                player.SpeedX += forwardAngle.X * 0.1;
+                player.SpeedZ += forwardAngle.Y * 0.1;
+            }
             if (player.Keys.Contains("s"))
-                player.SpeedX -= 0.1;
+            {
+                player.SpeedX -= forwardAngle.X * 0.1;
+                player.SpeedZ -= forwardAngle.Y * 0.1;
+            }
             if (player.Keys.Contains("a"))
-                player.SpeedZ += 0.1;
+            {
+                player.SpeedX += leftAngle.X * 0.1;
+                player.SpeedZ += leftAngle.Y * 0.1;
+            }
             if (player.Keys.Contains("d"))
-                player.SpeedZ -= 0.1;
+            {
+                player.SpeedX -= leftAngle.X * 0.1;
+                player.SpeedZ -= leftAngle.Y * 0.1;
+            }
         }
     }
 }

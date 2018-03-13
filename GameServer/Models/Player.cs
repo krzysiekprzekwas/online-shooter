@@ -1,4 +1,5 @@
-﻿using GameServer.States;
+﻿using GameServer.Models;
+using GameServer.States;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ namespace GameServer
         {
             Id = GameState.Instance.AssignPlayerId();
             Keys = new List<string>();
+            Angles = new Angle2();
         }
 
         public double X { get; set; }
@@ -21,6 +23,8 @@ namespace GameServer
         public string Name { get; set; }
         public int Id { get; set; }
 
+
+        public Angle2 Angles { get; set; }
 
         [JsonIgnore]
         public List<string> Keys;
