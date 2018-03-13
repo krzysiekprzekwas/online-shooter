@@ -17,18 +17,7 @@ socket.addEventListener('open', function (event) {
 socket.addEventListener('message', function (event) {
 
     let response = JSON.parse(event.data);
-    //console.log(response);
-
-    if (response.Type === "mapstate")
-        world.loadMapObjects(response.MapState);
-    else if (response.Type === "gamestate")
-        world.updatePlayers(response.GameState);
-    else if (response.Type === "connect")
-        logger.info("Player connected");
-    // else if(response.Type == "playerstate")
-    //     calculatePing();
-    else
-        logger.warn("Unknown message " + event.data);
+    responseController.processResponse(response);
 });
 
 setInterval(function() {

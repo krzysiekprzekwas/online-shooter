@@ -1,8 +1,12 @@
 ﻿let mouse = {
 
+    MOUSE_MOVE_FACTOR: 3000,
+
     initialize: function () {
 
         this.canvas = document.getElementById('renderCanvas');
+        this.x = 0;
+        this.y = 0;
         
         // Option to leave lock
         document.exitPointerLock = document.exitPointerLock ||
@@ -16,8 +20,8 @@
         };
 
         // On pointer lock status changed
-        //document.addEventListener('pointerlockchange', this.lockChangeAlert, false);
-        //document.addEventListener('mozpointerlockchange', this.lockChangeAlert, false);
+        document.addEventListener('pointerlockchange', mouse.lockChangeAlert, false);
+        document.addEventListener('mozpointerlockchange', mouse.lockChangeAlert, false);
     },
 
     lockChangeAlert: function () {
@@ -33,8 +37,15 @@
 
     updatePosition: function (e) {
 
-        console.log(e.movementX + " " + e.movementY);
-    }
+        mouse.x += e.movementX;
+        mouse.y += e.movementY;
+
+        world.camera.rotation.y = mouse.x / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
+        world.camera.rotation.x = mouse.y / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
+    },
+
+
+
 
 };
 

@@ -60,5 +60,16 @@ namespace GameServer.States
                 Console.WriteLine("key pressed " + key.Value);
             }
         }
+
+        public static void SendConnectedConfirmation(WebSocket webSocket, Player player)
+        {
+            var connectionConfirmationResponse = new
+            {
+                Type = "connected",
+                PlayerId = player.Id
+            };
+
+            SendState(connectionConfirmationResponse, webSocket);
+        }
     }
 }

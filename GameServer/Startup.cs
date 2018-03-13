@@ -66,6 +66,7 @@ namespace GameServer
             Player player = _gameEngine.ConnectPlayer(connectionRequest);
 
             // Send back initial status
+            StateController.SendConnectedConfirmation(webSocket, player);
             StateController.SendMapState(webSocket);
 
             // Wait for other player messages

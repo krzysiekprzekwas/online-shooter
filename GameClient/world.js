@@ -7,6 +7,7 @@ let world = {
         this.mapObjects = Array();
         this.playerObjects = Array();
         this.fpsLabel = document.getElementById("fpsLabel");
+        this.playerId = -1;
 
         this.createScene();
         
@@ -56,6 +57,14 @@ let world = {
 
         for(player of gamestate.Players) 
         {
+            if (player.Id == world.playerId) {
+
+                this.camera.position.x = player.X;
+                this.camera.position.y = player.Y;
+                this.camera.position.z = player.Z;
+                continue;
+            }
+
             if(typeof this.playerObjects[player.Id] == 'undefined')
             {
                 let playerObject = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
@@ -65,8 +74,8 @@ let world = {
             this.playerObjects[player.Id].position.x = player.X;
             this.playerObjects[player.Id].position.y = player.Y;
             this.playerObjects[player.Id].position.z = player.Z;
-
         }
+
     },
 
     createScene: function() {
@@ -74,8 +83,8 @@ let world = {
         this.scene = new BABYLON.Scene(this.engine);
 
         // Create camera
-        var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), this.scene);
-        camera.setTarget(BABYLON.Vector3.Zero());
+        this.camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), this.scene);
+        this.camera.setTarget(BABYLON.Vector3.Zero());
         //camera.attachControl(this.canvas, false);
 
         // Create light
