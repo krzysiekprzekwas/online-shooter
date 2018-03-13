@@ -45,10 +45,15 @@ let world = {
                 default:
                     console.error("[ERROR] Unknown object type " + obj.Type + ".");
             }
-    
+            
+
+            let mat = new BABYLON.StandardMaterial("mat", this.scene);
+            mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
+            
             mesh.position.x += obj.X;
             mesh.position.y += obj.Y;
             mesh.position.z += obj.Z;
+            mesh.material = mat;
 
             this.mapObjects[obj.Id] = mesh;
         }
@@ -86,9 +91,10 @@ let world = {
         this.scene = new BABYLON.Scene(this.engine);
 
         // Create camera
-        this.camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), this.scene);
+        this.camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -10), this.scene);
         this.camera.setTarget(BABYLON.Vector3.Zero());
-        //camera.attachControl(this.canvas, false);
+        //this.camera.rotation.x = -Math.PI / 2;
+        //this.camera.rotation.y = 0;
 
         // Create light
         var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), this.scene);

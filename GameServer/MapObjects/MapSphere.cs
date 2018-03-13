@@ -6,8 +6,8 @@ namespace GameServer.MapObjects
 {
     class MapSphere : MapObject
     {
-        public MapSphere(double x, double y, double z, double dx, double dy, double dz)
-            : base(x, y, z)
+        public MapSphere(double x, double y, double z, double dx, double dy, double dz, Color color = null)
+            : base(x, y, z, color)
         {
 
             DiameterX = dx;
@@ -15,8 +15,8 @@ namespace GameServer.MapObjects
             DiameterZ = dz;
         }
 
-        public MapSphere(double x, double y, double z, double diameter)
-            : base(x, y, z)
+        public MapSphere(double x, double y, double z, double diameter, Color color = null)
+            : base(x, y, z, color)
         {
             DiameterX = diameter;
             DiameterY = diameter;

@@ -3,8 +3,8 @@
     public class MapBox : MapObject
     {
         public string Type = @"box";
-        public MapBox(double x, double y, double z, double w, double h, double d)
-            : base(x, y, z)
+        public MapBox(double x, double y, double z, double w, double h, double d, Color color = null)
+            : base(x, y, z, color)
         {
             Width = w;
             Height = h;

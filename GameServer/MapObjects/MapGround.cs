@@ -6,8 +6,8 @@ namespace GameServer.MapObjects
 {
     class MapGround : MapObject
     {
-        public MapGround(double x, double y, double z, double w, double h)
-            : base(x, y, z)
+        public MapGround(double x, double y, double z, double w, double h, Color color = null)
+            : base(x, y, z, color)
         {
             Height = h;
             Width = w;

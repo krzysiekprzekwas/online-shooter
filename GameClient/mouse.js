@@ -42,14 +42,18 @@
         // world.camera.rotation.x is vertical rotation
         world.camera.rotation.x += e.movementY / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
         
+        let d;
 
-        // Normalize x rotation from 0 to 2 * PI
-        //let d = Math.floor(world.camera.rotation.x / (2 * Math.PI));
-        //world.camera.rotation.x -= d * Math.PI;
+        // Limit x rotation from -PI/2 to PI/2
+        if (world.camera.rotation.x < (-Math.PI / 6))
+            world.camera.rotation.x = (-Math.PI / 6);
+        else if (world.camera.rotation.x > (Math.PI / 6))
+            world.camera.rotation.x = (Math.PI / 6);
+        
 
-        // Normalize x rotation from 0 to PI
-        let d = Math.floor(world.camera.rotation.y / Math.PI);
-        world.camera.rotation.y -= d * Math.PI;
+        // Normalize y rotation from 0 to 2PI
+        d = Math.floor(world.camera.rotation.y / (2 * Math.PI));
+        world.camera.rotation.y -= d * (2 * Math.PI);
 
     },
 

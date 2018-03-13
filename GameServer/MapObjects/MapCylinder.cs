@@ -6,8 +6,8 @@ namespace GameServer.MapObjects
 {
     class MapCylinder : MapObject
     {
-        public MapCylinder(double x, double y, double z, double h, double diameterTop, double diameterBottom, int tessellation = 24)
-            : base(x, y, z)
+        public MapCylinder(double x, double y, double z, double h, double diameterTop, double diameterBottom, int tessellation = 24, Color color = null)
+            : base(x, y, z, color)
         {
             Height = h;
             DiameterBottom = diameterBottom;
@@ -15,8 +15,8 @@ namespace GameServer.MapObjects
             Tessellation = tessellation;
         }
 
-        public MapCylinder(double x, double y, double z, double h, double diameter, int tessellation = 24)
-            : base(x, y, z)
+        public MapCylinder(double x, double y, double z, double h, double diameter, int tessellation = 24, Color color = null)
+            : base(x, y, z, color)
         {
             Height = h;
             DiameterBottom = diameter;
