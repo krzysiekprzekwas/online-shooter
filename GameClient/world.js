@@ -7,13 +7,16 @@ let world = {
         this.mapObjects = Array();
         this.playerObjects = Array();
         this.fpsLabel = document.getElementById("fpsLabel");
+        this.pingLabel = document.getElementById("pingLabel");
         this.playerId = -1;
+        this.ping = 999;
 
         this.createScene();
         
         this.engine.runRenderLoop(function(){
             world.scene.render();
             world.fpsLabel.innerHTML = world.engine.getFps().toFixed();
+            world.pingLabel.innerHTML = world.ping;
         });
 
         // the canvas/window resize event handler
@@ -34,7 +37,7 @@ let world = {
                 mesh = BABYLON.MeshBuilder.CreateBox("box", {
                         height: obj.Height,
                         width: obj.Width,
-                        depth: obj.Depth,
+                        depth: obj.Depth
                     }, this.scene);   
     
                     break;
@@ -57,7 +60,7 @@ let world = {
 
         for(player of gamestate.Players) 
         {
-            if (player.Id == world.playerId) {
+            if (player.Id === world.playerId) {
 
                 this.camera.position.x = player.X;
                 this.camera.position.y = player.Y;
@@ -65,7 +68,7 @@ let world = {
                 continue;
             }
 
-            if(typeof this.playerObjects[player.Id] == 'undefined')
+            if(typeof this.playerObjects[player.Id] === 'undefined')
             {
                 let playerObject = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
                 this.playerObjects[player.Id] = playerObject;

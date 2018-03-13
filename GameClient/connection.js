@@ -30,12 +30,7 @@ setInterval(function() {
         Keys: keys.getKeysState()
     });
 
-    //pingStart = new Date();
+    pingStart = new Date();
     socket.send(playerStateString);
 
 }, 50);
-
-function calculatePing() {
-    let timeDiff = new Date() - pingStart;
-    console.log(timeDiff);
-}

@@ -75,6 +75,7 @@ namespace GameServer
                 //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
 
                 StateController.ReceiveState(buffer, player);
+                StateController.SendReceivedState(webSocket);
                 Array.Clear(buffer, 0, result.Count);
 
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);

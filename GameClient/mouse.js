@@ -36,12 +36,21 @@
     },
 
     updatePosition: function (e) {
+        
+        // world.camera.rotation.y is horizontal rotation
+        world.camera.rotation.y += e.movementX / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
+        // world.camera.rotation.x is vertical rotation
+        world.camera.rotation.x += e.movementY / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
+        
 
-        mouse.x += e.movementX;
-        mouse.y += e.movementY;
+        // Normalize x rotation from 0 to 2 * PI
+        //let d = Math.floor(world.camera.rotation.x / (2 * Math.PI));
+        //world.camera.rotation.x -= d * Math.PI;
 
-        world.camera.rotation.y = mouse.x / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
-        world.camera.rotation.x = mouse.y / mouse.MOUSE_MOVE_FACTOR * settings.sensitivity;
+        // Normalize x rotation from 0 to PI
+        let d = Math.floor(world.camera.rotation.y / Math.PI);
+        world.camera.rotation.y -= d * Math.PI;
+
     },
 
 

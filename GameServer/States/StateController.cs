@@ -52,13 +52,14 @@ namespace GameServer.States
 
         public static void ProcessPlayerState(dynamic playerState, Player player)
         {
-            Console.WriteLine(playerState);
             player.Keys = new List<string>();
             foreach (var key in playerState.Keys)
             {
                 player.Keys.Add(key.Value);
                 Console.WriteLine("key pressed " + key.Value);
             }
+
+
         }
 
         public static void SendConnectedConfirmation(WebSocket webSocket, Player player)
@@ -70,6 +71,16 @@ namespace GameServer.States
             };
 
             SendState(connectionConfirmationResponse, webSocket);
+        }
+
+        internal static void SendReceivedState(WebSocket webSocket)
+        {
+            var receivedConfirmationResponse = new
+            {
+                Type = "received"
+            };
+
+            SendState(receivedConfirmationResponse, webSocket);
         }
     }
 }

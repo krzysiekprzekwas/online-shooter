@@ -4,5 +4,5 @@ window.addEventListener('DOMContentLoaded', function(){
     mouse.initialize();
 });
 
-window.onkeyup = function (e) { keys.keyUp(e.keyCode) }
-window.onkeydown = function (e) { keys.keyDown(e.keyCode) }
+window.onkeyup = function (e) { keys.keyUp(e.keyCode); };
+window.onkeydown = function (e) { keys.keyDown(e.keyCode); };
