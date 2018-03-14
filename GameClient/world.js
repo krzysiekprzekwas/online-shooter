@@ -10,13 +10,25 @@ let world = {
         this.pingLabel = document.getElementById("pingLabel");
         this.playerId = -1;
         this.ping = 999;
+        this.receivedGameStateOnCurrentFrame = false;
+        this.lastGamestate = null;
+        this.lastFrameTime = new Date();
 
         this.createScene();
         
-        this.engine.runRenderLoop(function(){
+        this.engine.runRenderLoop(function () {
+
+            // If extrapolation is turned on and world gamestate is obsolote
+            if (settings.EXTRAPOLATION && !world.receivedGameStateOnCurrentFrame)
+                world.extrapolatePlayers();
+
+            world.receivedGameStateOnCurrentFrame = false;
             world.scene.render();
             world.fpsLabel.innerHTML = world.engine.getFps().toFixed();
             world.pingLabel.innerHTML = world.ping;
+
+            // Remember last frame generation time so we will be able to extrapolate
+            world.lastFrameTime = new Date();
         });
 
         // the canvas/window resize event handler
@@ -61,10 +73,16 @@ let world = {
         logger.info("Loaded map objects " + mapstate.MapObjects.length);
     },
 
+    // Update function is called when gamestate was received from server
     updatePlayers: function(gamestate) {
+
+        // Change variable so players wont be extrapolated on current frame
+        this.receivedGameStateOnCurrentFrame = true;
+        this.lastGamestate = gamestate;
 
         for(player of gamestate.Players) 
         {
+            // If current player is you, just update camera position
             if (player.Id === world.playerId) {
 
                 this.camera.position.x = player.X;
@@ -73,9 +91,10 @@ let world = {
                 continue;
             }
 
+            // Else create player or update players position
             if(typeof this.playerObjects[player.Id] === 'undefined')
             {
-                let playerObject = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+                let playerObject = BABYLON.Mesh.CreateSphere('sphere1', 16, 0.5, this.scene);
                 this.playerObjects[player.Id] = playerObject;
             }
 
@@ -84,6 +103,28 @@ let world = {
             this.playerObjects[player.Id].position.z = player.Z;
         }
 
+    },
+
+    extrapolatePlayers: function () {
+
+        if (this.lastGamestate == null)
+            return;
+
+        let timeDiff = new Date() - this.lastFrameTime;
+        let speed = (timeDiff / 1000) * settings.PLAYER_SPEED;
+
+        for (player of this.lastGamestate.Players)
+        {
+            // If current player is you, just update camera position
+            if (player.Id === world.playerId) {
+                
+                continue;
+            }
+
+            this.playerObjects[player.Id].position.x += player.SpeedX * speed;
+            this.playerObjects[player.Id].position.y += player.SpeedY * speed;
+            this.playerObjects[player.Id].position.z += player.SpeedZ * speed;
+        }
     },
 
     createScene: function() {

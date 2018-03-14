@@ -1,4 +1,6 @@
 ﻿let settings = {
 
-    sensitivity: 3
+    SENSITIVITY: 3,
+    EXTRAPOLATION: true,
+    PLAYER_SPEED: 2
 };

@@ -45,23 +45,23 @@ namespace GameServer.Physics
 
             if (player.Keys.Contains("w"))
             {
-                player.SpeedX += forwardAngle.X * 0.1;
-                player.SpeedZ += forwardAngle.Y * 0.1;
+                player.SpeedX += forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                player.SpeedZ += forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
             if (player.Keys.Contains("s"))
             {
-                player.SpeedX -= forwardAngle.X * 0.1;
-                player.SpeedZ -= forwardAngle.Y * 0.1;
+                player.SpeedX -= forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                player.SpeedZ -= forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
             if (player.Keys.Contains("a"))
             {
-                player.SpeedX += leftAngle.X * 0.1;
-                player.SpeedZ += leftAngle.Y * 0.1;
+                player.SpeedX += leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                player.SpeedZ += leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
             if (player.Keys.Contains("d"))
             {
-                player.SpeedX -= leftAngle.X * 0.1;
-                player.SpeedZ -= leftAngle.Y * 0.1;
+                player.SpeedX -= leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                player.SpeedZ -= leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
         }
     }

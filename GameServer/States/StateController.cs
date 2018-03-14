@@ -44,20 +44,18 @@ namespace GameServer.States
             string request = Encoding.ASCII.GetString(buffer).Trim((char)0);
             dynamic jsonObject = JsonConvert.DeserializeObject(request);
 
-            Console.WriteLine("Received " + jsonObject.Type + " request from player #" + player.Id);
 
             if (jsonObject.Type == "playerstate")
                 ProcessPlayerState(jsonObject, player);
+            else
+                Console.WriteLine("Received unknown " + jsonObject.Type + " request from player #" + player.Id);
         }
 
         public static void ProcessPlayerState(dynamic playerState, Player player)
         {
             player.Keys = new List<string>();
             foreach (var key in playerState.Keys)
-            {
                 player.Keys.Add(key.Value);
-                Console.WriteLine("key pressed " + key.Value);
-            }
 
             player.Angles.X = (double)playerState.Angles.X.Value;
             player.Angles.Y = (double)playerState.Angles.Y.Value;
