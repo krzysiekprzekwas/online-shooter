@@ -12,14 +12,12 @@ namespace GameServer
             Id = GameState.Instance.AssignPlayerId();
             Keys = new List<string>();
             Angles = new Angle2();
+            Position = new Vector3d();
+            Speed = new Vector3d();
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
-        public double SpeedX { get; set; }
-        public double SpeedY { get; set; }
-        public double SpeedZ { get; set; }
+        public Vector3d Position { get; set; }
+        public Vector3d Speed { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
 

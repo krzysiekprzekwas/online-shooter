@@ -23,23 +23,23 @@ namespace GameServer.Physics
             {
                 ProcessPlayerInput(player);
 
-                if(Math.Abs(player.SpeedX) > 0.00000001)
+                if(Math.Abs(player.Speed.X) > 0.00000001)
                 {
-                    player.X += player.SpeedX;
-                    player.SpeedX *= 0.2;
+                    player.Position.X += player.Speed.X;
+                    player.Speed.X *= 0.2;
                 }
 
-                if (Math.Abs(player.SpeedZ) > 0.00000001)
+                if (Math.Abs(player.Speed.Z) > 0.00000001)
                 {
-                    player.Z += player.SpeedZ;
-                    player.SpeedZ *= 0.2;
+                    player.Position.Z += player.Speed.Z;
+                    player.Speed.Z *= 0.2;
                 }
 
 
-                if (Math.Abs(player.SpeedY) > 0.00000001)
+                if (Math.Abs(player.Speed.Y) > 0.00000001)
                 {
-                    player.Y += player.SpeedY;
-                    player.SpeedY *= 0.2;
+                    player.Position.Y += player.Speed.Y;
+                    player.Speed.Y *= 0.2;
                 }
             }
 
@@ -51,40 +51,43 @@ namespace GameServer.Physics
         {
             Angle2 forwardAngle = new Angle2(Math.Sin(player.Angles.Y), Math.Cos(player.Angles.Y));
             Angle2 leftAngle = new Angle2(Math.Sin(player.Angles.Y - Math.PI / 2), Math.Cos(player.Angles.Y - Math.PI / 2));
-            List<double> speedVector = new List<double>(3) { 0, 0, 0 };
+            Vector3d speedVector = new Vector3d();
 
             if (player.Keys.Contains("w"))
             {
-                speedVector[0] = forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector[2] = forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.X = forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.Z = forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
             if (player.Keys.Contains("s"))
             {
-                speedVector[0] = -forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector[2] = -forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.X = -forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.Z = -forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
             if (player.Keys.Contains("a"))
             {
-                speedVector[0] = leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector[2] = leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.X = leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.Z = leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
             if (player.Keys.Contains("d"))
             {
-                speedVector[0] = -leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector[2] = -leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.X = -leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
+                speedVector.Z = -leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
 
-            speedVector[1] = -0.1;
+            speedVector.Y = -0.1;
 
             CheckCollision(player, speedVector);
 
-            player.SpeedX += speedVector[0];
-            player.SpeedY += speedVector[1];
-            player.SpeedZ += speedVector[2];
+            player.Speed.X += speedVector.X;
+            player.Speed.Y += speedVector.Y;
+            player.Speed.Z += speedVector.Z;
         }
 
-        public void CheckCollision(Player player, List<double> speedVector)
+        public void CheckCollision(Player player, Vector3d speedVector)
         {
+            Vector3d oldPosition = player.Position;
+            Vector3d newPosition = player.Position + speedVector;
+
             foreach(MapObject obj in MapState.Instance.MapObjects)
             {
                 if(obj is MapBox)
@@ -98,12 +101,12 @@ namespace GameServer.Physics
 
                     double up = box.Y + (box.Height / 2);
 
-                    if (player.X >= left &&
-                        player.X <= right &&
-                        player.Z <= top &&
-                        player.Z >= bottom &&
-                        player.Y >= up)
-                        speedVector[1] = 0;
+                    if (player.Position.X >= left &&
+                        player.Position.X <= right &&
+                        player.Position.Z <= top &&
+                        player.Position.Z >= bottom &&
+                        player.Position.Y >= up)
+                        speedVector.Y = 0;
                 }
             }
         }
