@@ -19,11 +19,11 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
-            foreach(Player player in GameState.Instance.Players)
+            foreach (Player player in GameState.Instance.Players)
             {
                 ProcessPlayerInput(player);
 
-                if(Math.Abs(player.Speed.X) > 0.00000001)
+                if (Math.Abs(player.Speed.X) > 0.00000001)
                 {
                     player.Position.X += player.Speed.X;
                     player.Speed.X *= 0.2;
@@ -74,9 +74,23 @@ namespace GameServer.Physics
                 speedVector.Z = -leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
             }
 
-            speedVector.Y = -0.1;
+            speedVector.Y = -1 * Config.GRAVITY / Config.SERVER_TICK;
+            if (player.Keys.Contains("sp"))
+            {
+                if (!player.IsJumping)
+                {
+                    player.IsJumping = true;
+                    speedVector.Y += Config.JUMP_POWER;
+                }
+            }
+
 
             CheckCollision(player, speedVector);
+
+            if (speedVector.Y == 0)
+            {
+                player.IsJumping = false;
+            }
 
             player.Speed.X += speedVector.X;
             player.Speed.Y += speedVector.Y;
@@ -88,24 +102,26 @@ namespace GameServer.Physics
             Vector3d oldPosition = player.Position;
             Vector3d newPosition = player.Position + speedVector;
 
-            foreach(MapObject obj in MapState.Instance.MapObjects)
+            foreach (MapObject obj in MapState.Instance.MapObjects)
             {
-                if(obj is MapBox)
+                if (obj is MapBox)
                 {
                     MapBox box = obj as MapBox;
 
-                    double left = box.X - (box.Width / 2);
-                    double right = box.X + (box.Width / 2);
-                    double top = box.Z + (box.Depth / 2);
-                    double bottom = box.Z - (box.Depth / 2);
+                    double left = box.Position.X - (box.Width / 2);
+                    double right = box.Position.X + (box.Width / 2);
+                    double top = box.Position.Z + (box.Depth / 2);
+                    double bottom = box.Position.Z - (box.Depth / 2);
 
-                    double up = box.Y + (box.Height / 2);
+                    double up = box.Position.Y + (box.Height / 2);
 
                     if (player.Position.X >= left &&
                         player.Position.X <= right &&
                         player.Position.Z <= top &&
                         player.Position.Z >= bottom &&
-                        player.Position.Y >= up)
+                        player.Position.Y >= up &&
+                        player.Position.Y < up + 1 &&
+                        speedVector.Y < 0)
                         speedVector.Y = 0;
                 }
             }

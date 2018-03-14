@@ -43,10 +43,10 @@
         world.camera.rotation.x += e.movementY / mouse.MOUSE_MOVE_FACTOR * settings.SENSITIVITY;
         
         // Limit x rotation from -PI/2 to PI/2
-        if (world.camera.rotation.x < -Math.PI / 6)
-            world.camera.rotation.x = -Math.PI / 6;
-        else if (world.camera.rotation.x > Math.PI / 6)
-            world.camera.rotation.x = Math.PI / 6;
+        if (world.camera.rotation.x < -Math.PI / 2)
+            world.camera.rotation.x = -Math.PI / 2;
+        else if (world.camera.rotation.x > Math.PI / 2)
+            world.camera.rotation.x = Math.PI / 2;
         
 
         // Normalize y rotation from 0 to 2PI

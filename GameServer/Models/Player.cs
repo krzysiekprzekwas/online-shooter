@@ -14,6 +14,8 @@ namespace GameServer
             Angles = new Angle2();
             Position = new Vector3d();
             Speed = new Vector3d();
+
+            IsJumping = false;
         }
 
         public Vector3d Position { get; set; }
@@ -26,5 +28,8 @@ namespace GameServer
 
         [JsonIgnore]
         public List<string> Keys;
+
+        [JsonIgnore]
+        public bool IsJumping;
     }
 }

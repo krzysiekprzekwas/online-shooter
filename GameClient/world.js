@@ -62,9 +62,9 @@ let world = {
             let mat = new BABYLON.StandardMaterial("mat", this.scene);
             mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
             
-            mesh.position.x += obj.X;
-            mesh.position.y += obj.Y;
-            mesh.position.z += obj.Z;
+            mesh.position.x += obj.Position.X;
+            mesh.position.y += obj.Position.Y;
+            mesh.position.z += obj.Position.Z;
             mesh.material = mat;
 
             this.mapObjects[obj.Id] = mesh;
@@ -85,9 +85,9 @@ let world = {
             // If current player is you, just update camera position
             if (player.Id === world.playerId) {
 
-                this.camera.position.x = player.X;
-                this.camera.position.y = player.Y;
-                this.camera.position.z = player.Z;
+                this.camera.position.x = player.Position.X;
+                this.camera.position.y = player.Position.Y;
+                this.camera.position.z = player.Position.Z;
                 continue;
             }
 
@@ -98,9 +98,9 @@ let world = {
                 this.playerObjects[player.Id] = playerObject;
             }
 
-            this.playerObjects[player.Id].position.x = player.X;
-            this.playerObjects[player.Id].position.y = player.Y;
-            this.playerObjects[player.Id].position.z = player.Z;
+            this.playerObjects[player.Id].position.x = player.Position.X;
+            this.playerObjects[player.Id].position.y = player.Position.Y;
+            this.playerObjects[player.Id].position.z = player.Position.Z;
         }
 
     },

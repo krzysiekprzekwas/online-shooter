@@ -5,13 +5,16 @@
         87: "w",
         83: "s",
         68: "d",
-        65: "a"
+        65: "a",
+        32: "sp" // Space
     },
 
     keysPressed: Array(),
 
     // Action on player key pressed
     keyDown: function (keyCode) {
+
+        //console.log(keyCode);
 
         let index = this.keysPressed.indexOf(keyCode);
         if (index === -1) {
@@ -28,8 +31,6 @@
         if (index > -1) {
             this.keysPressed.splice(index, 1);
         }
-
-        //console.log(this.getKeysState());
     },
 
     // Returns a list of all keys pressed

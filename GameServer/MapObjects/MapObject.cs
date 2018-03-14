@@ -1,4 +1,5 @@
-﻿using GameServer.States;
+﻿using GameServer.Models;
+using GameServer.States;
 
 namespace GameServer.MapObjects
 {
@@ -8,9 +9,7 @@ namespace GameServer.MapObjects
         {
             Id = MapState.Instance.AssingMapObjectId();
 
-            X = x;
-            Y = y;
-            Z = z;
+            Position = new Vector3d(x, y, z);
 
             Color = color;
             if(color == null)
@@ -19,9 +18,7 @@ namespace GameServer.MapObjects
             }
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public Vector3d Position { get; set; }
         public int Id { get; set; }
 
         public Color Color { get; set; }

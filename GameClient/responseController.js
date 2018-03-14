@@ -2,6 +2,8 @@
 
     processResponse: function (response) {
 
+
+        //console.log(response);
         if (response.Type === "mapstate")
             world.loadMapObjects(response.MapState);
         else if (response.Type === "gamestate")
