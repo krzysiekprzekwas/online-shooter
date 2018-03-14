@@ -111,7 +111,7 @@ let world = {
             return;
 
         let timeDiff = new Date() - this.lastFrameTime;
-        let speed = (timeDiff / 1000) * settings.PLAYER_SPEED;
+        let speed = timeDiff / 1000 * settings.PLAYER_SPEED;
 
         for (player of this.lastGamestate.Players)
         {
