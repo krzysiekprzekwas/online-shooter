@@ -107,7 +107,7 @@ let world = {
 
     extrapolatePlayers: function () {
 
-        if (this.lastGamestate == null)
+        if (this.lastGamestate === null)
             return;
 
         let timeDiff = new Date() - this.lastFrameTime;

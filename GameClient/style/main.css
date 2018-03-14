@@ -80,3 +80,15 @@ html {
     font: 2rem Consolas;
     color: #f1c40f;
 }
+
+#crosshair {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3rem;
+    height: 3rem;
+    margin: -1.5rem 0 0 -1.5rem;
+    background: url(crosshair.png);
+    background-position: center;
+    background-size: 3rem 3rem;
+}
