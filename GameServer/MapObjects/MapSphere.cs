@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameServer.MapObjects
 {
-    class MapSphere : MapObject
+    public class MapSphere : MapObject
     {
         public MapSphere(double x, double y, double z, double dx, double dy, double dz, Color color = null)
             : base(x, y, z, color)
