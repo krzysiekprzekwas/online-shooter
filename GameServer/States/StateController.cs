@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 
@@ -57,8 +58,10 @@ namespace GameServer.States
             foreach (var key in playerState.Keys)
                 player.Keys.Add(key.Value);
 
-            player.Angles.X = (double)playerState.Angles.X.Value;
-            player.Angles.Y = (double)playerState.Angles.Y.Value;
+            float ax = (float)playerState.Angles.X.Value;
+            float ay = (float)playerState.Angles.Y.Value;
+
+            player.Angles = new Vector2(ax, ay);
         }
 
         public static void SendConnectedConfirmation(WebSocket webSocket, Player player)

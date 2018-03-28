@@ -3,7 +3,7 @@
     public class MapBox : MapObject
     {
         public string Type = @"box";
-        public MapBox(double x, double y, double z, double w, double h, double d, Color color = null)
+        public MapBox(float x, float y, float z, float w, float h, float d, Color color = null)
             : base(x, y, z, color)
         {
             Width = w;
@@ -11,8 +11,8 @@
             Depth = d;
         }
 
-        public double Width { get; set; }
-        public double Height { get; set; }
-        public double Depth { get; set; }
+        public float Width { get; set; }
+        public float Height { get; set; }
+        public float Depth { get; set; }
     }
 }

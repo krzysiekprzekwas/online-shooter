@@ -2,13 +2,14 @@
 using GameServer.Models;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace GameServer.Physics
 {
     public static class Intersection
     {
-        public static double DistanceSquared(Vector3d v1, Vector3d v2)
+        public static double DistanceSquared(Vector3 v1, Vector3 v2)
         {
             double dx = Math.Abs(v1.X - v2.X);
             double dy = Math.Abs(v1.Y - v2.Y);
@@ -17,7 +18,7 @@ namespace GameServer.Physics
             return Math.Pow(dx, 2) + Math.Pow(dy, 2) + Math.Pow(dz, 2);
         }
 
-        public static double Distance(Vector3d v1, Vector3d v2)
+        public static double Distance(Vector3 v1, Vector3 v2)
         {
             return Math.Sqrt(DistanceSquared(v1, v2));
         }
@@ -32,14 +33,14 @@ namespace GameServer.Physics
         {
             double distanceSquared = Math.Pow(s.Diameter / 2, 2);
 
-            Vector3d c1 = new Vector3d()
+            Vector3 c1 = new Vector3()
             {
                 X = c.Position.X - (c.Width / 2),
                 Y = c.Position.Y - (c.Height / 2),
                 Z = c.Position.Z - (c.Depth / 2)
             };
 
-            Vector3d c2 = new Vector3d()
+            Vector3 c2 = new Vector3()
             {
                 X = c.Position.X + (c.Width / 2),
                 Y = c.Position.Y + (c.Height / 2),

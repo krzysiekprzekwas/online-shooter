@@ -21,38 +21,40 @@ namespace GameServer.Physics
         {
             foreach (Player player in GameState.Instance.Players)
             {
-                player.Speed.X *= Config.PLAYER_DECCELERATION;
-                player.Speed.Z *= Config.PLAYER_DECCELERATION;
-                player.Speed.Y *= Config.PLAYER_DECCELERATION;
+                // Deccelerate player every tick
+                float x = player.Speed.X * Config.PLAYER_DECCELERATION;
+                float y = player.Speed.Y * Config.PLAYER_DECCELERATION;
+                float z = player.Speed.Z * Config.PLAYER_DECCELERATION;
+                player.Speed = new Vector3(x, y, z);
 
+                // Process movement caused by input
                 ProcessPlayerInput(player);
 
+                // If movement is slow stop player
+                float px = player.Position.X;
+                float py = player.Position.Y;
+                float pz = player.Position.Z;
+
+                // Update position if player is moving
                 if (Math.Abs(player.Speed.X) > 0.00000001)
-                {
-                    player.Position.X += player.Speed.X;
-                }
+                    px += player.Speed.X;
 
                 if (Math.Abs(player.Speed.Z) > 0.00000001)
-                {
-                    player.Position.Z += player.Speed.Z;
-                }
-
-
+                    pz += player.Speed.Z;
+                
                 if (Math.Abs(player.Speed.Y) > 0.00000001)
-                {
-                    player.Position.Y += player.Speed.Y;
-                }
+                    py += player.Speed.Y;
+
+                // Save new positon
+                player.Position = new Vector3(px, py, pz);
             }
-
-
-
         }
 
         public void ProcessPlayerInput(Player player)
         {
-            Angle2 forwardAngle = new Angle2(Math.Sin(player.Angles.Y), Math.Cos(player.Angles.Y));
-            Angle2 leftAngle = new Angle2(Math.Sin(player.Angles.Y - Math.PI / 2), Math.Cos(player.Angles.Y - Math.PI / 2));
-            Vector3d speedVector = new Vector3d();
+            Vector2 forwardAngle = new Vector2((float)Math.Sin(player.Angles.Y), (float)Math.Cos(player.Angles.Y));
+            Vector2 leftAngle = new Vector2((float)Math.Sin(player.Angles.Y - (float)Math.PI / 2), (float)Math.Cos(player.Angles.Y - Math.PI / 2));
+            Vector3 speedVector = new Vector3();
 
             if (player.Keys.Contains("w"))
             {
@@ -93,15 +95,22 @@ namespace GameServer.Physics
                 player.IsJumping = false;
             }
 
-            player.Speed.X += speedVector.X;
-            player.Speed.Y += speedVector.Y;
-            player.Speed.Z += speedVector.Z;
+            // Update player speed
+            float sx = player.Speed.X;
+            float sy = player.Speed.Y;
+            float sz = player.Speed.Z;
+
+            sx += speedVector.X;
+            sy += speedVector.Y;
+            sz += speedVector.Z;
+
+            player.Speed = new Vector3(sx, sy, sz);
         }
 
-        public void CheckCollision(Player player, Vector3d speedVector)
+        public void CheckCollision(Player player, Vector3 speedVector)
         {
-            Vector3d oldPosition = player.Position;
-            Vector3d newPosition = player.Position + speedVector;
+            Vector3 oldPosition = player.Position;
+            Vector3 newPosition = player.Position + speedVector;
 
             foreach (MapObject obj in MapState.Instance.MapObjects)
             {

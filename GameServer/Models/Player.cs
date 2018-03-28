@@ -2,6 +2,7 @@
 using GameServer.States;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace GameServer
 {
@@ -11,20 +12,20 @@ namespace GameServer
         {
             Id = GameState.Instance.AssignPlayerId();
             Keys = new List<string>();
-            Angles = new Angle2();
-            Position = new Vector3d();
-            Speed = new Vector3d();
+            Angles = new Vector2();
+            Position = new Vector3();
+            Speed = new Vector3();
 
             IsJumping = false;
         }
 
-        public Vector3d Position { get; set; }
-        public Vector3d Speed { get; set; }
+        public Vector3 Position { get; set; }
+        public Vector3 Speed { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
 
 
-        public Angle2 Angles { get; set; }
+        public Vector2 Angles { get; set; }
 
         [JsonIgnore]
         public List<string> Keys;
