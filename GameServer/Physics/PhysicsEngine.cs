@@ -21,25 +21,26 @@ namespace GameServer.Physics
         {
             foreach (Player player in GameState.Instance.Players)
             {
+                player.Speed.X *= Config.PLAYER_DECCELERATION;
+                player.Speed.Z *= Config.PLAYER_DECCELERATION;
+                player.Speed.Y *= Config.PLAYER_DECCELERATION;
+
                 ProcessPlayerInput(player);
 
                 if (Math.Abs(player.Speed.X) > 0.00000001)
                 {
                     player.Position.X += player.Speed.X;
-                    player.Speed.X *= 0.2;
                 }
 
                 if (Math.Abs(player.Speed.Z) > 0.00000001)
                 {
                     player.Position.Z += player.Speed.Z;
-                    player.Speed.Z *= 0.2;
                 }
 
 
                 if (Math.Abs(player.Speed.Y) > 0.00000001)
                 {
                     player.Position.Y += player.Speed.Y;
-                    player.Speed.Y *= 0.2;
                 }
             }
 

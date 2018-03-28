@@ -30,7 +30,7 @@ namespace GameServer.Physics
         }
         public static bool CheckIntersection(MapBox c, MapSphere s)
         {
-            double distanceSquared = Math.Pow(s.DiameterX, 2);
+            double distanceSquared = Math.Pow(s.Diameter / 2, 2);
 
             Vector3d c1 = new Vector3d()
             {
@@ -54,6 +54,14 @@ namespace GameServer.Physics
             else if (s.Position.Z > c2.Z) distanceSquared -= Math.Pow(s.Position.Z - c2.Z, 2);
 
             return distanceSquared > 0;
+        }
+
+        public static bool CheckIntersection(MapSphere s1, MapSphere s2)
+        {
+            double distanceSquared = DistanceSquared(s1.Position, s2.Position);
+            double diameterSquared = Math.Pow((s1.Diameter / 2) + (s2.Diameter / 2), 2);
+            
+            return diameterSquared > distanceSquared;
         }
     }
 }

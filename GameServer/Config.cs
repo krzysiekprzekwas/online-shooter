@@ -10,6 +10,7 @@ namespace GameServer
         public const int SERVER_TICK = 64;
         public const double PLAYER_SPEED = 2; // PER SECOND
         public const double GRAVITY = 10; // PER SECOND
-        public const double JUMP_POWER = 7;
+        public const double JUMP_POWER = 2;
+        public const double PLAYER_DECCELERATION = 0.2;
     }
 }
