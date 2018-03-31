@@ -45,7 +45,8 @@ namespace GameServer.Game
 
             Player player = new Player
             {
-                Name = json.Name
+                Name = json.Name,
+                Position = new System.Numerics.Vector3(0, Config.PLAYER_SIZE / 2, 0)
             };
             GameState.Players.Add(player);
             Console.WriteLine(String.Format("[INFO] Player #{0} ({1}) connected.", player.Id, player.Name));

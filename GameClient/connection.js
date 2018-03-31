@@ -1,6 +1,5 @@
 // Create WebSocket connection.
 const socket = new WebSocket('ws://localhost:5000/ws');
-let pingStart;
 
 // Connect to server
 socket.addEventListener('open', function (event) {
@@ -28,10 +27,10 @@ setInterval(function() {
     const playerStateString = JSON.stringify({
         Type: "playerstate",
         Keys: keys.getKeysState(),
-        Angles: mouse.getCurrentAngles()
+        Angles: mouse.getCurrentAngles(),
+        PingStart: new Date().getTime()
     });
-
-    pingStart = new Date();
+    
     socket.send(playerStateString);
 
 }, 50);
