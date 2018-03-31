@@ -1,7 +1,7 @@
 ﻿let keys = {
 
     configuration: {
-
+        80: "p",
         87: "w",
         83: "s",
         68: "d",
@@ -14,7 +14,10 @@
     // Action on player key pressed
     keyDown: function (keyCode) {
 
-        //console.log(keyCode);
+        // console.log(keyCode);
+
+        if (keyCode == 80)
+            config.DEBUG_STOP = !config.DEBUG_STOP;
 
         let index = this.keysPressed.indexOf(keyCode);
         if (index === -1) {

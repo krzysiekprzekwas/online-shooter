@@ -36,6 +36,9 @@
     },
 
     updatePosition: function (e) {
+
+        if (config.DEBUG_STOP)
+            return;
         
         // world.camera.rotation.y is horizontal rotation
         world.camera.rotation.y += e.movementX / mouse.MOUSE_MOVE_FACTOR * config.SENSITIVITY;

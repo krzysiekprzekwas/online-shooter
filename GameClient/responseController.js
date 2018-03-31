@@ -2,6 +2,8 @@
 
     processResponse: function (response) {
 
+        if (config.DEBUG_STOP)
+            return;
 
         //console.log(response);
         if (response.Type === "mapstate")

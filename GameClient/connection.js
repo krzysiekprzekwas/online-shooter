@@ -19,7 +19,11 @@ socket.addEventListener('message', function (event) {
     responseController.processResponse(response);
 });
 
-setInterval(function() {
+setInterval(function () {
+
+
+    if (config.DEBUG_STOP)
+        return;
 
     if (socket.readyState !== socket.OPEN)
         return true;
@@ -30,6 +34,7 @@ setInterval(function() {
         Angles: mouse.getCurrentAngles(),
         PingStart: new Date().getTime()
     });
+
     
     socket.send(playerStateString);
 
