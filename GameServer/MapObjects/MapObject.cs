@@ -6,11 +6,13 @@ namespace GameServer.MapObjects
 {
     public abstract class MapObject
     {
-        public MapObject(float x, float y, float z, Color color)
+        public MapObject(float x, float y, float z, Color color, int textureId)
         {
             Id = MapState.Instance.AssingMapObjectId();
 
             Position = new Vector3(x, y, z);
+
+            TextureId = textureId;
 
             Color = color;
             if(color == null)
@@ -23,5 +25,6 @@ namespace GameServer.MapObjects
         public int Id { get; set; }
 
         public Color Color { get; set; }
+        public int TextureId { get; set; }
     }
 }

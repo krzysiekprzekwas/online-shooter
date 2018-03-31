@@ -57,11 +57,23 @@ let world = {
                 default:
                     console.error("[ERROR] Unknown object type " + obj.Type + ".");
             }
-            
 
             let mat = new BABYLON.StandardMaterial("mat", this.scene);
-            mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
-            
+
+            switch (obj.TextureId) {
+            case 1:
+                mat.emissiveTexture = new BABYLON.Texture("textures/wall.jpg", this.scene);
+                break;
+            case 2:
+                mat.emissiveTexture = new BABYLON.Texture("textures/brick.jpg", this.scene);
+                break;
+
+            default:
+                mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
+            }
+
+
+
             mesh.position.x += obj.Position.X;
             mesh.position.y += obj.Position.Y;
             mesh.position.z += obj.Position.Z;
