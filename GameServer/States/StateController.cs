@@ -69,7 +69,8 @@ namespace GameServer.States
             var connectionConfirmationResponse = new
             {
                 Type = "connected",
-                PlayerId = player.Id
+                PlayerId = player.Id,
+                Config = Config.Instance
             };
 
             SendState(connectionConfirmationResponse, webSocket);

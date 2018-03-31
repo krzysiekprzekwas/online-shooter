@@ -38,9 +38,9 @@
     updatePosition: function (e) {
         
         // world.camera.rotation.y is horizontal rotation
-        world.camera.rotation.y += e.movementX / mouse.MOUSE_MOVE_FACTOR * settings.SENSITIVITY;
+        world.camera.rotation.y += e.movementX / mouse.MOUSE_MOVE_FACTOR * config.SENSITIVITY;
         // world.camera.rotation.x is vertical rotation
-        world.camera.rotation.x += e.movementY / mouse.MOUSE_MOVE_FACTOR * settings.SENSITIVITY;
+        world.camera.rotation.x += e.movementY / mouse.MOUSE_MOVE_FACTOR * config.SENSITIVITY;
         
         // Limit x rotation from -PI/2 to PI/2
         if (world.camera.rotation.x < -Math.PI / 2)

@@ -19,7 +19,7 @@ let world = {
         this.engine.runRenderLoop(function () {
 
             // If extrapolation is turned on and world gamestate is obsolote
-            if (settings.EXTRAPOLATION && !world.receivedGameStateOnCurrentFrame)
+            if (config.EXTRAPOLATION && !world.receivedGameStateOnCurrentFrame)
                 world.extrapolatePlayers();
 
             world.receivedGameStateOnCurrentFrame = false;
@@ -111,16 +111,16 @@ let world = {
             return;
 
         let timeDiff = new Date() - this.lastFrameTime;
-        let speed = timeDiff / 1000 * settings.PLAYER_SPEED;
+        let speed = timeDiff / 1000 * config.PLAYER_SPEED;
 
         for (player of this.lastGamestate.Players)
         {
             // If current player is you, just update camera position
             if (player.Id === world.playerId) {
 
-                //this.camera.position.x += player.Speed.X * speed;
-                //this.camera.position.y += player.Speed.Y * speed;
-                //this.camera.position.z += player.Speed.Z * speed;
+                this.camera.position.x += player.Speed.X * speed;
+                this.camera.position.y += player.Speed.Y * speed;
+                this.camera.position.z += player.Speed.Z * speed;
                 continue;
             }
 
