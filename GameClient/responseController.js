@@ -31,10 +31,10 @@
     },
 
     receivedResponse: function (response) {
+        
+        let timeDiff = new Date() - response.PingStart;
 
-        let timeDiff = new Date() - pingStart;
-
-        world.ping = Math.floor(timeDiff / 2);
+        world.ping = Math.floor(timeDiff);
     }
 
 };

@@ -12,13 +12,15 @@ namespace GameServer
         [JsonProperty]
         public const int SERVER_TICK = 64;
         [JsonProperty]
-        public const float PLAYER_SPEED = 2; // PER SECOND
+        public const float PLAYER_SPEED = 32; // PER SECOND
         [JsonProperty]
         public const float GRAVITY = 10; // PER SECOND
         [JsonProperty]
         public const float JUMP_POWER = 2;
         [JsonProperty]
         public const float PLAYER_DECCELERATION = 0.2f;
+        [JsonProperty]
+        public const float PLAYER_SIZE = 32;
 
         private static Config instance;
         public static Config Instance

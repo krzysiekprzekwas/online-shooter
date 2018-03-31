@@ -40,14 +40,18 @@ namespace GameServer.States
             SendState(mapStateResponse, webSocket);
         }
         
-        public static void ReceiveState(byte[] buffer, Player player)
+        public static void ReceiveState(byte[] buffer, Player player, WebSocket webSocket)
         {
             string request = Encoding.ASCII.GetString(buffer).Trim((char)0);
             dynamic jsonObject = JsonConvert.DeserializeObject(request);
 
 
             if (jsonObject.Type == "playerstate")
+            {
                 ProcessPlayerState(jsonObject, player);
+                long pingStart = jsonObject.PingStart;
+                StateController.SendReceivedState(webSocket, pingStart);
+            }
             else
                 Console.WriteLine("Received unknown " + jsonObject.Type + " request from player #" + player.Id);
         }
@@ -76,11 +80,12 @@ namespace GameServer.States
             SendState(connectionConfirmationResponse, webSocket);
         }
 
-        internal static void SendReceivedState(WebSocket webSocket)
+        internal static void SendReceivedState(WebSocket webSocket, long pingStart)
         {
             var receivedConfirmationResponse = new
             {
-                Type = "received"
+                Type = "received",
+                PingStart = pingStart
             };
 
             SendState(receivedConfirmationResponse, webSocket);
