@@ -22,120 +22,62 @@ namespace GameServer.Physics
             foreach (Player player in GameState.Instance.Players)
             {
                 // Deccelerate player every tick
-                float x = player.Speed.X * Config.PLAYER_DECCELERATION;
-                float y = player.Speed.Y * Config.PLAYER_DECCELERATION;
-                float z = player.Speed.Z * Config.PLAYER_DECCELERATION;
-                player.Speed = new Vector3(x, y, z);
+                player.Speed *= Config.PLAYER_DECCELERATION;
 
                 // Process movement caused by input
-                ProcessPlayerInput(player);
-
-                // If movement is slow stop player
-                float px = player.Position.X;
-                float py = player.Position.Y;
-                float pz = player.Position.Z;
-
-                // Update position if player is moving
-                if (Math.Abs(player.Speed.X) > 0.00000001)
-                    px += player.Speed.X;
-
-                if (Math.Abs(player.Speed.Z) > 0.00000001)
-                    pz += player.Speed.Z;
+                CalculatePlayerSpeed(player);
                 
-                if (Math.Abs(player.Speed.Y) > 0.00000001)
-                    py += player.Speed.Y;
-
                 // Save new positon
-                player.Position = new Vector3(px, py, pz);
+                player.Position += player.Speed;
             }
         }
 
-        public void ProcessPlayerInput(Player player)
+        public void CalculatePlayerSpeed(Player player)
         {
-            Vector2 forwardAngle = new Vector2((float)Math.Sin(player.Angles.Y), (float)Math.Cos(player.Angles.Y));
-            Vector2 leftAngle = new Vector2((float)Math.Sin(player.Angles.Y - (float)Math.PI / 2), (float)Math.Cos(player.Angles.Y - Math.PI / 2));
-            Vector3 speedVector = new Vector3();
+            Vector3 forwardAngle = new Vector3((float)Math.Sin(player.Angles.Y), 0, (float)Math.Cos(player.Angles.Y));
+            Vector3 leftAngle = new Vector3((float)Math.Sin(player.Angles.Y - (float)Math.PI / 2), 0, (float)Math.Cos(player.Angles.Y - Math.PI / 2));
+            Vector3 speedVector = new Vector3(0, 0, 0);
 
+            // First get direction
             if (player.Keys.Contains("w"))
-            {
-                speedVector.X = forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector.Z = forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
-            }
+                speedVector += forwardAngle;
             if (player.Keys.Contains("s"))
-            {
-                speedVector.X = -forwardAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector.Z = -forwardAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
-            }
+                speedVector -= forwardAngle;
             if (player.Keys.Contains("a"))
-            {
-                speedVector.X = leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector.Z = leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
-            }
+                speedVector += leftAngle;
             if (player.Keys.Contains("d"))
-            {
-                speedVector.X = -leftAngle.X * Config.PLAYER_SPEED / Config.SERVER_TICK;
-                speedVector.Z = -leftAngle.Y * Config.PLAYER_SPEED / Config.SERVER_TICK;
-            }
+                speedVector -= leftAngle;
 
-            speedVector.Y = -1 * Config.GRAVITY / Config.SERVER_TICK;
-            if (player.Keys.Contains("sp"))
-            {
-                if (!player.IsJumping)
-                {
-                    player.IsJumping = true;
-                    speedVector.Y += Config.JUMP_POWER;
-                }
-            }
+            // Scale vector to be speed length
+            if(speedVector.Length() > 0)
+                speedVector = Vector3.Normalize(speedVector) * ((Config.PLAYER_SPEED / (float)Config.SERVER_TICK));
 
+            // Add to current speed
+            speedVector += player.Speed;
 
-            CheckCollision(player, speedVector);
-            speedVector.Y = 0;
+            // TODO
+            // Gravitation
 
-            if (speedVector.Y == 0)
-            {
-                player.IsJumping = false;
-            }
+            // If movement is slow stop player
+            if (player.Speed.Length() < 0.00001)
+                player.Speed = new Vector3(0, 0, 0);
 
-            // Update player speed
-            float sx = player.Speed.X;
-            float sy = player.Speed.Y;
-            float sz = player.Speed.Z;
-
-            sx += speedVector.X;
-            sy += speedVector.Y;
-            sz += speedVector.Z;
-
-            player.Speed = new Vector3(sx, sy, sz);
+            // Check collision at new position
+            player.Speed = CalculateSpeedAfterCollision(player, speedVector);
         }
 
-        public void CheckCollision(Player player, Vector3 speedVector)
+        public Vector3 CalculateSpeedAfterCollision(Player player, Vector3 speedVector)
         {
-            Vector3 oldPosition = player.Position;
-            Vector3 newPosition = player.Position + speedVector;
+            Vector3 newPosition = player.Position + speedVector + Vector3.Normalize(speedVector) * (Config.PLAYER_SIZE / 2f);
 
             foreach (MapObject obj in MapState.Instance.MapObjects)
             {
-                if (obj is MapBox)
-                {
-                    MapBox box = obj as MapBox;
-
-                    double left = box.Position.X - (box.Width / 2);
-                    double right = box.Position.X + (box.Width / 2);
-                    double top = box.Position.Z + (box.Depth / 2);
-                    double bottom = box.Position.Z - (box.Depth / 2);
-
-                    double up = box.Position.Y + (box.Height / 2);
-
-                    if (player.Position.X >= left &&
-                        player.Position.X <= right &&
-                        player.Position.Z <= top &&
-                        player.Position.Z >= bottom &&
-                        player.Position.Y >= up &&
-                        player.Position.Y < up + 1 &&
-                        speedVector.Y < 0)
-                        speedVector.Y = 0;
-                }
+                MapBox box = obj as MapBox;
+                if (Intersection.CheckIntersection(box, newPosition))
+                    return new Vector3(0, speedVector.Y, 0);
             }
+
+            return speedVector;
         }
     }
 }

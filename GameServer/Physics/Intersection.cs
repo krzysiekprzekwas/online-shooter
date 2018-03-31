@@ -64,5 +64,20 @@ namespace GameServer.Physics
             
             return diameterSquared > distanceSquared;
         }
+
+        public static bool CheckIntersection(Vector3 position, MapBox c)
+        {
+            return CheckIntersection(c, position);
+        }
+        public static bool CheckIntersection(MapBox c, Vector3 position)
+        {
+            float hw = c.Width / 2f;
+            float hh = c.Height / 2f;
+            float hz = c.Depth / 2f;
+
+            return ((position.X >= c.Position.X - hw && position.X <= c.Position.X + hw) &&
+                (position.Y >= c.Position.Y - hh && position.Y <= c.Position.Y + hh) &&
+                (position.Z >= c.Position.Z - hz && position.Z <= c.Position.Z + hz));
+        }
     }
 }
