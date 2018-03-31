@@ -89,6 +89,7 @@ namespace GameServer.Physics
 
 
             CheckCollision(player, speedVector);
+            speedVector.Y = 0;
 
             if (speedVector.Y == 0)
             {

@@ -118,9 +118,9 @@ let world = {
             // If current player is you, just update camera position
             if (player.Id === world.playerId) {
 
-                this.camera.position.x += player.Speed.X * speed;
-                this.camera.position.y += player.Speed.Y * speed;
-                this.camera.position.z += player.Speed.Z * speed;
+                //this.camera.position.x += player.Speed.X * speed;
+                //this.camera.position.y += player.Speed.Y * speed;
+                //this.camera.position.z += player.Speed.Z * speed;
                 continue;
             }
 
