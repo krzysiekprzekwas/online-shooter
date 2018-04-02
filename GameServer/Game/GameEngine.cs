@@ -32,9 +32,12 @@ namespace GameServer.Game
         private void Tick(object state)
         {
             PhysicsEngine.ApplyPhysics();
-            
+
+            WebSocket[] currentSockets = new WebSocket[ClientSockets.Count];
+            ClientSockets.CopyTo(currentSockets);
+
             // Send game state for each client
-            foreach (var socket in ClientSockets)
+            foreach (var socket in currentSockets)
             {
                 StateController.SendGameState(socket);
             }
