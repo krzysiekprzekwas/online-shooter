@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
 using System.Text;
 using System.Threading;
+using System.Runtime.Serialization.Formatters;
 
 namespace GameServer.States
 {
@@ -20,10 +23,19 @@ namespace GameServer.States
 
         public static void SendGameState(WebSocket webSocket)
         {
+            var plrs = GameState.Instance.value.Players.Select(player =>
+                player.DeepCopy()).ToList();
+
+            var newGameStateValue = new GameStateValue();
+
+            newGameStateValue.Players = plrs;
+            newGameStateValue.PlayerId = GameState.Instance.value.PlayerId;
+
+
             var gameStateResponse = new
             {
                 Type = "gamestate",
-                GameState = GameState.Instance,
+                GameState = newGameStateValue
             };
 
             SendState(gameStateResponse, webSocket);

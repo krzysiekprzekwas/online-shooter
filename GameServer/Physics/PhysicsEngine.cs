@@ -19,7 +19,7 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
-            foreach (Player player in GameState.Instance.Players)
+            foreach (Player player in GameState.Instance.value.Players)
             {
                 // Deccelerate player every tick
                 player.Speed *= Config.PLAYER_DECCELERATION;

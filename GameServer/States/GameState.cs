@@ -8,10 +8,12 @@ namespace GameServer.States
     public class GameState
     {
         private static GameState instance;
+        public GameStateValue value;
+
         public GameState()
         {
-            Players = new List<Player>();
-            PlayerId = 1;
+            value = new GameStateValue();
+            value.Players = new List<Player>();
         }
         
         public static GameState Instance
@@ -24,16 +26,12 @@ namespace GameServer.States
                 return instance;
             }
         }
+    }
 
-        public int AssignPlayerId()
-        {
-            int id = PlayerId;
-            PlayerId++;
-            return id;
-        }
-        
+    public struct GameStateValue
+    {
         public List<Player> Players { get; set; }
-        
+
 
         [JsonIgnore]
         public int PlayerId { get; set; }
