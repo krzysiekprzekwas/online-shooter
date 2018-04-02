@@ -13,12 +13,12 @@ namespace GameServer.Game
     public class GameEngine
     {
         private Timer _ticker;
-        public HashSet<WebSocket> ClientSockets = new HashSet<WebSocket>();
+        public List<WebSocket> ClientSockets = new List<WebSocket>();
         public GameState GameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
         private Random random;
-        
+
         public GameEngine()
         {
             _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
@@ -32,7 +32,8 @@ namespace GameServer.Game
         private void Tick(object state)
         {
             PhysicsEngine.ApplyPhysics();
-
+            
+            // Send game state for each client
             foreach (var socket in ClientSockets)
             {
                 StateController.SendGameState(socket);
