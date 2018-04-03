@@ -32,5 +32,11 @@ namespace GameServer.Models
             Origin = o;
             Direction = d;
         }
+
+        public Ray(float x, float y, float z, float dx, float dy, float dz)
+            : this(new Vector3(x, y, z), new Vector3(dx, dy, dz))
+        {
+
+        }
     }
 }

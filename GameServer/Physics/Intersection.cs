@@ -80,78 +80,85 @@ namespace GameServer.Physics
                 (position.Z >= c.Position.Z - hz && position.Z <= c.Position.Z + hz));
         }
 
-        //public static bool CheckIntersection(MapBox box, Ray ray)
-        //{
+        public static bool CheckIntersection(MapBox box, Ray ray, out Vector3 point)
+        {
+            point = new Vector3();
 
-        //    // 1.
-        //    Vector3 dS21 = S2.sub(S1);
-        //    Vector3 dS31 = S3.sub(S1);
-        //    Vector3 n = dS21.cross(dS31);
+            foreach (var quad in box.GetQuads())
+            {
+                bool intersects = CheckIntersection(quad: quad, ray: ray, point: out point);
+                if (intersects)
+                    return true;
+            }
 
-        //    // 2.
-        //    Vector3 dR = R1.sub(R2);
+            return false;
+        }
+        public static bool CheckIntersection(MapQuad quad, Ray ray, out Vector3 point)
+        {
+            point = new Vector3();
 
-        //    float ndotdR = n.dot(dR);
+            foreach (var triangle in quad.GetTriangles())
+            {
+                bool intersects = CheckIntersection(triangle: triangle, ray: ray, point: out point);
+                if (intersects)
+                    return true;
+            }
 
-        //    if (Math.abs(ndotdR) < 1e-6f)
-        //    { // Choose your tolerance
-        //        return false;
-        //    }
+            return false;
+        }
 
-        //    float t = -n.dot(R1.sub(S1)) / ndotdR;
-        //    Vector3 M = R1.add(dR.scale(t));
+        public static bool CheckIntersection(MapTriangle triangle, Ray ray, out Vector3 point)
+        {
+            point = new Vector3();
 
-        //    // 3.
-        //    Vector3 dMS1 = M.sub(S1);
-        //    float u = dMS1.dot(dS21);
-        //    float v = dMS1.dot(dS31);
+            // get triangle edge vectors and plane normal
+            Vector3 u = triangle.Verticies[1] - triangle.Verticies[0];
+            Vector3 v = triangle.Verticies[2] - triangle.Verticies[0];
+            Vector3 n = Vector3.Cross(u, v);
 
-        //    // 4.
-        //    return (u >= 0.0f && u <= dS21.dot(dS21)
-        //         && v >= 0.0f && v <= dS31.dot(dS31));
-        //}
+            if (n.LengthSquared() == 0)             // triangle is degenerate
+                return false;                // do not deal with this case
 
-        //public class Test
-        //{
-        //    static class Vector3
-        //    {
-        //        public float x, y, z;
+            Vector3 w0 = ray.Origin - triangle.Verticies[0];
+            float a = (-1) * Vector3.Dot(n, w0);
+            float b = Vector3.Dot(n, ray.Direction);
 
-        //        public Vector3(float x, float y, float z)
-        //        {
-        //            this.x = x;
-        //            this.y = y;
-        //            this.z = z;
-        //        }
+            if (Math.Abs(b) < 1e-6f)
+            {     // ray is  parallel to triangle plane
+                if (a == 0)                 // ray lies in triangle plane
+                    return false;
 
-        //        public Vector3 add(Vector3 other)
-        //        {
-        //            return new Vector3(x + other.x, y + other.y, z + other.z);
-        //        }
+                return false;              // ray disjoint from plane
+            }
 
-        //        public Vector3 sub(Vector3 other)
-        //        {
-        //            return new Vector3(x - other.x, y - other.y, z - other.z);
-        //        }
+            // get intersect point of ray with triangle plane
+            float r = a / b;
+            if (r < 0.0)                    // ray goes away from triangle
+                return false;                   // => no intersect
+                                                // for a segment, also test if (r > 1.0) => no intersect
 
-        //        public Vector3 scale(float f)
-        //        {
-        //            return new Vector3(x * f, y * f, z * f);
-        //        }
+            point = ray.Origin + (r * ray.Direction);  // intersect point of ray and plane
 
-        //        public Vector3 cross(Vector3 other)
-        //        {
-        //            return new Vector3(y * other.z - z * other.y,
-        //                               z - other.x - x * other.z,
-        //                               x - other.y - y * other.x);
-        //        }
+            // is I inside T?
+            float uu, uv, vv, wu, wv, D;
+            uu = Vector3.Dot(u, u);
+            uv = Vector3.Dot(u, v);
+            vv = Vector3.Dot(v, v);
+            Vector3 w = point - triangle.Verticies[0];
+            wu = Vector3.Dot(w, u);
+            wv = Vector3.Dot(w, v);
+            D = uv * uv - uu * vv;
 
-        //        public float dot(Vector3 other)
-        //        {
-        //            return x * other.x + y * other.y + z * other.z;
-        //        }
-        //    }
-            
-        //}
+            // get and test parametric coords
+            float s, t;
+            s = (uv * wv - vv * wu) / D;
+            if (s < 0.0 || s > 1.0)         // I is outside T
+                return false;
+            t = (uv * wu - uu * wv) / D;
+            if (t < 0.0 || (s + t) > 1.0)  // I is outside T
+                return false;
+
+            return true;                       // I is in T
+        }
     }
 }

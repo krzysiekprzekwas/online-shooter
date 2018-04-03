@@ -32,5 +32,15 @@ namespace GameServer.MapObjects
         public float Depth { get; set; }
 
         public Vector3[] Verticies;
+
+        public MapTriangle[] GetTriangles()
+        {
+            return new MapTriangle[]
+            {
+                new MapTriangle(Verticies[0], Verticies[1], Verticies[2]),
+                new MapTriangle(Verticies[2], Verticies[3], Verticies[0])
+            };
+        }
+
     }
 }
