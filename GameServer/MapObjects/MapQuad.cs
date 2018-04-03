@@ -38,7 +38,7 @@ namespace GameServer.MapObjects
             return new MapTriangle[]
             {
                 new MapTriangle(Verticies[0], Verticies[1], Verticies[2]),
-                new MapTriangle(Verticies[2], Verticies[3], Verticies[0])
+                new MapTriangle(Verticies[0], Verticies[2], Verticies[3])
             };
         }
 

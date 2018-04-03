@@ -188,6 +188,25 @@ namespace GameTests
         }
 
         [TestMethod]
+        public void Test_TriangleRayIntersection2()
+        {
+            // arrange  
+            Vector3 T0 = new Vector3(-2.0f, -2.0f, 3.0f);
+            Vector3 T1 = new Vector3(2.0f, -2.0f, 3.0f);
+            Vector3 T2 = new Vector3(-2.0f, 6.0f, 3.0f);
+
+            MapTriangle triangle = new MapTriangle(T0, T1, T2);
+
+            Ray ray = new Ray(2, 0, -1.0f, 0, 0, 1.0f);
+
+            // act 
+            bool intersects = Intersection.CheckIntersection(triangle, ray, out Vector3 point);
+
+            // assert  
+            Assert.IsFalse(intersects, "Intersection error ray and triangle");
+        }
+
+        [TestMethod]
         public void Test_QuadRayIntersection1()
         {
             // arrange  
@@ -217,7 +236,7 @@ namespace GameTests
 
             MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
 
-            Ray ray = new Ray(0, 0, 0, 1, 0, 1);
+            Ray ray = new Ray(3, 0, 0, -1, 0, 2);
 
             // act 
             bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
@@ -234,9 +253,49 @@ namespace GameTests
             Vector3 Q2 = new Vector3(2, 2, 3);
             Vector3 Q3 = new Vector3(1, 2, 4);
 
+            MapQuad quad = new MapQuad(Q0, Q3, Q2, Q1);
+
+            Ray ray = new Ray(-2, 0, 0, 1, 0, 1);
+
+            // act 
+            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+
+            // assert  
+            Assert.IsTrue(intersects, "Intersection error ray and quad");
+        }
+
+        [TestMethod]
+        public void Test_QuadRayIntersection4()
+        {
+            // arrange  
+            Vector3 Q0 = new Vector3(-2, -2, 2);
+            Vector3 Q1 = new Vector3(-2, 2, 2);
+            Vector3 Q2 = new Vector3(2, 2, 2);
+            Vector3 Q3 = new Vector3(2, -2, 2);
+
             MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
 
-            Ray ray = new Ray(1, 0, 0, 1, 0, 1);
+            Ray ray = new Ray(2, 0, 0, 0, 0, 1);
+
+            // act 
+            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+
+            // assert  
+            Assert.IsTrue(intersects, "Intersection error ray and quad");
+        }
+
+        [TestMethod]
+        public void Test_QuadRayIntersection5()
+        {
+            // arrange  
+            Vector3 Q0 = new Vector3(-3, -2, 3);
+            Vector3 Q1 = new Vector3(-3, 2, 3);
+            Vector3 Q2 = new Vector3(3, 2, -3);
+            Vector3 Q3 = new Vector3(3, -2, -3);
+
+            MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
+
+            Ray ray = new Ray(3, 0, 3, -1, -0.1f, -3);
 
             // act 
             bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);

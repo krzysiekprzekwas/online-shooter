@@ -82,7 +82,7 @@ namespace GameServer.Physics
 
         public static bool CheckIntersection(MapBox box, Ray ray, out Vector3 point)
         {
-            point = new Vector3();
+            point = new Vector3(0, 0, 0);
 
             foreach (var quad in box.GetQuads())
             {
@@ -95,7 +95,7 @@ namespace GameServer.Physics
         }
         public static bool CheckIntersection(MapQuad quad, Ray ray, out Vector3 point)
         {
-            point = new Vector3();
+            point = new Vector3(0, 0, 0);
 
             foreach (var triangle in quad.GetTriangles())
             {
@@ -109,7 +109,7 @@ namespace GameServer.Physics
 
         public static bool CheckIntersection(MapTriangle triangle, Ray ray, out Vector3 point)
         {
-            point = new Vector3();
+            point = new Vector3(0, 0, 0);
 
             // get triangle edge vectors and plane normal
             Vector3 u = triangle.Verticies[1] - triangle.Verticies[0];
