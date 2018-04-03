@@ -4,6 +4,8 @@
 
     requestFullscreen: function () {
 
+        document.querySelector('#fullscreenToggle > img').src = 'style/exitFullscreen.png';
+
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
         }
@@ -21,6 +23,8 @@
     },
 
     exitFullscreen: function () {
+
+        document.querySelector('#fullscreenToggle > img').src = 'style/enterFullscreen.png';
 
         if (document.exitFullscreen) {
             document.exitFullscreen();
