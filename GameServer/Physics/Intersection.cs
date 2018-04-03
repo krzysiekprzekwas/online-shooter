@@ -116,30 +116,32 @@ namespace GameServer.Physics
             Vector3 v = triangle.Verticies[2] - triangle.Verticies[0];
             Vector3 n = Vector3.Cross(u, v);
 
-            if (n.LengthSquared() == 0)             // triangle is degenerate
-                return false;                // do not deal with this case
+            // Invalid triangle (degenerate)
+            if (n.LengthSquared() == 0)
+                return false;
 
             Vector3 w0 = ray.Origin - triangle.Verticies[0];
             float a = (-1) * Vector3.Dot(n, w0);
             float b = Vector3.Dot(n, ray.Direction);
 
+            // Parallel to triangle plane
             if (Math.Abs(b) < 1e-6f)
-            {     // ray is  parallel to triangle plane
-                if (a == 0)                 // ray lies in triangle plane
+            {
+                if (a == 0) // Ray lies inside plane
                     return false;
 
-                return false;              // ray disjoint from plane
+                return false;
             }
 
-            // get intersect point of ray with triangle plane
+            // Get distance to intersection point
             float r = a / b;
-            if (r < 0.0)                    // ray goes away from triangle
-                return false;                   // => no intersect
-                                                // for a segment, also test if (r > 1.0) => no intersect
+            if (r < 0.0) // Ray goes different way -> no intersection
+                return false;
 
-            point = ray.Origin + (r * ray.Direction);  // intersect point of ray and plane
+            // Calculate intersection point
+            point = ray.Origin + (r * ray.Direction);
 
-            // is I inside T?
+            // Check if point is inside T
             float uu, uv, vv, wu, wv, D;
             uu = Vector3.Dot(u, u);
             uv = Vector3.Dot(u, v);
@@ -149,7 +151,7 @@ namespace GameServer.Physics
             wv = Vector3.Dot(w, v);
             D = uv * uv - uu * vv;
 
-            // get and test parametric coords
+            // Get parametric coords
             float s, t;
             s = (uv * wv - vv * wu) / D;
             if (s < 0.0 || s > 1.0)         // I is outside T
