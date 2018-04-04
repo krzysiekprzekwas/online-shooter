@@ -11,7 +11,7 @@ namespace GameTests
     public class UnitTest1
     {
         [TestMethod]
-        public void Test_CubeSphereIntersection1()
+        public void CubeSphereIntersection1()
         {
             // arrange  
             MapSphere o1 = new MapSphere(0, 0, 0, 2);
@@ -25,7 +25,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_CubeSphereIntersection2()
+        public void CubeSphereIntersection2()
         {
             // arrange  
             MapSphere o1 = new MapSphere(0, 0, 0, 2);
@@ -39,7 +39,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_CubeSphereIntersection3()
+        public void CubeSphereIntersection3()
         {
             // arrange  
             MapSphere o1 = new MapSphere(0, 0, 0, 2);
@@ -54,7 +54,7 @@ namespace GameTests
 
 
         [TestMethod]
-        public void Test_SphereSphereIntersection1()
+        public void SphereSphereIntersection1()
         {
             // arrange  
             MapSphere o1 = new MapSphere(0, 0, 0, 2);
@@ -69,7 +69,7 @@ namespace GameTests
 
 
         [TestMethod]
-        public void Test_SphereSphereIntersection2()
+        public void SphereSphereIntersection2()
         {
             // arrange  
             MapSphere o1 = new MapSphere(0, 0, 0, 2);
@@ -84,7 +84,7 @@ namespace GameTests
 
 
         [TestMethod]
-        public void Test_SphereSphereIntersection3()
+        public void SphereSphereIntersection3()
         {
             // arrange  
             MapSphere o1 = new MapSphere(0, 0, 0, (float)Math.Sqrt(2) * 2f - 0.01f);
@@ -99,7 +99,7 @@ namespace GameTests
 
 
         [TestMethod]
-        public void Test_PointBoxIntersection1()
+        public void PointBoxIntersection1()
         {
             // arrange  
             MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
@@ -113,7 +113,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_PointBoxIntersection2()
+        public void PointBoxIntersection2()
         {
             // arrange  
             MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
@@ -127,7 +127,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_BoxRayIntersection1()
+        public void BoxRayIntersection1()
         {
             // arrange  
             MapBox box = new MapBox(10, 0, 0, 1, 1, 1);
@@ -141,7 +141,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_BoxRayIntersection2()
+        public void BoxRayIntersection2()
         {
             // arrange  
             MapBox box = new MapBox(0, 0, 1, 2, 2, 2);
@@ -155,7 +155,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_BoxRayIntersection3()
+        public void BoxRayIntersection3()
         {
             // arrange  
             MapBox box = new MapBox(0, 3, 1, 2, 2, 2);
@@ -169,7 +169,47 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_TriangleRayIntersection1()
+        public void BoxRayIntersection4()
+        {
+            // arrange  
+            MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
+            Ray ray = new Ray(-2, 0.5f, 1, 2, 0, 1);
+
+            // act 
+            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+
+            // assert  
+            Assert.IsTrue(intersects, "Intersection error ray and box");
+        }
+
+        [TestMethod]
+        public void BoxRayIntersection5()
+        {
+            // arrange  
+            MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
+            Ray ray = new Ray(5, 0.75f, 3, -2, -0.3f, -2);
+            // act 
+            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+
+            // assert  
+            Assert.IsTrue(intersects, "Intersection error ray and box");
+        }
+
+        [TestMethod]
+        public void BoxRayIntersection6()
+        {
+            // arrange  
+            MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
+            Ray ray = new Ray(5, 0.3f, 3, -2f, 0, -2.1f);
+            // act 
+            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+
+            // assert  
+            Assert.IsFalse(intersects, "Intersection error ray and box");
+        }
+
+        [TestMethod]
+        public void TriangleRayIntersection1()
         {
             // arrange  
             Vector3 T0 = new Vector3(-2.0f, -2.0f, 3.0f);
@@ -188,7 +228,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_TriangleRayIntersection2()
+        public void TriangleRayIntersection2()
         {
             // arrange  
             Vector3 T0 = new Vector3(-2.0f, -2.0f, 3.0f);
@@ -207,7 +247,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_QuadRayIntersection1()
+        public void QuadRayIntersection1()
         {
             // arrange  
             Vector3 Q0 = new Vector3(1, -2, 4);
@@ -226,7 +266,7 @@ namespace GameTests
             Assert.IsTrue(intersects, "Intersection error ray and quad");
         }
         [TestMethod]
-        public void Test_QuadRayIntersection2()
+        public void QuadRayIntersection2()
         {
             // arrange  
             Vector3 Q0 = new Vector3(1, -2, 4);
@@ -245,7 +285,7 @@ namespace GameTests
             Assert.IsTrue(intersects, "Intersection error ray and quad");
         }
         [TestMethod]
-        public void Test_QuadRayIntersection3()
+        public void QuadRayIntersection3()
         {
             // arrange  
             Vector3 Q0 = new Vector3(1, -2, 4);
@@ -265,7 +305,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_QuadRayIntersection4()
+        public void QuadRayIntersection4()
         {
             // arrange  
             Vector3 Q0 = new Vector3(-2, -2, 2);
@@ -285,7 +325,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Test_QuadRayIntersection5()
+        public void QuadRayIntersection5()
         {
             // arrange  
             Vector3 Q0 = new Vector3(-3, -2, 3);
