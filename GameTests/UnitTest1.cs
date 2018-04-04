@@ -394,5 +394,108 @@ namespace GameTests
             Vector3 expectedQ = new Vector3(2, 2, 0);
             Assert.AreEqual(expectedQ, Q);
         }
+
+        [TestMethod]
+        public void FindClosestPointOnLine4()
+        {
+            // arrange  
+            Vector3 A = new Vector3(6, 1, 0);
+            Vector3 B = new Vector3(5, 2, 0);
+
+            Vector3 P = new Vector3(3, 3, 0);
+
+            // act 
+            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+
+            // assert  
+            Vector3 expectedQ = new Vector3(3.5f, 3.5f, 0);
+            Assert.AreEqual(expectedQ, Q);
+        }
+
+        [TestMethod]
+        public void SphereRayIntersection1()
+        {
+            // arrange  
+            MapSphere sphere = new MapSphere(0, 0, 0, 2);
+            Ray ray = new Ray(-2, 0, 0, 1, 0, 0);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(sphere, ray);
+
+            // assert  
+            Assert.IsNotNull(trace);
+
+            Vector3 expectedPos = new Vector3(-1, 0, 0);
+            Assert.AreEqual(trace.Position, expectedPos);
+        }
+
+        [TestMethod]
+        public void SphereRayIntersection2()
+        {
+            // arrange  
+            MapSphere sphere = new MapSphere(0, 1, 0, 2);
+            Ray ray = new Ray(1, -1, 0, 0, 1, 0);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(sphere, ray);
+
+            // assert  
+            Assert.IsNotNull(trace);
+
+            Vector3 expectedPos = new Vector3(1, 1, 0);
+            Assert.AreEqual(trace.Position, expectedPos);
+        }
+
+        [TestMethod]
+        public void SphereRayIntersection3()
+        {
+            // arrange  
+            MapSphere sphere = new MapSphere(0, 0, 0, 2);
+            Ray ray = new Ray(1.5f, 0, 0, 1, 0, 0);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(sphere, ray);
+
+            // assert  
+            Assert.IsNull(trace);
+        }
+
+        [TestMethod]
+        public void SphereRayIntersection4()
+        {
+            // arrange  
+            MapSphere sphere = new MapSphere(3, 3, 0, 2);
+            Ray ray = new Ray(6, 1, 0, -1, 1, 0);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(sphere, ray);
+
+            // assert  
+            Assert.IsNotNull(trace);
+
+            const float TOLERANCE = 0.001f;
+
+            Vector3 expectedPos = new Vector3(4, 3, 0);
+
+            bool areAlmostEqual = Math.Abs(trace.Position.X - expectedPos.X) < TOLERANCE &&
+                                    Math.Abs(trace.Position.Y - expectedPos.Y) < TOLERANCE &&
+                                    Math.Abs(trace.Position.Z - expectedPos.Z) < TOLERANCE;
+
+            Assert.IsTrue(areAlmostEqual);
+        }
+
+        [TestMethod]
+        public void SphereRayIntersectionFromInside()
+        {
+            // arrange  
+            MapSphere sphere = new MapSphere(2, 2, 0, 2);
+            Ray ray = new Ray(2, 2, 0, -1, 1, 0);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(sphere, ray);
+
+            // assert  
+            Assert.IsNull(trace);
+        }
     }
 }

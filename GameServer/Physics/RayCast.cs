@@ -9,6 +9,8 @@ namespace GameServer.Physics
 {
     public class RayCast
     {
+        private static float PARRALEL_TOLLERANCE = 0.9f;
+
         /// <summary>
         /// Get closest point on line
         /// </summary>
@@ -20,19 +22,24 @@ namespace GameServer.Physics
         {
             Vector3 AB = B - A;
             Vector3 AP = P - A;
-            Vector3 PQ = Vector3.Multiply(AB, Vector3.Dot(AP, AB) / AB.LengthSquared()) - AP;
-            Vector3 Q = P + PQ;
+            Vector3 QP = AP - Vector3.Multiply(AB, Vector3.Dot(AP, AB) / AB.LengthSquared());
+            Vector3 Q = P - QP;
 
             return Q;
         }
 
         public static Trace CheckBulletTrace(MapSphere s, Ray ray)
         {
+            // Ray started from inside sphere
+            if((s.Position - ray.Origin).LengthSquared() < s.RadiusSquared)
+                return null;
+
             // Get closest point on line to sphere center
-            Vector3 closestPointOnLine = GetClosestPointOnLine(ray.Origin, ray.Origin + ray.Direction, s.Position);
+            Vector3 closestPointOnLine = GetClosestPointOnLine(ray.Origin + ray.Direction, ray.Origin, s.Position);
 
             // Get triangle parameters
             float aSquared = (closestPointOnLine - s.Position).LengthSquared();
+            
             float radiusSquared = (float)Math.Pow(s.Diameter / 2, 2);
 
             // Ray not going through the sphere
@@ -42,15 +49,25 @@ namespace GameServer.Physics
             // Half the size of ray length inside sphere
             float b = (float)Math.Sqrt(radiusSquared - aSquared);
 
+            // Touching sphere at exactly one point
+            if(b == 0)
+            {
+                float d = (closestPointOnLine - ray.Origin).Length();
+                return new Trace(closestPointOnLine, ray.Origin, d, s);
+            }
 
-            float relativeDistance = (s.Position - ray.Origin).Length();
-
-            // Ray started from inside of the sphere
-            if (relativeDistance - b >= 0 && relativeDistance + b >= 0)
-                return null;
+            // Find relative point
+            Vector3 relativeVector = closestPointOnLine - ray.Origin;
+            Vector3 relativeRay = Vector3.Normalize(relativeVector);
+            float relativeDistance = relativeVector.Length();
 
             // Sphere behind the ray
-            if (relativeDistance - b < 0 && relativeDistance + b <= 0)
+            // Dot returns angle between normalized vectors
+            // 1 = heading same direction
+            // -1 = heading opposite direction
+            // 0 = vectors are parralel
+            float dot = Vector3.Dot(relativeRay, ray.Direction);
+            if(dot < PARRALEL_TOLLERANCE)
                 return null;
 
             // Create trace object
