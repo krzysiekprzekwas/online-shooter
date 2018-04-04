@@ -343,5 +343,56 @@ namespace GameTests
             // assert  
             Assert.IsNotNull(trace, "Intersection error ray and quad");
         }
+
+        [TestMethod]
+        public void FindClosestPointOnLine1()
+        {
+            // arrange  
+            Vector3 A = new Vector3(-1, -1, -1);
+            Vector3 B = new Vector3(1, -1, -1);
+
+            Vector3 P = new Vector3(0, 0, 0);
+
+            // act 
+            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+
+            // assert  
+            Vector3 expectedQ = new Vector3(0, -1, -1);
+            Assert.AreEqual(expectedQ, Q);
+        }
+
+        [TestMethod]
+        public void FindClosestPointOnLine2()
+        {
+            // arrange  
+            Vector3 A = new Vector3(-1, 0, -1);
+            Vector3 B = new Vector3(1, 0, -1);
+
+            Vector3 P = new Vector3(0, 0, 0);
+
+            // act 
+            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+
+            // assert  
+            Vector3 expectedQ = new Vector3(0, 0, -1);
+            Assert.AreEqual(expectedQ, Q);
+        }
+
+        [TestMethod]
+        public void FindClosestPointOnLine3()
+        {
+            // arrange  
+            Vector3 A = new Vector3(-4, -1, 0);
+            Vector3 B = new Vector3(-2, 0, 0);
+
+            Vector3 P = new Vector3(3, 0, 0);
+
+            // act 
+            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+
+            // assert  
+            Vector3 expectedQ = new Vector3(2, 2, 0);
+            Assert.AreEqual(expectedQ, Q);
+        }
     }
 }

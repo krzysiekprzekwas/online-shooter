@@ -9,14 +9,55 @@ namespace GameServer.Physics
 {
     public class RayCast
     {
+        /// <summary>
+        /// Get closest point on line
+        /// </summary>
+        /// <param name="A">First point lying on line</param>
+        /// <param name="B">Second point lying on line</param>
+        /// <param name="P">Relative point for which we will be looking for closest point</param>
+        /// <returns>Closest point on line A to point p</returns>
+        public static Vector3 GetClosestPointOnLine(Vector3 A, Vector3 B, Vector3 P)
+        {
+            Vector3 AB = B - A;
+            Vector3 AP = P - A;
+            Vector3 PQ = Vector3.Multiply(AB, Vector3.Dot(AP, AB) / AB.LengthSquared()) - AP;
+            Vector3 Q = P + PQ;
+
+            return Q;
+        }
+
         public static Trace CheckBulletTrace(MapSphere s, Ray ray)
         {
-            Vector3 closestPointOnLine = new Vector3(0, 0, 0);
+            // Get closest point on line to sphere center
+            Vector3 closestPointOnLine = GetClosestPointOnLine(ray.Origin, ray.Origin + ray.Direction, s.Position);
 
-            // TODO
-            // Calculate distance from ray to sphere center
+            // Get triangle parameters
+            float aSquared = (closestPointOnLine - s.Position).LengthSquared();
+            float radiusSquared = (float)Math.Pow(s.Diameter / 2, 2);
 
-            return null;
+            // Ray not going through the sphere
+            if (aSquared > radiusSquared)
+                return null;
+
+            // Half the size of ray length inside sphere
+            float b = (float)Math.Sqrt(radiusSquared - aSquared);
+
+
+            float relativeDistance = (s.Position - ray.Origin).Length();
+
+            // Ray started from inside of the sphere
+            if (relativeDistance - b >= 0 && relativeDistance + b >= 0)
+                return null;
+
+            // Sphere behind the ray
+            if (relativeDistance - b < 0 && relativeDistance + b <= 0)
+                return null;
+
+            // Create trace object
+            float dist = relativeDistance - b;
+            Vector3 position = ray.Origin + dist * ray.Direction;
+                
+            return new Trace(position, ray.Origin, dist, s);
         }
 
 
