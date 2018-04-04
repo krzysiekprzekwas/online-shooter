@@ -134,10 +134,10 @@ namespace GameTests
             Ray ray = new Ray(0, 0, 0, 1, 0, 0);
 
             // act  
-            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and box");
+            Assert.IsNotNull(trace, "Intersection error ray and box");
         }
 
         [TestMethod]
@@ -148,10 +148,10 @@ namespace GameTests
             Ray ray = new Ray(0, 0, -1, 0, 0, 1);
 
             // act  
-            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and box");
+            Assert.IsNotNull(trace, "Intersection error ray and box");
         }
 
         [TestMethod]
@@ -162,10 +162,10 @@ namespace GameTests
             Ray ray = new Ray(0, 0, -1, 0, 0, 1);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Assert.IsFalse(intersects, "Intersection error ray and box");
+            Assert.IsNull(trace, "Intersection error ray and box");
         }
 
         [TestMethod]
@@ -176,10 +176,10 @@ namespace GameTests
             Ray ray = new Ray(-2, 0.5f, 1, 2, 0, 1);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and box");
+            Assert.IsNotNull(trace, "Intersection error ray and box");
         }
 
         [TestMethod]
@@ -189,10 +189,10 @@ namespace GameTests
             MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
             Ray ray = new Ray(5, 0.75f, 3, -2, -0.3f, -2);
             // act 
-            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and box");
+            Assert.IsNotNull(trace, "Intersection error ray and box");
         }
 
         [TestMethod]
@@ -202,10 +202,10 @@ namespace GameTests
             MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
             Ray ray = new Ray(5, 0.3f, 3, -2f, 0, -2.1f);
             // act 
-            bool intersects = Intersection.CheckIntersection(box, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Assert.IsFalse(intersects, "Intersection error ray and box");
+            Assert.IsNull(trace, "Intersection error ray and box");
         }
 
         [TestMethod]
@@ -221,10 +221,10 @@ namespace GameTests
             Ray ray = new Ray(0, 0, -1.0f, 0, 0, 1.0f);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(triangle, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(triangle, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and triangle");
+            Assert.IsNotNull(trace, "Intersection error ray and triangle");
         }
 
         [TestMethod]
@@ -240,10 +240,10 @@ namespace GameTests
             Ray ray = new Ray(2, 0, -1.0f, 0, 0, 1.0f);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(triangle, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(triangle, ray);
 
             // assert  
-            Assert.IsFalse(intersects, "Intersection error ray and triangle");
+            Assert.IsNull(trace, "Intersection error ray and triangle");
         }
 
         [TestMethod]
@@ -260,10 +260,10 @@ namespace GameTests
             Ray ray = new Ray(-2, 0, 0, 1, 0, 1);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(quad, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and quad");
+            Assert.IsNotNull(trace, "Intersection error ray and quad");
         }
         [TestMethod]
         public void QuadRayIntersection2()
@@ -279,10 +279,10 @@ namespace GameTests
             Ray ray = new Ray(3, 0, 0, -1, 0, 2);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(quad, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and quad");
+            Assert.IsNotNull(trace, "Intersection error ray and quad");
         }
         [TestMethod]
         public void QuadRayIntersection3()
@@ -298,10 +298,10 @@ namespace GameTests
             Ray ray = new Ray(-2, 0, 0, 1, 0, 1);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(quad, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and quad");
+            Assert.IsNotNull(trace, "Intersection error ray and quad");
         }
 
         [TestMethod]
@@ -318,10 +318,10 @@ namespace GameTests
             Ray ray = new Ray(2, 0, 0, 0, 0, 1);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(quad, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and quad");
+            Assert.IsNotNull(trace, "Intersection error ray and quad");
         }
 
         [TestMethod]
@@ -338,10 +338,10 @@ namespace GameTests
             Ray ray = new Ray(3, 0, 3, -1, -0.1f, -3);
 
             // act 
-            bool intersects = Intersection.CheckIntersection(quad, ray, out Vector3 point);
+            Trace trace = RayCast.CheckBulletTrace(quad, ray);
 
             // assert  
-            Assert.IsTrue(intersects, "Intersection error ray and quad");
+            Assert.IsNotNull(trace, "Intersection error ray and quad");
         }
     }
 }
