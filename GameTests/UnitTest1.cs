@@ -207,6 +207,20 @@ namespace GameTests
             // assert  
             Assert.IsNull(trace, "Intersection error ray and box");
         }
+        
+        [TestMethod]
+        public void BoxRayIntersection7()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Ray ray = new Ray(1, 0, 2, 0, 0, 1);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Assert.IsNull(trace);
+        }
 
         [TestMethod]
         public void TriangleRayIntersection1()
@@ -530,6 +544,21 @@ namespace GameTests
 
         [TestMethod]
         public void GetVectorParralelProjectionToObjectNormal3()
+        {
+            // arrange  
+            Vector3 speedVector = new Vector3(-1, 0, 0);
+            Vector3 objectNorm = new Vector3(-1, 0, 0);
+
+            // act 
+            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
+
+            // assert
+            Vector3 expectedU = new Vector3(0, 0, 0);
+            Assert.AreEqual(u, expectedU);
+        }
+
+        [TestMethod]
+        public void GetVectorParralelProjectionToObjectNormal4()
         {
             // arrange  
             Vector3 speedVector = new Vector3(-1, 0, -4);

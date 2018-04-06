@@ -42,13 +42,12 @@ namespace GameServer.Physics
                 return;
 
             // Create player ray
-            Ray ray = new Ray(player.Position + new Vector3(0, player.Radius, 0), speedVector);
-
-            Vector3 newPosition = player.Position + speedVector + Vector3.Normalize(speedVector) * (Config.PLAYER_SIZE / 2f);
+            Ray ray = new Ray(player.Position, speedVector);
 
             // Find closest object
             Trace closestTrace = null;
             float closestDist = -1;
+            Vector3 movementVector = speedVector;
 
             // Check collision
             foreach (MapObject obj in MapState.Instance.MapObjects)
@@ -59,7 +58,7 @@ namespace GameServer.Physics
                 else if (obj is MapSphere)
                     trace = RayCast.CheckBulletTrace((MapSphere)obj, ray);
 
-                // No collision with this obeject - check next one
+                // No collision with this object - check next one
                 if (trace == null)
                     continue;
 
@@ -74,27 +73,27 @@ namespace GameServer.Physics
                 {
                     closestTrace = trace;
                     closestDist = moveDistance;
+                    movementVector = Vector3.Normalize(speedVector) * moveDistance;
                 }
             }
 
             // Some object on the way found
-            if(closestTrace != null)
+            if (closestTrace != null)
             {
                 // Calculate movement
-                float leftDistance = speedVector.Length() - closestDist - player.Radius;
-
-                speedVector = Vector3.Normalize(speedVector) * closestDist;
+                float leftDistance = speedVector.Length() - closestDist;
+                Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
 
                 // Now player will collide so we can move him along the wall
                 if (leftDistance > 0)
                 {
-                    Vector3 parralelVector = GetVectorParralelProjectionToObjectNormal(speedVector * leftDistance, closestTrace.ObjectNormal);
-                    speedVector += parralelVector;
+                    Vector3 parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
+                    movementVector += parralelVector;
                 }
             }
 
             // Change player speed
-            player.Speed = speedVector;
+            player.Speed = movementVector;
         }
 
         private Vector3 CalculateSpeedVector(Player player)

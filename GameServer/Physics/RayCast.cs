@@ -128,7 +128,7 @@ namespace GameServer.Physics
             if (Math.Abs(b) < 1e-6f)
             {
                 if (a == 0) // Ray lies inside plane
-                    return new Trace(ray.Origin, ray.Origin, 0, triangle, n);
+                    return null;
 
                 return null;
             }
