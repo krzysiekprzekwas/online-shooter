@@ -8,8 +8,8 @@ namespace GameServer.MapObjects
     {
         public string Type = @"quad";
 
-        public MapQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, Color color = null, int texture = 0)
-            : base((v1.X + v2.X + v3.X + v4.X) / 4.0f, (v1.Y + v2.Y + v3.Y + v4.Y) / 4.0f, (v1.Z + v2.Z + v3.Z + v4.Z) / 4.0f, color, texture)
+        public MapQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, MapObject parent = null, Color color = null, int texture = 0)
+            : base((v1.X + v2.X + v3.X + v4.X) / 4.0f, (v1.Y + v2.Y + v3.Y + v4.Y) / 4.0f, (v1.Z + v2.Z + v3.Z + v4.Z) / 4.0f, parent, color, texture)
         {
             float maxX = new[] { v1.X, v2.X, v3.X, v4.X }.Max();
             float minX = new[] { v1.X, v2.X, v3.X, v4.X }.Min();
@@ -37,8 +37,8 @@ namespace GameServer.MapObjects
         {
             return new MapTriangle[]
             {
-                new MapTriangle(Verticies[0], Verticies[1], Verticies[2]),
-                new MapTriangle(Verticies[0], Verticies[2], Verticies[3])
+                new MapTriangle(Verticies[0], Verticies[1], Verticies[2], this),
+                new MapTriangle(Verticies[0], Verticies[2], Verticies[3], this)
             };
         }
     }

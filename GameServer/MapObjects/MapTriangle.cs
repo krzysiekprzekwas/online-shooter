@@ -8,8 +8,8 @@ namespace GameServer.MapObjects
     {
         public string Type = @"triangle";
 
-        public MapTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Color color = null, int texture = 0)
-            : base((v1.X + v2.X + v3.X) / 3.0f, (v1.Y + v2.Y + v3.Y) / 3.0f, (v1.X + v2.X + v3.X) / 3.0f, color, texture)
+        public MapTriangle(Vector3 v1, Vector3 v2, Vector3 v3, MapObject parent = null, Color color = null, int texture = 0)
+            : base((v1.X + v2.X + v3.X) / 3.0f, (v1.Y + v2.Y + v3.Y) / 3.0f, (v1.X + v2.X + v3.X) / 3.0f, parent, color, texture)
         {
             float maxX = new[] { v1.X, v2.X, v3.X }.Max();
             float minX = new[] { v1.X, v2.X, v3.X }.Min();

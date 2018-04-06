@@ -8,8 +8,8 @@ namespace GameServer.MapObjects
     public class MapSphere : MapObject
     {
 
-        public MapSphere(float x, float y, float z, float diameter, Color color = null, int texture = 0)
-            : base(x, y, z, color, texture)
+        public MapSphere(float x, float y, float z, float diameter, MapObject parent = null, Color color = null, int texture = 0)
+            : base(x, y, z, parent, color, texture)
         {
             Diameter = diameter;
         }

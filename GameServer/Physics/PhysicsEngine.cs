@@ -45,7 +45,11 @@ namespace GameServer.Physics
             Ray ray = new Ray(player.Position + new Vector3(0, player.Radius, 0), speedVector);
 
             Vector3 newPosition = player.Position + speedVector + Vector3.Normalize(speedVector) * (Config.PLAYER_SIZE / 2f);
-            
+
+            // Find closest object
+            Trace closestTrace = null;
+            float closestDist = -1;
+
             // Check collision
             foreach (MapObject obj in MapState.Instance.MapObjects)
             {
@@ -60,27 +64,37 @@ namespace GameServer.Physics
                     continue;
 
                 // Trace is so far that we dont consider it
-                if (trace.Distance > speedVector.Length() + player.Radius)
+                float speedLength = speedVector.Length();
+                if (trace.Distance > speedLength + player.Radius)
                     continue;
 
                 // Calculate how far I can go that direction
                 float moveDistance = trace.Distance - player.Radius;
-                float leftDistance = moveDistance - speedVector.Length();
-
-                speedVector = Vector3.Normalize(speedVector) * moveDistance;
-
-                // Now player will collide so we can move him along the wall
-                if(leftDistance > 0)
+                if(closestDist == -1 || moveDistance < closestDist)
                 {
-                    speedVector += GetVectorParralelProjectionToObjectNormal(speedVector * leftDistance, trace.ObjectNormal);
+                    closestTrace = trace;
+                    closestDist = moveDistance;
                 }
             }
 
-            player.Speed = speedVector;
+            // Some object on the way found
+            if(closestTrace != null)
+            {
+                // Calculate movement
+                float leftDistance = speedVector.Length() - closestDist - player.Radius;
 
-            // If movement is slow stop player TODO (maybe not needed)
-            //if (player.Speed.LengthSquared() < 0.001)
-            //    player.Speed = new Vector3(0, 0, 0);
+                speedVector = Vector3.Normalize(speedVector) * closestDist;
+
+                // Now player will collide so we can move him along the wall
+                if (leftDistance > 0)
+                {
+                    Vector3 parralelVector = GetVectorParralelProjectionToObjectNormal(speedVector * leftDistance, closestTrace.ObjectNormal);
+                    speedVector += parralelVector;
+                }
+            }
+
+            // Change player speed
+            player.Speed = speedVector;
         }
 
         private Vector3 CalculateSpeedVector(Player player)

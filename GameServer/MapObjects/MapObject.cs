@@ -7,11 +7,12 @@ namespace GameServer.MapObjects
 {
     public abstract class MapObject
     {
-        public MapObject(float x, float y, float z, Color color, int textureId)
+        public MapObject(float x, float y, float z, MapObject parent, Color color, int textureId)
         {
             Id = MapState.Instance.AssingMapObjectId();
 
             Position = new Vector3(x, y, z);
+            Parent = parent;
 
             TextureId = textureId;
 
@@ -27,6 +28,8 @@ namespace GameServer.MapObjects
 
         public Color Color { get; set; }
         public int TextureId { get; set; }
+
+        public MapObject Parent { get; set; }
     }
 
     public class MapObjectDistanceToPositionComparer : IComparer

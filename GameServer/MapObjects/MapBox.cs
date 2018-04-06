@@ -6,8 +6,8 @@ namespace GameServer.MapObjects
     public class MapBox : MapObject
     {
         public string Type = @"box";
-        public MapBox(float x, float y, float z, float w, float h, float d, Color color = null, int texture =0)
-            : base(x, y, z, color, texture)
+        public MapBox(float x, float y, float z, float w, float h, float d, MapObject parent = null, Color color = null, int texture =0)
+            : base(x, y, z, parent, color, texture)
         {
             Width = w;
             Height = h;
@@ -46,12 +46,12 @@ namespace GameServer.MapObjects
 
             return new MapQuad[]
             {
-                new MapQuad(v[0], v[1], v[2], v[3]), // bottom
-                new MapQuad(v[4], v[5], v[6], v[7]), // top
-                new MapQuad(v[0], v[1], v[5], v[4]), // front
-                new MapQuad(v[1], v[2], v[6], v[5]), // right
-                new MapQuad(v[3], v[2], v[6], v[7]), // back
-                new MapQuad(v[0], v[3], v[7], v[4]), // left
+                new MapQuad(v[0], v[1], v[2], v[3], this), // bottom
+                new MapQuad(v[4], v[5], v[6], v[7], this), // top
+                new MapQuad(v[0], v[1], v[5], v[4], this), // front
+                new MapQuad(v[1], v[2], v[6], v[5], this), // right
+                new MapQuad(v[3], v[2], v[6], v[7], this), // back
+                new MapQuad(v[0], v[3], v[7], v[4], this), // left
             };
         }
 
