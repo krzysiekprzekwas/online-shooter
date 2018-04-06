@@ -497,5 +497,50 @@ namespace GameTests
             // assert  
             Assert.IsNull(trace);
         }
+
+        [TestMethod]
+        public void Temporary()
+        {
+            // arrange  
+            Vector3 speedVector = new Vector3(3, 0, 4);
+            Vector3 objectNorm = new Vector3(0, 0, -1);
+
+            // act 
+            Vector3 u = PhysicsEngine.GetVectorParralelToObject(speedVector, objectNorm);
+
+            // assert
+            Vector3 expectedU = new Vector3(3, 0, 0);
+            Assert.AreEqual(u, expectedU);
+        }
+
+        [TestMethod]
+        public void Temporary2()
+        {
+            // arrange  
+            Vector3 speedVector = new Vector3(4, 0, 1);
+            Vector3 objectNorm = new Vector3(-1, 0, -1);
+
+            // act 
+            Vector3 u = PhysicsEngine.GetVectorParralelToObject(speedVector, objectNorm);
+
+            // assert
+            Vector3 expectedU = new Vector3(1.5f, 0, -1.5f);
+            Assert.AreEqual(u, expectedU);
+        }
+
+        [TestMethod]
+        public void Temporary3()
+        {
+            // arrange  
+            Vector3 speedVector = new Vector3(-1, 0, -4);
+            Vector3 objectNorm = new Vector3(1, 0, 1);
+
+            // act 
+            Vector3 u = PhysicsEngine.GetVectorParralelToObject(speedVector, objectNorm);
+
+            // assert
+            Vector3 expectedU = new Vector3(1.5f, 0, -1.5f);
+            Assert.AreEqual(u, expectedU);
+        }
     }
 }

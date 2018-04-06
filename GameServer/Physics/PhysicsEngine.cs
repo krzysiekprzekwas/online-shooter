@@ -26,7 +26,7 @@ namespace GameServer.Physics
 
                 // Process movement caused by input
                 CalculatePlayerSpeed(player);
-                
+
                 // Save new positon
                 player.Position += player.Speed;
             }
@@ -49,7 +49,7 @@ namespace GameServer.Physics
                 speedVector -= leftAngle;
 
             // Scale vector to be speed length
-            if(speedVector.Length() > 0)
+            if (speedVector.Length() > 0)
                 speedVector = Vector3.Normalize(speedVector) * ((Config.PLAYER_SPEED / (float)Config.SERVER_TICK));
 
             // Add to current speed
@@ -78,6 +78,15 @@ namespace GameServer.Physics
             }
 
             return speedVector;
+        }
+
+        public static Vector3 GetVectorParralelToObject(Vector3 vector, Vector3 objectNormal)
+        {
+            float a = Vector3.Dot(vector, objectNormal) / objectNormal.Length();
+            Vector3 b = objectNormal / objectNormal.Length();
+            Vector3 projection = Vector3.Negate(a * b);
+            
+            return vector + projection;
         }
     }
 }
