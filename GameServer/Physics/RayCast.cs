@@ -53,7 +53,7 @@ namespace GameServer.Physics
             if(b == 0)
             {
                 float d = (closestPointOnLine - ray.Origin).Length();
-                return new Trace(closestPointOnLine, ray.Origin, d, s);
+                return new Trace(closestPointOnLine, ray.Origin, d, s, ray.Origin - s.Position);
             }
 
             // Find relative point
@@ -74,13 +74,14 @@ namespace GameServer.Physics
             float dist = relativeDistance - b;
             Vector3 position = ray.Origin + dist * ray.Direction;
                 
-            return new Trace(position, ray.Origin, dist, s);
+            return new Trace(position, ray.Origin, dist, s, ray.Origin - s.Position);
         }
 
 
         public static Trace CheckBulletTrace(MapBox box, Ray ray)
         {
-            foreach (var quad in box.GetQuads())
+            MapQuad[] quads = box.GetSortedQuadsClosestToPosition(ray.Origin);
+            foreach (var quad in quads)
             {
                 Trace trace = CheckBulletTrace(quad, ray);
 
@@ -127,7 +128,7 @@ namespace GameServer.Physics
             if (Math.Abs(b) < 1e-6f)
             {
                 if (a == 0) // Ray lies inside plane
-                    return new Trace(ray.Origin, ray.Origin, 0, triangle);
+                    return new Trace(ray.Origin, ray.Origin, 0, triangle, n);
 
                 return null;
             }
@@ -159,7 +160,7 @@ namespace GameServer.Physics
             if (t < 0.0 || (s + t) > 1.0)  // I is outside T
                 return null;
 
-            return new Trace(position, ray.Origin, r, triangle);                       // I is in T
+            return new Trace(position, ray.Origin, r, triangle, n);                       // I is in T
         }
     }
 }

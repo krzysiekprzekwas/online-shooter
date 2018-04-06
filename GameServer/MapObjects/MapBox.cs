@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace GameServer.MapObjects
 {
@@ -52,6 +53,13 @@ namespace GameServer.MapObjects
                 new MapQuad(v[3], v[2], v[6], v[7]), // back
                 new MapQuad(v[0], v[3], v[7], v[4]), // left
             };
+        }
+
+        public MapQuad[] GetSortedQuadsClosestToPosition(Vector3 position)
+        {
+            MapQuad[] quads = GetQuads();
+            Array.Sort(quads, new MapObjectDistanceToPositionComparer(position));
+            return quads;
         }
     }
 }

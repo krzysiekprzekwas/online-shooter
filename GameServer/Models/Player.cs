@@ -14,11 +14,12 @@ namespace GameServer
         {
             Id = GameState.Instance.value.Players.Count + 1;
             Keys = new List<string>();
-            Angles = new Vector2();
-            Position = new Vector3();
-            Speed = new Vector3();
+            Angles = new Vector2(0, 0);
+            Position = new Vector3(0, 0, 0);
+            Speed = new Vector3(0, 0, 0);
 
             IsJumping = false;
+            Diameter = Config.PLAYER_SIZE;
         }
 
         public Vector3 Position { get; set; }
@@ -49,5 +50,36 @@ namespace GameServer
 
         [JsonIgnore]
         public bool IsJumping;
+
+
+        private float _playerRadius;
+
+        [JsonIgnore]
+        public float Radius
+        {
+            get
+            {
+                return _playerRadius;
+            }
+            set
+            {
+                if (value > 0)
+                    _playerRadius = value;
+            }
+        }
+
+        [JsonIgnore]
+        public float Diameter
+        {
+            get
+            {
+                return _playerRadius * 2f;
+            }
+            set
+            {
+                if(value > 0)
+                    _playerRadius = value / 2f;
+            }
+        }
     }
 }

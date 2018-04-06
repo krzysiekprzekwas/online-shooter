@@ -499,14 +499,14 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Temporary()
+        public void GetVectorParralelProjectionToObjectNormal1()
         {
             // arrange  
             Vector3 speedVector = new Vector3(3, 0, 4);
             Vector3 objectNorm = new Vector3(0, 0, -1);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelToObject(speedVector, objectNorm);
+            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
             Vector3 expectedU = new Vector3(3, 0, 0);
@@ -514,14 +514,14 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Temporary2()
+        public void GetVectorParralelProjectionToObjectNormal2()
         {
             // arrange  
             Vector3 speedVector = new Vector3(4, 0, 1);
             Vector3 objectNorm = new Vector3(-1, 0, -1);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelToObject(speedVector, objectNorm);
+            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
             Vector3 expectedU = new Vector3(1.5f, 0, -1.5f);
@@ -529,18 +529,150 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Temporary3()
+        public void GetVectorParralelProjectionToObjectNormal3()
         {
             // arrange  
             Vector3 speedVector = new Vector3(-1, 0, -4);
             Vector3 objectNorm = new Vector3(1, 0, 1);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelToObject(speedVector, objectNorm);
+            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
             Vector3 expectedU = new Vector3(1.5f, 0, -1.5f);
             Assert.AreEqual(u, expectedU);
+        }
+
+        [TestMethod]
+        public void GetTracePosition1()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Ray ray = new Ray(-1, 0, 4, 1, 0, -3);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Assert.IsNotNull(trace);
+
+            const float TOLERANCE = 0.001f;
+
+            Vector3 expectedPos = new Vector3(0, 0, 1);
+
+            bool areAlmostEqual = Math.Abs(trace.Position.X - expectedPos.X) < TOLERANCE &&
+                                    Math.Abs(trace.Position.Y - expectedPos.Y) < TOLERANCE &&
+                                    Math.Abs(trace.Position.Z - expectedPos.Z) < TOLERANCE;
+
+            Assert.IsTrue(areAlmostEqual);
+        }
+
+        [TestMethod]
+        public void GetTracePosition2()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Ray ray = new Ray(-1, 0, 2, 0.5f, 0, -2);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Assert.IsNotNull(trace);
+
+            Vector3 expectedPos = new Vector3(-0.75f, 0, 1);
+            Assert.AreEqual(trace.Position, expectedPos);
+        }
+
+        [TestMethod]
+        public void GetTraceDistance1()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Ray ray = new Ray(-5, -1, -3, 4, 0, 3);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Assert.AreEqual(trace.Distance, 5f);
+        }
+        
+        [TestMethod]
+        public void GetTraceDistance2()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Ray ray = new Ray(-6, -1, -12, 5, 0, 12);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Assert.AreEqual(trace.Distance, 13f);
+        }
+
+        [TestMethod]
+        public void SortBoxQuadsFromPosition()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Vector3 pos = new Vector3(0, 0, 2);
+
+            Vector3 v1 = new Vector3(-1, -1, 1);
+            Vector3 v2 = new Vector3(1, -1, 1);
+            Vector3 v3 = new Vector3(1, -1, -1);
+            Vector3 v4 = new Vector3(-1, -1, -1);
+
+            Vector3 v5 = new Vector3(-1, 1, 1);
+            Vector3 v6 = new Vector3(1, 1, 1);
+            Vector3 v7 = new Vector3(1, 1, -1);
+            Vector3 v8 = new Vector3(-1, 1, -1);
+
+            // act 
+            MapQuad[] quads = box.GetSortedQuadsClosestToPosition(pos);
+            
+            // Closest quad
+            bool quad0Correct = (v1 == quads[0].Verticies[0] && v2 == quads[0].Verticies[1] &&
+                v6 == quads[0].Verticies[2] && v5 == quads[0].Verticies[3]);
+
+            // Farest quad
+            bool quad5Correct = (v4 == quads[5].Verticies[0] && v3 == quads[5].Verticies[1] &&
+                v7 == quads[5].Verticies[2] && v8 == quads[5].Verticies[3]);
+            
+            // assert
+            Assert.IsTrue(quad0Correct);
+            Assert.IsTrue(quad5Correct);
+        }
+
+        [TestMethod]
+        public void GetTraceSphereNormal()
+        {
+            // arrange  
+            MapSphere sphere = new MapSphere(0, 0, 1, 2);
+            Ray ray = new Ray(-1, -1, 0, 1, 1, 1);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(sphere, ray);
+
+            // assert  
+            Vector3 expectedNormal = Vector3.Normalize(new Vector3(-1, -1, -1));
+            Assert.AreEqual(trace.ObjectNormal, expectedNormal);
+        }
+
+        [TestMethod]
+        public void GetTraceBoxNormal()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            Ray ray = new Ray(-2, -0.5f, 2, 1, 0.5f, -2);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Vector3 expectedNormal = Vector3.Normalize(new Vector3(-1, 0, 0));
+            Assert.AreEqual(trace.ObjectNormal, expectedNormal);
         }
     }
 }
