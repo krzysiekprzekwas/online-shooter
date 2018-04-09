@@ -207,7 +207,7 @@ namespace GameTests
             // assert  
             Assert.IsNull(trace, "Intersection error ray and box");
         }
-        
+
         [TestMethod]
         public void BoxRayIntersection7()
         {
@@ -220,6 +220,22 @@ namespace GameTests
 
             // assert  
             Assert.IsNull(trace);
+        }
+
+        [TestMethod]
+        public void BoxRayIntersection8()
+        {
+            // arrange  
+            MapBox box = new MapBox(0, 0, 0, 1200, 1, 1);
+            Ray ray = new Ray(-500, 0, -1, 0, 0, 1);
+
+            // act 
+            Trace trace = RayCast.CheckBulletTrace(box, ray);
+
+            // assert  
+            Vector3 expectedPosition = new Vector3(-500, 0, -0.5f);
+            Assert.IsNotNull(trace);
+            Assert.AreEqual(trace.Position, expectedPosition);
         }
 
         [TestMethod]
@@ -642,39 +658,6 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void SortBoxQuadsFromPosition()
-        {
-            // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
-            Vector3 pos = new Vector3(0, 0, 2);
-
-            Vector3 v1 = new Vector3(-1, -1, 1);
-            Vector3 v2 = new Vector3(1, -1, 1);
-            Vector3 v3 = new Vector3(1, -1, -1);
-            Vector3 v4 = new Vector3(-1, -1, -1);
-
-            Vector3 v5 = new Vector3(-1, 1, 1);
-            Vector3 v6 = new Vector3(1, 1, 1);
-            Vector3 v7 = new Vector3(1, 1, -1);
-            Vector3 v8 = new Vector3(-1, 1, -1);
-
-            // act 
-            MapQuad[] quads = box.GetSortedQuadsClosestToPosition(pos);
-            
-            // Closest quad
-            bool quad0Correct = (v1 == quads[0].Verticies[0] && v2 == quads[0].Verticies[1] &&
-                v6 == quads[0].Verticies[2] && v5 == quads[0].Verticies[3]);
-
-            // Farest quad
-            bool quad5Correct = (v4 == quads[5].Verticies[0] && v3 == quads[5].Verticies[1] &&
-                v7 == quads[5].Verticies[2] && v8 == quads[5].Verticies[3]);
-            
-            // assert
-            Assert.IsTrue(quad0Correct);
-            Assert.IsTrue(quad5Correct);
-        }
-
-        [TestMethod]
         public void GetTraceSphereNormal()
         {
             // arrange  
@@ -703,5 +686,27 @@ namespace GameTests
             Vector3 expectedNormal = Vector3.Normalize(new Vector3(-1, 0, 0));
             Assert.AreEqual(trace.ObjectNormal, expectedNormal);
         }
+
+        [TestMethod]
+        public void RotateVectorAroundYAxis1()
+        {
+            // arrange  
+            Vector3 vector = new Vector3(1, 1, 1);
+            float radians = (float)Math.PI / 2f;
+
+            // act 
+            Vector3 rotatedVector = PhysicsEngine.RotateVectorAroundYAxis(vector, radians);
+            
+            // assert  
+            Vector3 expectedVector = new Vector3(-1, 1, 1);
+
+            const float TOLERANCE = 0.001f;
+            bool areAlmostEqual = Math.Abs(rotatedVector.X - expectedVector.X) < TOLERANCE &&
+                                    Math.Abs(rotatedVector.Y - expectedVector.Y) < TOLERANCE &&
+                                    Math.Abs(rotatedVector.Z - expectedVector.Z) < TOLERANCE;
+            
+            Assert.IsTrue(areAlmostEqual);
+        }
+
     }
 }

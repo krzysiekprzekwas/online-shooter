@@ -80,30 +80,29 @@ namespace GameServer.Physics
 
         public static Trace CheckBulletTrace(MapBox box, Ray ray)
         {
-            MapQuad[] quads = box.GetSortedQuadsClosestToPosition(ray.Origin);
+            MapQuad[] quads = box.GetQuads();
+
+            Trace closestTrace = null;
             foreach (var quad in quads)
             {
-                Trace trace = CheckBulletTrace(quad, ray);
+                Trace quadTrace = CheckBulletTrace(quad, ray);
+                if (quadTrace == null)
+                    continue;
 
-                if (trace != null)
-                {
-                    trace.MapObject = box;
-                    return trace;
-                }
+                if (closestTrace == null || closestTrace.Distance > quadTrace.Distance)
+                    closestTrace = quadTrace;
             }
 
-            return null;
+            return closestTrace;
         }
         public static Trace CheckBulletTrace(MapQuad quad, Ray ray)
         {
             foreach (var triangle in quad.GetTriangles())
             {
                 Trace trace = CheckBulletTrace(triangle, ray);
+
                 if (trace != null)
-                {
-                    trace.MapObject = quad;
                     return trace;
-                }
             }
 
             return null;

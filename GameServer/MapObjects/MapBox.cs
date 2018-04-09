@@ -54,12 +54,5 @@ namespace GameServer.MapObjects
                 new MapQuad(v[0], v[3], v[7], v[4], this), // left
             };
         }
-
-        public MapQuad[] GetSortedQuadsClosestToPosition(Vector3 position)
-        {
-            MapQuad[] quads = GetQuads();
-            Array.Sort(quads, new MapObjectDistanceToPositionComparer(position));
-            return quads;
-        }
     }
 }
