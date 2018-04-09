@@ -26,17 +26,41 @@ namespace GameServer.Physics
 
                 // Process movement caused by input
                 Vector3 speedVector = player.Speed + CalculateSpeedVector(player);
-
-                Trace closestTrace = null;
-                Vector3 movementVector = GetMovementVector(player, speedVector, ref closestTrace);
-                
-                // Save data about movement
-                player.Position += movementVector;
-                player.Speed = movementVector; // Assign movement vector not speed vector (does not matter where player wanted to go, just where he moved)
+                UpdatePlayerPosition(player, speedVector);
             }
         }
 
-        public Vector3 GetMovementVector(Player player, Vector3 speedVector, ref Trace closestTrace)
+        public void UpdatePlayerPosition(Player player, Vector3 speedVector, int iterations = 1)
+        {
+            // Get movement vectors
+            Trace closestTrace = null;
+            Vector3 movementVector = GetPlayerMovementVector(player, speedVector, ref closestTrace);
+
+            // Save data about movement
+            player.Position += movementVector;
+
+            // TODO Maybe assign speedVector if collision detection is also client sided
+            player.Speed = movementVector; // Assign movement vector not speed vector (does not matter where player wanted to go, just where he moved)
+
+            if (closestTrace != null)
+            {
+                // Calculate movement
+                float leftDistance = 0.5f * (speedVector.Length() - closestTrace.Distance + player.Radius);
+
+                // Now player will collide so we can move him along the wall
+                if (leftDistance > 0.001 && iterations <= 1)
+                {
+                    Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
+                    Vector3 parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
+
+                    iterations++;
+                    UpdatePlayerPosition(player, parralelVector, iterations);
+                    return;
+                }
+            }
+        }
+
+        public Vector3 GetPlayerMovementVector(Player player, Vector3 speedVector, ref Trace closestTrace)
         {
             // Get movement vectors
             if (speedVector.LengthSquared() == 0)
@@ -171,37 +195,3 @@ namespace GameServer.Physics
         }
     }
 }
-
-
-
-
-
-//        public void UpdatePlayerPosition(Player player, Vector3 speedVector, int iterations = 1)
-//        {
-//            // Get movement vectors
-//            Trace closestTrace = null;
-//            Vector3 movementVector = GetPlayerMovementVector(speedVector, player, ref closestTrace);
-
-//            // Update player position
-//            player.Position += movementVector;
-
-//            //if (closestTrace != null)
-//            //{
-//            //    // Calculate movement
-//            //    float leftDistance = 0.5f * (speedVector.Length() - closestTrace.Distance);
-
-//            //    // Now player will collide so we can move him along the wall
-//            //    if (leftDistance > 0.001 && iterations <= 1)
-//            //    {
-//            //        Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
-//            //        Vector3 parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
-
-//            //        iterations++;
-//            //        UpdatePlayerPosition(player, parralelVector, iterations);
-//            //        return;
-//            //    }
-//            //}
-
-//            // Update player position
-//            player.Speed = movementVector;
-//        }
