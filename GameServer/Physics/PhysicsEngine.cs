@@ -19,7 +19,7 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
-            foreach(Player player in GameState.Instance.value.Players)
+            foreach (Player player in GameState.Instance.value.Players)
             {
                 player.Speed *= Config.PLAYER_DECCELERATION;
                 Vector3 speedVector = player.Speed + CalculateSpeedVector(player);
@@ -41,6 +41,7 @@ namespace GameServer.Physics
                 return new Vector3(0, 0, 0);
 
             Vector3 speedVectorNormalized = Vector3.Normalize(speedVector);
+            Vector3 parralelVector = new Vector3(0, 0, 0);
 
             // Variables used to calculate speed vector
             float offset = 0f;
@@ -64,11 +65,50 @@ namespace GameServer.Physics
                     currentPrecision /= 2f;
                 }
 
+                // Parralel movemnt
+                if (intersectionObject != null)
+                {
+                    Vector3 forwardVector = Vector3.Normalize(speedVector);
+                    Vector3 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
+                    Vector3 upVector = new Vector3(0, 1, 0);
+
+                    Ray[] rays = new Ray[]
+                    {
+                        new Ray(player.Position, speedVector), // FRONT
+                        new Ray(player.Position + (leftVector * player.Radius), speedVector), // LEFT  + forwardVector * (player.Radius / 4f)
+                        new Ray(player.Position + (-leftVector * player.Radius), speedVector), // RIGHT + forwardVector * (player.Radius / 4f)
+                    };
+
+                    Trace closestTrace = null;
+                    foreach (Ray ray in rays)
+                    {
+                        Trace trace = null;
+
+                        if (intersectionObject is MapBox)
+                            trace = RayCast.CheckBulletTrace((MapBox)intersectionObject, ray);
+                        else if (intersectionObject is MapSphere)
+                            trace = RayCast.CheckBulletTrace((MapSphere)intersectionObject, ray);
+
+                        if (trace == null)
+                            continue;
+
+                        if (closestTrace == null || trace.Distance < closestTrace.Distance)
+                            closestTrace = trace;
+                    }
+
+                    if (closestTrace != null)
+                    {
+                        float leftDistance = speedVectorLength - offset;
+                        Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
+                        parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
+                    }
+                }
+
             } // Do this as long as we reach desired precision
             while (currentPrecision >= Config.INTERSECTION_INTERVAL);
 
             // Update speed vector
-            return speedVectorNormalized * offset;
+            return (speedVectorNormalized * offset) + parralelVector;
         }
 
         public MapObject CheckAnyIntersectionWithWorld(MapSphere s)
