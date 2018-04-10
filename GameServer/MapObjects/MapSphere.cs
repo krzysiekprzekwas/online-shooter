@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace GameServer.MapObjects
@@ -10,6 +11,12 @@ namespace GameServer.MapObjects
 
         public MapSphere(float x, float y, float z, float diameter, MapObject parent = null, Color color = null, int texture = 0)
             : base(x, y, z, parent, color, texture)
+        {
+            Diameter = diameter;
+        }
+
+        public MapSphere(Vector3 pos, float diameter, MapObject parent = null, Color color = null, int texture = 0)
+            : base(pos.X, pos.Y, pos.Z, parent, color, texture)
         {
             Diameter = diameter;
         }

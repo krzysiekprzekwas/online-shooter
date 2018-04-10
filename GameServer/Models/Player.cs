@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using GameServer.MapObjects;
 
 namespace GameServer
 {
@@ -43,6 +44,21 @@ namespace GameServer
             };
 
             return copy;
+        }
+
+        [JsonIgnore]
+        private MapSphere _worldObject = null;
+        public MapSphere WorldObject
+        {
+            get
+            {
+                if (_worldObject == null)
+                    _worldObject = new MapSphere(Position.X, Position.Y, Position.Z, Diameter);
+                else
+                    _worldObject.Position = Position;
+
+                return _worldObject;
+            }
         }
 
         [JsonIgnore]

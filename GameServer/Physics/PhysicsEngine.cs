@@ -19,6 +19,79 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
+            foreach(Player player in GameState.Instance.value.Players)
+            {
+                player.Speed *= Config.PLAYER_DECCELERATION;
+                Vector3 speedVector = player.Speed + CalculateSpeedVector(player);
+
+                speedVector = GetNewPlayerPosition(player, speedVector);
+
+                player.Speed = speedVector;
+                player.Position += speedVector;
+            }
+        }
+
+        public Vector3 GetNewPlayerPosition(Player player, Vector3 speedVector)
+        {
+            // Calculate length
+            float speedVectorLength = speedVector.Length();
+
+            // Get movement vectors
+            if (speedVectorLength == 0)
+                return new Vector3(0, 0, 0);
+
+            Vector3 speedVectorNormalized = Vector3.Normalize(speedVector);
+
+            // Variables used to calculate speed vector
+            float offset = 0f;
+            float currentPrecision = speedVectorLength / 2f;
+
+            do
+            {
+                // Create moved sphere
+                Vector3 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
+                MapSphere s = new MapSphere(checkPosition, player.Diameter);
+
+                // Check for intersection
+                MapObject intersectionObject = CheckAnyIntersectionWithWorld(s);
+
+                // Update new position and offset
+                if (intersectionObject != null) // Object found try a bit closer
+                    currentPrecision /= 2f;
+                else // No object found, increase offset
+                {
+                    offset += currentPrecision;
+                    currentPrecision /= 2f;
+                }
+
+            } // Do this as long as we reach desired precision
+            while (currentPrecision >= Config.INTERSECTION_INTERVAL);
+
+            // Update speed vector
+            return speedVectorNormalized * offset;
+        }
+
+        public MapObject CheckAnyIntersectionWithWorld(MapSphere s)
+        {
+            // Check intersection with all map objects
+            foreach (MapObject obj in MapState.Instance.MapObjects)
+            {
+                bool intersects = false;
+                if (obj is MapBox)
+                    intersects = Intersection.CheckIntersection((MapBox)obj, s);
+                else if (obj is MapSphere)
+                    intersects = Intersection.CheckIntersection((MapSphere)obj, s);
+
+                if (intersects)
+                    return obj;
+            }
+
+            return null;
+        }
+
+
+        public void ApplyPhysicsRayCast()
+        {
             foreach (Player player in GameState.Instance.value.Players)
             {
                 // Deccelerate player every tick
