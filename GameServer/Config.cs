@@ -23,6 +23,8 @@ namespace GameServer
         [JsonProperty]
         public const float PLAYER_SIZE = 32;
 
+        public const float INTERSECTION_INTERVAL = 0.01f;
+
         private static Config instance;
         public static Config Instance
         {
