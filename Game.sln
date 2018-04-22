@@ -5,28 +5,9 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameServer", "GameServer\GameServer.csproj", "{AFF98F62-7B7B-468C-9682-B756DFF16FDD}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GameClient", "GameClient\", "{C9125894-1711-432A-997B-2A463A624278}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_57925"
-		Debug.AspNetCompiler.PhysicalPath = "GameClient\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57925\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_57925"
-		Release.AspNetCompiler.PhysicalPath = "GameClient\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57925\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "57925"
-		SlnRelativePath = "GameClient\"
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTests", "GameTests\GameTests.csproj", "{A787C918-C8DD-4317-A5D1-256AC7F25391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTests", "GameTests\GameTests.csproj", "{A787C918-C8DD-4317-A5D1-256AC7F25391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameClient", "GameClient\GameClient.csproj", "{DABB76CF-4E22-48CF-BE5C-C69891BFFDEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,14 +19,14 @@ Global
 		{AFF98F62-7B7B-468C-9682-B756DFF16FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFF98F62-7B7B-468C-9682-B756DFF16FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFF98F62-7B7B-468C-9682-B756DFF16FDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9125894-1711-432A-997B-2A463A624278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9125894-1711-432A-997B-2A463A624278}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9125894-1711-432A-997B-2A463A624278}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9125894-1711-432A-997B-2A463A624278}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{A787C918-C8DD-4317-A5D1-256AC7F25391}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A787C918-C8DD-4317-A5D1-256AC7F25391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A787C918-C8DD-4317-A5D1-256AC7F25391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A787C918-C8DD-4317-A5D1-256AC7F25391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DABB76CF-4E22-48CF-BE5C-C69891BFFDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DABB76CF-4E22-48CF-BE5C-C69891BFFDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DABB76CF-4E22-48CF-BE5C-C69891BFFDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DABB76CF-4E22-48CF-BE5C-C69891BFFDEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
