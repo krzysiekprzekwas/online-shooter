@@ -19,6 +19,7 @@ namespace GameClient
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://*:80", "http://0.0.0.0:80")
                 .UseStartup<Startup>()
                 .Build();
     }
