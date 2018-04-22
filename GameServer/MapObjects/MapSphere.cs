@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameServer.MapObjects
+﻿namespace GameServer.MapObjects
 {
     public class MapSphere : MapObject
     {
 
-        public MapSphere(float x, float y, float z, float diameter, Color color = null,int texture=0)
+        public MapSphere(float x, float y, float z, float diameter, Color color = null, int texture = 0)
             : base(x, y, z, color, texture)
         {
             Diameter = diameter;

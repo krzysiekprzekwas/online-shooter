@@ -1,18 +1,19 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
 using System.Text;
 using System.Threading;
-using System.Runtime.Serialization.Formatters;
+using System.Threading.Tasks;
+using GameServer.Models;
+using Newtonsoft.Json;
 
 namespace GameServer.States
 {
-    public static class StateController
+    public class StateController
     {
+
         private static void SendState(dynamic state, WebSocket webSocket)
         {
             string json = JsonConvert.SerializeObject(state);
@@ -51,7 +52,7 @@ namespace GameServer.States
 
             SendState(mapStateResponse, webSocket);
         }
-        
+
         public static void ReceiveState(byte[] buffer, Player player, WebSocket webSocket)
         {
             string request = Encoding.ASCII.GetString(buffer).Trim((char)0);

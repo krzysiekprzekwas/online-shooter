@@ -1,10 +1,9 @@
-﻿using GameServer.Models;
+﻿using System.Numerics;
 using GameServer.States;
-using System.Numerics;
 
 namespace GameServer.MapObjects
 {
-    public abstract class MapObject
+    public class MapObject
     {
         public MapObject(float x, float y, float z, Color color, int textureId)
         {
@@ -15,7 +14,7 @@ namespace GameServer.MapObjects
             TextureId = textureId;
 
             Color = color;
-            if(color == null)
+            if (color == null)
             {
                 Color = new Color(1, 1, 1);
             }

@@ -1,11 +1,10 @@
-﻿using GameServer.Game;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
+using GameServer.Game;
 using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 
 namespace GameServer.Physics
 {
@@ -26,7 +25,7 @@ namespace GameServer.Physics
 
                 // Process movement caused by input
                 CalculatePlayerSpeed(player);
-                
+
                 // Save new positon
                 player.Position += player.Speed;
             }
@@ -49,7 +48,7 @@ namespace GameServer.Physics
                 speedVector -= leftAngle;
 
             // Scale vector to be speed length
-            if(speedVector.Length() > 0)
+            if (speedVector.Length() > 0)
                 speedVector = Vector3.Normalize(speedVector) * ((Config.PLAYER_SPEED / (float)Config.SERVER_TICK));
 
             // Add to current speed

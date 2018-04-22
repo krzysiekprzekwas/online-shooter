@@ -1,31 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GameServer.Game;
+using GameServer.Models;
+using GameServer.States;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using GameServer.States;
-using GameServer.Game;
 
 namespace GameServer
 {
     public class Startup
     {
         private GameEngine _gameEngine;
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             _gameEngine = new GameEngine();
-            
+
             var webSocketOptions = new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(120),
@@ -33,6 +35,7 @@ namespace GameServer
             };
             app.UseWebSockets(webSocketOptions);
             
+
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path == "/ws")
@@ -73,7 +76,7 @@ namespace GameServer
             while (!result.CloseStatus.HasValue)
             {
                 //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-                
+
                 StateController.ReceiveState(buffer, player, webSocket);
                 Array.Clear(buffer, 0, result.Count);
 
@@ -88,3 +91,4 @@ namespace GameServer
         }
     }
 }
+

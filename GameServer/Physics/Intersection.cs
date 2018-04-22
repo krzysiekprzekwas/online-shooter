@@ -1,9 +1,9 @@
-﻿using GameServer.MapObjects;
-using GameServer.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
-using System.Text;
+using System.Threading.Tasks;
+using GameServer.MapObjects;
 
 namespace GameServer.Physics
 {
@@ -61,7 +61,7 @@ namespace GameServer.Physics
         {
             double distanceSquared = DistanceSquared(s1.Position, s2.Position);
             double diameterSquared = Math.Pow((s1.Diameter / 2) + (s2.Diameter / 2), 2);
-            
+
             return diameterSquared > distanceSquared;
         }
 
