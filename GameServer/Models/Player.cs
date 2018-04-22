@@ -1,13 +1,12 @@
 ﻿using System;
-using GameServer.Models;
-using GameServer.States;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using GameServer.MapObjects;
+using GameServer.States;
+using Newtonsoft.Json;
 
-namespace GameServer
+namespace GameServer.Models
 {
     public class Player
     {

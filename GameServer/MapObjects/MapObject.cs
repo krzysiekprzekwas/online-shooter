@@ -2,10 +2,11 @@
 using GameServer.States;
 using System.Collections;
 using System.Numerics;
+using GameServer.States;
 
 namespace GameServer.MapObjects
 {
-    public abstract class MapObject
+    public class MapObject
     {
         public MapObject(float x, float y, float z, MapObject parent, Color color, int textureId)
         {

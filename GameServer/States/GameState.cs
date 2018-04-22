@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+using GameServer.Models;
+using Newtonsoft.Json;
 
 namespace GameServer.States
 {
@@ -15,7 +17,7 @@ namespace GameServer.States
             value = new GameStateValue();
             value.Players = new List<Player>();
         }
-        
+
         public static GameState Instance
         {
             get

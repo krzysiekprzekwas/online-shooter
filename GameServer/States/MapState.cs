@@ -1,6 +1,8 @@
-﻿using GameServer.MapObjects;
-using Newtonsoft.Json;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using GameServer.MapObjects;
+using Newtonsoft.Json;
 
 namespace GameServer.States
 {
@@ -23,7 +25,7 @@ namespace GameServer.States
                 return instance;
             }
         }
-        
+
 
         public int AssingMapObjectId()
         {
@@ -31,11 +33,12 @@ namespace GameServer.States
             MapObjectId++;
             return id;
         }
-        
+
 
         public List<MapObject> MapObjects { get; set; }
-        
+
         [JsonIgnore]
         public int MapObjectId { get; set; }
+
     }
 }

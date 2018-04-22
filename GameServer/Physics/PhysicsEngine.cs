@@ -1,11 +1,10 @@
-﻿using GameServer.Game;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
+using GameServer.Game;
 using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 
 namespace GameServer.Physics
 {
