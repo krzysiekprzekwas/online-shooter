@@ -60,20 +60,27 @@ let world = {
 
             let mat = new BABYLON.StandardMaterial("mat", this.scene);
 
-            switch (obj.TextureId) {
-            case 1:
-                    mat.emissiveTexture = new BABYLON.Texture("https://cdnb.artstation.com/p/assets/covers/images/003/400/471/large/matthew-dereve-stonebrick-texturewatermark.jpg?1473296852", this.scene);
-                    break;
-            case 2:
-                mat.emissiveTexture = new BABYLON.Texture("https://cdn.artstation.com/p/assets/images/images/000/692/171/large/choi-yong-wip026.jpg?1430892524", this.scene);
-                break;
-            case 3:
-                    mat.emissiveTexture = new BABYLON.Texture("https://cdna.artstation.com/p/assets/covers/images/004/539/128/small_square/darren-horrocks-artstationthumbnail-dirtrox.jpg?1484417971", this.scene);
-                break;
-            default:
+
+            try {
+
+                switch (obj.TextureId) {
+                    case 1:
+                            mat.diffuseTexture  = new BABYLON.Texture("textures/brick.jpg",this.scene);
+                        break;
+                    case 2:
+                            mat.diffuseTexture  = new BABYLON.Texture("textures/wall.jpg", this.scene);
+                        break;
+                    case 3:
+                            mat.diffuseTexture  = new BABYLON.Texture("textures/brick.jpg", this.scene);
+                        break;
+                    default:
+                        mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
+                    }
+
+            }
+            catch (err) {
                 mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
             }
-
 
 
             mesh.position.x += obj.Position.X;
