@@ -65,13 +65,13 @@ let world = {
 
                 switch (obj.TextureId) {
                     case 1:
-                            mat.diffuseTexture  = new BABYLON.Texture("textures/brick.jpg",this.scene);
+                        mat.diffuseTexture = new BABYLON.Texture("textures/brick.jpg",this.scene);
                         break;
                     case 2:
                             mat.diffuseTexture  = new BABYLON.Texture("textures/wall.jpg", this.scene);
                         break;
                     case 3:
-                            mat.diffuseTexture  = new BABYLON.Texture("textures/brick.jpg", this.scene);
+                        mat.diffuseTexture = new BABYLON.Texture("textures/ground.jpg", this.scene);
                         break;
                     default:
                         mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
@@ -79,6 +79,7 @@ let world = {
 
             }
             catch (err) {
+                console.log("Trouble getting texture. Loaded backup color.")
                 mat.emissiveColor = new BABYLON.Color3(obj.Color.Red, obj.Color.Green, obj.Color.Blue);
             }
 
