@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.WebSockets;
 using System.Numerics;
 using GameServer.MapObjects;
 using GameServer.States;
@@ -10,6 +12,16 @@ namespace GameServer.Models
 {
     public class Player
     {
+        public Vector3 Position { get; set; }
+        public Vector3 Speed { get; set; }
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public WebSocket WebSocket { get; set; }
+        public IPAddress IpAddress { get; set; }
+
+
+    public Vector2 Angles { get; set; }
+
         public Player()
         {
             Id = GameState.Instance.value.Players.Count + 1;
@@ -21,13 +33,6 @@ namespace GameServer.Models
             IsJumping = false;
             Diameter = Config.PLAYER_SIZE;
         }
-
-        public Vector3 Position { get; set; }
-        public Vector3 Speed { get; set; }
-        public string Name { get; set; }
-        public int Id { get; set; }
-
-        public Vector2 Angles { get; set; }
 
         public Player DeepCopy()
         {

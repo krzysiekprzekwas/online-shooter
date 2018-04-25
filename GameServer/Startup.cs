@@ -11,8 +11,10 @@ using GameServer.States;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace GameServer
 {
@@ -34,7 +36,12 @@ namespace GameServer
                 ReceiveBufferSize = Config.BUFFER_SIZE
             };
             app.UseWebSockets(webSocketOptions);
-            
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                                   ForwardedHeaders.XForwardedProto
+            });
 
             app.Use(async (context, next) =>
             {
@@ -43,7 +50,6 @@ namespace GameServer
                     if (context.WebSockets.IsWebSocketRequest)
                     {
                         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        _gameEngine.ClientSockets.Add(webSocket);
                         await Echo(context, webSocket);
                     }
                     else
@@ -61,12 +67,25 @@ namespace GameServer
 
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
+
+            _gameEngine.ClientSockets.Add(webSocket);
+
             // Player connecting - sending connect request
             var buffer = new byte[Config.BUFFER_SIZE];
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
             string connectionRequest = Encoding.ASCII.GetString(buffer);
-            Player player = _gameEngine.ConnectPlayer(connectionRequest);
+            dynamic json = JsonConvert.DeserializeObject(connectionRequest);
+
+            Player player = new Player
+            {
+                Name = json.Name,
+                Position = new System.Numerics.Vector3(0, Config.PLAYER_SIZE / 2, 0),
+                WebSocket = webSocket,
+                IpAddress = context.Connection.RemoteIpAddress
+            };
+
+            _gameEngine.ConnectPlayer(player);
 
             // Send back initial status
             StateController.SendConnectedConfirmation(webSocket, player);
