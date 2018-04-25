@@ -5,6 +5,8 @@ let world = {
         this.canvas = document.getElementById('renderCanvas');
         this.engine = new BABYLON.Engine(this.canvas, true);
         this.mapObjects = Array();
+        this.skyBox = null;
+        this.skyboxMaterial = null;
         this.playerObjects = Array();
         this.fpsLabel = document.getElementById("fpsLabel");
         this.pingLabel = document.getElementById("pingLabel");
@@ -26,6 +28,8 @@ let world = {
             world.scene.render();
             world.fpsLabel.innerHTML = world.engine.getFps().toFixed();
             world.pingLabel.innerHTML = world.ping;
+
+            world.updateSun();
 
             // Remember last frame generation time so we will be able to extrapolate
             world.lastFrameTime = new Date();
@@ -116,7 +120,7 @@ let world = {
                 frontMaterial.diffuseTexture.vScale = obj.Height / textureSize;
                 backMaterial.diffuseTexture.uScale = obj.Width / textureSize;
                 backMaterial.diffuseTexture.vScale = obj.Height / textureSize;
-                
+
                 // Add all materials to MultiMaterial object
                 material.subMaterials.push(frontMaterial);
                 material.subMaterials.push(backMaterial);
@@ -149,6 +153,7 @@ let world = {
         }
 
         logger.info("Loaded map objects " + mapstate.MapObjects.length);
+        this.updateSun();
     },
 
     // Update function is called when gamestate was received from server
@@ -220,5 +225,25 @@ let world = {
         light.diffuse = new BABYLON.Color3(0.8, 0.8, 0.8);
         light.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
         light.groundColor = new BABYLON.Color3(0, 0, 0);
+
+        // Sky material
+        this.skyboxMaterial = new BABYLON.SkyMaterial("skyMaterial", this.scene);
+        this.skyboxMaterial.backFaceCulling = false;
+        this.skyboxMaterial.rayleigh = 2;
+
+        // Sky mesh (box)
+        this.skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, this.scene);
+        this.skybox.material = this.skyboxMaterial;
+    },
+
+    updateSun: function () {
+
+        const currentDate = new Date();
+        let dayMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
+        let minutesNorm = dayMinutes / (24 * 60);
+
+        let inclination = (minutesNorm - 0.75) * 2;
+        this.skyboxMaterial.inclination = inclination;
+
     }
 };
