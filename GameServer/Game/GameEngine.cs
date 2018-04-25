@@ -45,21 +45,14 @@ namespace GameServer.Game
             }
         }
 
-        public Player ConnectPlayer(string connectionRequest)
+        public bool ConnectPlayer(Player player)
         {
-            dynamic json = JsonConvert.DeserializeObject(connectionRequest);
-
-            Player player = new Player
-            {
-                Name = json.Name,
-                Position = new System.Numerics.Vector3(0, Config.PLAYER_SIZE / 2, 0)
-            };
             GameState.value.Players.Add(player);
-            Console.WriteLine(String.Format("[INFO] Player #{0} ({1}) connected.", player.Id, player.Name));
+            Console.WriteLine(string.Format("[INFO] Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
 
             GameEvents.OnPlayerConnected(player);
 
-            return player;
+            return true;
         }
 
         public void DisconnectPlayer(Player player)
