@@ -242,7 +242,7 @@ let world = {
         let dayMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
         let minutesNorm = dayMinutes / (24 * 60);
 
-        let inclination = (minutesNorm - 0.75) * 2;
+        let inclination = (minutesNorm - 0.5) * 1.75;
         this.skyboxMaterial.inclination = inclination;
 
     }
