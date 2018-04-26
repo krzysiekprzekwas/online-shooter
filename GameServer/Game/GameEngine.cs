@@ -8,12 +8,15 @@ using GameServer.Models;
 using GameServer.Physics;
 using GameServer.States;
 using GameServer.World;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace GameServer.Game
 {
     public class GameEngine
     {
+        private readonly ILogger<GameEngine> _logger;
+
         private Timer _ticker;
         public List<WebSocket> ClientSockets = new List<WebSocket>();
         public GameState GameState = GameState.Instance;
@@ -21,8 +24,9 @@ namespace GameServer.Game
         public PhysicsEngine PhysicsEngine;
         private Random random;
 
-        public GameEngine()
+        public GameEngine(ILogger<GameEngine> logger)
         {
+            _logger = logger;
             _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
             GameEvents = new GameEvents(this);
             PhysicsEngine = new PhysicsEngine(this);
@@ -47,8 +51,9 @@ namespace GameServer.Game
 
         public bool ConnectPlayer(Player player)
         {
+            _logger.LogInformation(string.Format("Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
+
             GameState.value.Players.Add(player);
-            Console.WriteLine(string.Format("[INFO] Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
 
             GameEvents.OnPlayerConnected(player);
 
@@ -57,7 +62,7 @@ namespace GameServer.Game
 
         public void DisconnectPlayer(Player player)
         {
-            Console.WriteLine(String.Format("[INFO] Player #{0} disconnected.", player.Id));
+            _logger.LogInformation(string.Format("Player #{0} ({1}) IP={2} disconnected.", player.Id, player.Name, player.IpAddress));
 
             GameEvents.OnPlayerDisconnected(player);
 
