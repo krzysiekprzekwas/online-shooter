@@ -68,13 +68,13 @@ let world = {
             // Load texture url based on textureId sent by server
             switch (obj.TextureId) {
                 case 1:
-                    textureUrl = "http://145.239.86.84/textures/brick.jpg";
+                    textureUrl = "/textures/brick.jpg";
                     break;
                 case 2:
-                    textureUrl = "http://145.239.86.84/textures/wall.jpg";
+                    textureUrl = "/textures/wall.jpg";
                     break;
                 case 3:
-                    textureUrl = "http://145.239.86.84/textures/ground.jpg";
+                    textureUrl = "/textures/ground.jpg";
                     break;
             }
 
@@ -244,5 +244,6 @@ let world = {
 
         let inclination = (minutesNorm - 0.5) * 1.75;
         this.skyboxMaterial.inclination = inclination;
+
     }
 };
