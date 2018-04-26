@@ -51,7 +51,8 @@ namespace GameServer.Game
 
         public bool ConnectPlayer(Player player)
         {
-            _logger.LogInformation(string.Format("[INFO] Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
+            _logger.LogInformation(string.Format("Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
+
             GameState.value.Players.Add(player);
 
             GameEvents.OnPlayerConnected(player);
