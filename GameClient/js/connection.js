@@ -1,6 +1,7 @@
 // Create WebSocket connection.
-const socket = new WebSocket('ws://145.239.86.84:1000/ws');
-
+const socket = ((location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? new WebSocket('ws://localhost:1000/ws')
+    : new WebSocket('ws://145.239.86.84:1000/ws'));
 // Connect to server
 socket.addEventListener('open', function (event) {
 

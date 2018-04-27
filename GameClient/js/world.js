@@ -68,13 +68,13 @@ let world = {
             // Load texture url based on textureId sent by server
             switch (obj.TextureId) {
                 case 1:
-                    textureUrl = "/textures/brick.jpg";
+                    textureUrl = "textures/brick.jpg";
                     break;
                 case 2:
-                    textureUrl = "/textures/wall.jpg";
+                    textureUrl = "textures/wall.jpg";
                     break;
                 case 3:
-                    textureUrl = "/textures/ground.jpg";
+                    textureUrl = "textures/ground.jpg";
                     break;
             }
 
