@@ -20,12 +20,6 @@ namespace GameServer
                     .UseUrls("http://*:1000", "http://0.0.0.0:5000")
                     .UseKestrel()
                     .UseStartup<Startup>()
-                    .ConfigureLogging(logging =>
-                    {
-                        logging.ClearProviders();
-                        logging.SetMinimumLevel(LogLevel.Trace);
-                    })
-                    .UseNLog()
                     .Build();
 
                 host.Run();
