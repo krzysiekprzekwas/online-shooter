@@ -8,6 +8,7 @@ let world = {
         this.skyBox = null;
         this.skyboxMaterial = null;
         this.playerObjects = Array();
+        this.players = Array();
         this.fpsLabel = document.getElementById("fpsLabel");
         this.pingLabel = document.getElementById("pingLabel");
         this.playerId = -1;
@@ -162,6 +163,16 @@ let world = {
         // Change variable so players wont be extrapolated on current frame
         this.receivedGameStateOnCurrentFrame = true;
         this.lastGamestate = gamestate;
+
+        // Remove disconected players
+        for (player of this.players) {
+            if (gamestate.Players.map(x => x.Id).indexOf(player) === -1) {
+                this.playerObjects[player].dispose();
+            }
+        }
+
+        // Save current players ids
+        this.players = gamestate.Players.map(x => x.Id);
 
         for (player of gamestate.Players) {
             // If current player is you, just update camera position
