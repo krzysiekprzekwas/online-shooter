@@ -31,6 +31,9 @@ namespace GameServer
         {
             var services = new ServiceCollection();
 
+            //Runner is the custom class
+            services.AddTransient<GameEngine>();
+
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddLogging((builder) => builder.SetMinimumLevel(LogLevel.Trace));
@@ -49,7 +52,8 @@ namespace GameServer
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var servicesProvider = BuildDi();
-            _gameEngine = new GameEngine(servicesProvider.GetRequiredService<ILoggerFactory>().CreateLogger<GameEngine>());
+            _gameEngine = servicesProvider.GetRequiredService<GameEngine>();
+            
 
             var webSocketOptions = new WebSocketOptions()
             {
