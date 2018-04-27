@@ -27,12 +27,11 @@ namespace GameServer.Game
         public GameEngine(ILogger<GameEngine> logger)
         {
             _logger = logger;
-            _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
             GameEvents = new GameEvents(this);
             PhysicsEngine = new PhysicsEngine(this);
             random = new Random();
-
             WorldLoader.LoadMap();
+            _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
         }
 
         private void Tick(object state)
