@@ -18,7 +18,7 @@ namespace GameServer.Game
         private readonly ILogger<GameEngine> _logger;
 
         private Timer _ticker;
-        public List<WebSocket> ClientSockets = new List<WebSocket>();
+        public List<Player> Players = new List<Player>();
         public GameState GameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
@@ -38,13 +38,14 @@ namespace GameServer.Game
         {
             PhysicsEngine.ApplyPhysics();
 
-            WebSocket[] currentSockets = new WebSocket[ClientSockets.Count];
-            ClientSockets.CopyTo(currentSockets);
+            var currentPlayers = new Player[GameState.value.Players.Count];
+            GameState.value.Players.CopyTo(currentPlayers);
 
             // Send game state for each client
-            foreach (var socket in currentSockets)
+            foreach (var player in currentPlayers)
             {
-                StateController.SendGameState(socket);
+                StateController.SendGameState(player.WebSocket);
+
             }
         }
 

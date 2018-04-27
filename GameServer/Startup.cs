@@ -93,8 +93,6 @@ namespace GameServer
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
 
-            _gameEngine.ClientSockets.Add(webSocket);
-
             // Player connecting - sending connect request
             var buffer = new byte[Config.BUFFER_SIZE];
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);

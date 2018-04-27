@@ -16,7 +16,9 @@ namespace GameServer.Models
         public Vector3 Speed { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
+        [JsonIgnore]
         public WebSocket WebSocket { get; set; }
+        [JsonIgnore]
         public IPAddress IpAddress { get; set; }
 
 
