@@ -1,4 +1,5 @@
 # Shoterio
+[![Build status](https://ci.appveyor.com/api/projects/status/77uw8begc1kj6kf7?svg=true)](https://ci.appveyor.com/project/krzysiekprzekwas/online-shooter-38ynl)
 
 Shoterio is an online FPS game created as a base project for our engineer's thesis. The main focus of our thesis is the impact of lag compensation algorithms on  performance and hardware requirements of hosts.
 
