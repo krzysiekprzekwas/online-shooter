@@ -17,7 +17,7 @@ namespace GameServer.Game
     {
         private readonly ILogger<GameEngine> _logger;
 
-        private Timer _ticker;
+        public Timer Ticker;
         public List<Player> Players = new List<Player>();
         public GameState GameState = GameState.Instance;
         public GameEvents GameEvents;
@@ -31,7 +31,7 @@ namespace GameServer.Game
             PhysicsEngine = new PhysicsEngine(this);
             random = new Random();
             WorldLoader.LoadMap();
-            _ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
+            Ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
         }
 
         private void Tick(object state)

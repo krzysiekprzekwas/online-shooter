@@ -27,7 +27,7 @@ namespace GameServer
         {
         }
 
-        private static IServiceProvider BuildDi()
+        public static IServiceProvider BuildDi()
         {
             var services = new ServiceCollection();
 
