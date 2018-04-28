@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.WebSockets;
 using System.Numerics;
@@ -17,12 +15,57 @@ namespace GameServer.Models
         public string Name { get; set; }
         public int Id { get; set; }
         [JsonIgnore]
-        public WebSocket WebSocket { get; set; }
+        public WebSocket WebSocket;
+
         [JsonIgnore]
-        public IPAddress IpAddress { get; set; }
+        public IPAddress IpAddress;
+        public Vector2 Angles { get; set; }
+        [JsonIgnore]
+        private MapSphere _worldObject;
+        public MapSphere WorldObject
+        {
+            get
+            {
+                if (_worldObject == null)
+                    _worldObject = new MapSphere(Position.X, Position.Y, Position.Z, Diameter);
+                else
+                    _worldObject.Position = Position;
 
+                return _worldObject;
+            }
+        }
+        [JsonIgnore]
+        public List<string> Keys;
+        [JsonIgnore]
+        public bool IsJumping;
+        private float _playerRadius;
+        [JsonIgnore]
+        public float Radius
+        {
+            get
+            {
+                return _playerRadius;
+            }
+            set
+            {
+                if (value > 0)
+                    _playerRadius = value;
+            }
+        }
 
-    public Vector2 Angles { get; set; }
+        [JsonIgnore]
+        public float Diameter
+        {
+            get
+            {
+                return _playerRadius * 2f;
+            }
+            set
+            {
+                if(value > 0)
+                    _playerRadius = value / 2f;
+            }
+        }
 
         public Player()
         {
@@ -50,58 +93,6 @@ namespace GameServer.Models
             };
 
             return copy;
-        }
-
-        [JsonIgnore]
-        private MapSphere _worldObject = null;
-        public MapSphere WorldObject
-        {
-            get
-            {
-                if (_worldObject == null)
-                    _worldObject = new MapSphere(Position.X, Position.Y, Position.Z, Diameter);
-                else
-                    _worldObject.Position = Position;
-
-                return _worldObject;
-            }
-        }
-
-        [JsonIgnore]
-        public List<string> Keys;
-
-        [JsonIgnore]
-        public bool IsJumping;
-
-
-        private float _playerRadius;
-
-        [JsonIgnore]
-        public float Radius
-        {
-            get
-            {
-                return _playerRadius;
-            }
-            set
-            {
-                if (value > 0)
-                    _playerRadius = value;
-            }
-        }
-
-        [JsonIgnore]
-        public float Diameter
-        {
-            get
-            {
-                return _playerRadius * 2f;
-            }
-            set
-            {
-                if(value > 0)
-                    _playerRadius = value / 2f;
-            }
         }
     }
 }
