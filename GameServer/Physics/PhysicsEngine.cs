@@ -30,7 +30,7 @@ namespace GameServer.Physics
             }
         }
 
-        public MapObject GetIntersectionObjectTowardsDirection(out float offset, Vector3 position, Vector3 speedVectorNormalized, float speedVectorLength, float diameter = Config.PLAYER_SIZE)
+        public MapObject GetIntersectionObjectTowardsDirection(out float offset, Player player, Vector3 speedVectorNormalized, float speedVectorLength)
         {
             // Variables used to calculate speed vector
             offset = 0f;
@@ -40,8 +40,8 @@ namespace GameServer.Physics
             do
             {
                 // Create moved sphere
-                Vector3 checkPosition = position + (speedVectorNormalized * (offset + currentPrecision));
-                MapSphere s = new MapSphere(checkPosition, diameter);
+                Vector3 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
+                MapSphere s = new MapSphere(checkPosition, player.Diameter);
 
                 // Check for intersection
                 intersectionObject = CheckAnyIntersectionWithWorld(s);
@@ -74,7 +74,7 @@ namespace GameServer.Physics
             Vector3 speedVectorNormalized = Vector3.Normalize(speedVector);
 
             // Get intersection object
-            MapObject intersectionObject = GetIntersectionObjectTowardsDirection(out float offset, player.Position, speedVectorNormalized, speedVectorLength, player.Diameter);
+            MapObject intersectionObject = GetIntersectionObjectTowardsDirection(out float offset, player, speedVectorNormalized, speedVectorLength);
 
             Vector3 parralelVector = GetParralelMovementVector(player, speedVector, speedVectorLength, intersectionObject, offset);
 
