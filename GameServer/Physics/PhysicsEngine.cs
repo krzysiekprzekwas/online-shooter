@@ -30,30 +30,21 @@ namespace GameServer.Physics
             }
         }
 
-        public Vector3 GetNewPlayerPosition(Player player, Vector3 speedVector)
+        public MapObject GetIntersectionObjectTowardsDirection(out float offset, Vector3 position, Vector3 speedVectorNormalized, float speedVectorLength, float diameter = Config.PLAYER_SIZE)
         {
-            // Calculate length
-            float speedVectorLength = speedVector.Length();
-
-            // Get movement vectors
-            if (speedVectorLength == 0)
-                return new Vector3(0, 0, 0);
-
-            Vector3 speedVectorNormalized = Vector3.Normalize(speedVector);
-            Vector3 parralelVector = new Vector3(0, 0, 0);
-
             // Variables used to calculate speed vector
-            float offset = 0f;
+            offset = 0f;
             float currentPrecision = speedVectorLength / 2f;
+            MapObject intersectionObject = null;
 
             do
             {
                 // Create moved sphere
-                Vector3 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
-                MapSphere s = new MapSphere(checkPosition, player.Diameter);
+                Vector3 checkPosition = position + (speedVectorNormalized * (offset + currentPrecision));
+                MapSphere s = new MapSphere(checkPosition, diameter);
 
                 // Check for intersection
-                MapObject intersectionObject = CheckAnyIntersectionWithWorld(s);
+                intersectionObject = CheckAnyIntersectionWithWorld(s);
 
                 // Update new position and offset
                 if (intersectionObject != null) // Object found try a bit closer
@@ -64,50 +55,62 @@ namespace GameServer.Physics
                     currentPrecision /= 2f;
                 }
 
-                // Parralel movemnt
-                if (intersectionObject != null)
-                {
-                    Vector3 forwardVector = Vector3.Normalize(speedVector);
-                    Vector3 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
-                    Vector3 upVector = new Vector3(0, 1, 0);
-
-                    Ray[] rays = new Ray[]
-                    {
-                        new Ray(player.Position, speedVector), // FRONT
-                        new Ray(player.Position + (leftVector * player.Radius), speedVector), // LEFT  + forwardVector * (player.Radius / 4f)
-                        new Ray(player.Position + (-leftVector * player.Radius), speedVector), // RIGHT + forwardVector * (player.Radius / 4f)
-                    };
-
-                    Trace closestTrace = null;
-                    foreach (Ray ray in rays)
-                    {
-                        Trace trace = null;
-
-                        if (intersectionObject is MapBox)
-                            trace = RayCast.CheckBulletTrace((MapBox)intersectionObject, ray);
-                        else if (intersectionObject is MapSphere)
-                            trace = RayCast.CheckBulletTrace((MapSphere)intersectionObject, ray);
-
-                        if (trace == null)
-                            continue;
-
-                        if (closestTrace == null || trace.Distance < closestTrace.Distance)
-                            closestTrace = trace;
-                    }
-
-                    if (closestTrace != null)
-                    {
-                        float leftDistance = speedVectorLength - offset;
-                        Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
-                        parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
-                    }
-                }
 
             } // Do this as long as we reach desired precision
             while (currentPrecision >= Config.INTERSECTION_INTERVAL);
 
+            return intersectionObject;
+        }
+
+        public Vector3 GetNewPlayerPosition(Player player, Vector3 speedVector)
+        {
+            // Calculate length
+            float speedVectorLength = speedVector.Length();
+
+            // Get movement vectors
+            if (speedVectorLength == 0)
+                return new Vector3(0, 0, 0);
+
+            Vector3 speedVectorNormalized = Vector3.Normalize(speedVector);
+
+            // Get intersection object
+            MapObject intersectionObject = GetIntersectionObjectTowardsDirection(out float offset, player.Position, speedVectorNormalized, speedVectorLength, player.Diameter);
+
+            Vector3 parralelVector = GetParralelMovementVector(player, speedVector, speedVectorLength, intersectionObject, offset);
+
             // Update speed vector
             return (speedVectorNormalized * offset) + parralelVector;
+        }
+
+        private Vector3 GetParralelMovementVector(Player player, Vector3 speedVector, float speedVectorLength, MapObject intersectionObject, float offset)
+        {
+            Vector3 parralelVector = new Vector3(0, 0, 0);
+
+            // Parralel movemnt
+            if (intersectionObject != null)
+            {
+                Vector3 forwardVector = Vector3.Normalize(speedVector);
+                Vector3 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
+                Vector3 upVector = new Vector3(0, 1, 0);
+
+                Ray[] rays = new Ray[]
+                {
+                        new Ray(player.Position, speedVector), // FRONT
+                        new Ray(player.Position + (leftVector * player.Radius), speedVector), // LEFT  + forwardVector * (player.Radius / 4f)
+                        new Ray(player.Position + (-leftVector * player.Radius), speedVector), // RIGHT + forwardVector * (player.Radius / 4f)
+                };
+
+                Trace closestTrace = GetClosestTrace(rays);
+
+                if (closestTrace != null)
+                {
+                    float leftDistance = speedVectorLength - offset;
+                    Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
+                    parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
+                }
+            }
+
+            return parralelVector;
         }
 
         public MapObject CheckAnyIntersectionWithWorld(MapSphere s)
@@ -228,6 +231,7 @@ namespace GameServer.Physics
             return closestTrace;
         }
 
+
         private Trace GetClosestTrace(Ray ray)
         {
             Trace closestTrace = null;
@@ -271,7 +275,11 @@ namespace GameServer.Physics
 
             // Scale vector to be speed length
             if (speedVector.LengthSquared() > 0)
-                speedVector = Vector3.Normalize(speedVector) * ((Config.PLAYER_SPEED / (float)Config.SERVER_TICK));
+            {
+                Vector3 normalizedSpeed = Vector3.Normalize(speedVector);
+                float vectorLength = Config.PLAYER_SPEED / (float)Config.SERVER_TICK;
+                speedVector = normalizedSpeed * vectorLength;
+            }
 
             return speedVector;
         }
