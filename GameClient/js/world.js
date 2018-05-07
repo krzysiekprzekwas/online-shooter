@@ -186,7 +186,7 @@ let world = {
 
             // Else create player or update players position
             if (typeof this.playerObjects[player.Id] === 'undefined') {
-                let playerObject = BABYLON.Mesh.CreateSphere('sphere1', 16, 0.5, this.scene);
+                let playerObject = BABYLON.Mesh.CreateSphere('sphere1', 16, player.WorldObject.Diameter, this.scene);
                 this.playerObjects[player.Id] = playerObject;
             }
 
