@@ -7,9 +7,9 @@
 
         //console.log(response);
         if (response.Type === "mapstate")
-            world.loadMapObjects(response.MapState);
+            world.onMapStateReceived(response.MapState);
         else if (response.Type === "gamestate")
-            world.updatePlayers(response.GameState);
+            world.onGameStateReceived(response.GameState);
         else if (response.Type === "connected")
             this.connectedResponse(response);
         else if (response.Type === "received")
