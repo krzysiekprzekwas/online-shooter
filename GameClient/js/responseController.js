@@ -20,14 +20,14 @@
 
     connectedResponse: function (response) {
 
-        logger.info("Player connected");
+        logger.info(`Player connected #${response.PlayerId}`);
         
         for (setting in response.Config) {
 
             const value = response.Config[setting];
             config[setting] = value;
         }
-        logger.info("Loaded server configuration (" + Object.keys(response.Config).length + " variables)");
+        logger.info(`Loaded server configuration (${Object.keys(response.Config).length} variables)`);
 
         world.playerId = response.PlayerId;
     },
