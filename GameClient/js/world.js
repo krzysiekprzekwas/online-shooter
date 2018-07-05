@@ -14,7 +14,7 @@ let world = {
         this.lastGamestate = null;
         this.lastFrameTime = new Date();
 
-        this.printCoordinates = true;
+        this.printCoordinates = false;
     },
 
     onMapStateReceived: function (mapstate) {
