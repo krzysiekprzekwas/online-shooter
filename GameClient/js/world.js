@@ -87,7 +87,7 @@ let world = {
             y: (this.myPlayer !== null) ? this.myPlayer.y : 0
         };
 
-        translate(center.x + (windowWidth / 2), center.y + (windowHeight / 2));
+        translate((windowWidth / 2), (windowHeight / 2));
 
         // Draw map components
         this.drawMapObjects(center);
