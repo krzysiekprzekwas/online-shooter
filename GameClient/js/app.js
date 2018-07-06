@@ -2,7 +2,7 @@ window.onkeyup = function (e) { keys.keyUp(e.keyCode); };
 window.onkeydown = function (e) { keys.keyDown(e.keyCode); };
 
 function setup() {
-    createCanvas(displayWidth, displayHeight);
+    createCanvas(displayWidth, displayHeight, WEBGL);
     stroke(0);
 
     ellipseMode(CENTER);
@@ -10,6 +10,7 @@ function setup() {
 
     mouse.initialize();
     world.initialize();
+    texturesService.initialize();
 }
 
 function draw() {

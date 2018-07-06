@@ -13,6 +13,7 @@ let world = {
         this.receivedGameStateOnCurrentFrame = false;
         this.lastGamestate = null;
         this.lastFrameTime = new Date();
+        this.images = [];
 
         this.printCoordinates = false;
     },
@@ -27,7 +28,7 @@ let world = {
                 height: obj.Depth,
                 x: obj.Position.X,
                 y: obj.Position.Z,
-                texture: this.getTextureUrl(obj.TextureId),
+                textureId: obj.TextureId,
                 type: obj.Type
             };
 
@@ -63,19 +64,6 @@ let world = {
         }
     },
 
-    getTextureUrl: function (textureId) {
-
-        // Load texture url based on textureId sent by server
-        switch (textureId) {
-            case 1:
-                return "textures/brick.jpg";
-            case 2:
-                return "textures/wall.jpg";
-            case 3:
-                return "textures/ground.jpg";
-        }
-    },
-
     draw: function () {
 
         // Start a new drawing state
@@ -105,6 +93,8 @@ let world = {
             strokeWeight(2);
             stroke(243, 156, 18);
             noFill();
+
+            texture(texturesService.getTexture(obj.textureId));
             rect(obj.x - center.x, obj.y - center.y, obj.width, obj.height);
 
             if (world.printCoordinates) {
