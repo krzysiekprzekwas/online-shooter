@@ -6,17 +6,17 @@ using System.Text;
 
 namespace GameServer.MapObjects
 {
-    public class MapSphere : MapObject
+    public class MapEllipse : MapObject
     {
 
-        public MapSphere(float x, float y, float z, float diameter, MapObject parent = null, Color color = null, int texture = 0)
-            : base(x, y, z, parent, color, texture)
+        public MapEllipse(float x, float y, float diameter, MapObject parent = null, Color color = null, int texture = 0)
+            : base(x, y, parent, color, texture)
         {
             Diameter = diameter;
         }
 
-        public MapSphere(Vector3 pos, float diameter, MapObject parent = null, Color color = null, int texture = 0)
-            : base(pos.X, pos.Y, pos.Z, parent, color, texture)
+        public MapEllipse(Vector2 pos, float diameter, MapObject parent = null, Color color = null, int texture = 0)
+            : base(pos.X, pos.Y, parent, color, texture)
         {
             Diameter = diameter;
         }

@@ -10,8 +10,8 @@ namespace GameServer.Models
 {
     public class Player
     {
-        public Vector3 Position { get; set; }
-        public Vector3 Speed { get; set; }
+        public Vector2 Position { get; set; }
+        public Vector2 Speed { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
         [JsonIgnore]
@@ -19,15 +19,15 @@ namespace GameServer.Models
 
         [JsonIgnore]
         public IPAddress IpAddress;
-        public Vector2 Angles { get; set; }
+        public float Angle { get; set; }
         [JsonIgnore]
-        private MapSphere _worldObject;
-        public MapSphere WorldObject
+        private MapEllipse _worldObject;
+        public MapEllipse WorldObject
         {
             get
             {
                 if (_worldObject == null)
-                    _worldObject = new MapSphere(Position.X, Position.Y, Position.Z, Diameter);
+                    _worldObject = new MapEllipse(Position.X, Position.Y, Diameter);
                 else
                     _worldObject.Position = Position;
 
@@ -71,9 +71,9 @@ namespace GameServer.Models
         {
             Id = GameState.Instance.value.Players.Count + 1;
             Keys = new List<string>();
-            Angles = new Vector2(0, 0);
-            Position = new Vector3(0, 0, 0);
-            Speed = new Vector3(0, 0, 0);
+            Angle = 0.0f;
+            Position = new Vector2(0, 0);
+            Speed = new Vector2(0, 0);
 
             IsJumping = false;
             Diameter = Config.PLAYER_SIZE;
@@ -85,7 +85,7 @@ namespace GameServer.Models
             {
                 Id = Id,
                 Keys = Keys,
-                Angles = Angles,
+                Angle = Angle,
                 Position = Position,
                 Speed = Speed,
                 IsJumping = IsJumping,

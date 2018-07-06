@@ -21,7 +21,7 @@ namespace GameServer.Physics
             foreach (Player player in GameState.Instance.value.Players)
             {
                 player.Speed *= Config.PLAYER_DECCELERATION;
-                Vector3 speedVector = player.Speed + CalculateSpeedVector(player);
+                Vector2 speedVector = player.Speed + CalculateSpeedVector(player);
 
                 speedVector = GetNewPlayerPosition(player, speedVector);
 
@@ -30,7 +30,7 @@ namespace GameServer.Physics
             }
         }
 
-        public MapObject GetIntersectionObjectTowardsDirection(out float offset, Player player, Vector3 speedVectorNormalized, float speedVectorLength)
+        public MapObject GetIntersectionObjectTowardsDirection(out float offset, Player player, Vector2 speedVectorNormalized, float speedVectorLength)
         {
             // Variables used to calculate speed vector
             offset = 0f;
@@ -40,8 +40,8 @@ namespace GameServer.Physics
             do
             {
                 // Create moved sphere
-                Vector3 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
-                MapSphere s = new MapSphere(checkPosition, player.Diameter);
+                Vector2 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
+                MapEllipse s = new MapEllipse(checkPosition, player.Diameter);
 
                 // Check for intersection
                 intersectionObject = CheckAnyIntersectionWithWorld(s);
@@ -62,36 +62,36 @@ namespace GameServer.Physics
             return intersectionObject;
         }
 
-        public Vector3 GetNewPlayerPosition(Player player, Vector3 speedVector)
+        public Vector2 GetNewPlayerPosition(Player player, Vector2 speedVector)
         {
             // Calculate length
             float speedVectorLength = speedVector.Length();
 
             // Get movement vectors
             if (speedVectorLength == 0)
-                return new Vector3(0, 0, 0);
+                return new Vector2(0, 0);
 
-            Vector3 speedVectorNormalized = Vector3.Normalize(speedVector);
+            Vector2 speedVectorNormalized = Vector2.Normalize(speedVector);
 
             // Get intersection object
             MapObject intersectionObject = GetIntersectionObjectTowardsDirection(out float offset, player, speedVectorNormalized, speedVectorLength);
 
-            Vector3 parralelVector = GetParralelMovementVector(player, speedVector, speedVectorLength, intersectionObject, offset);
+            Vector2 parralelVector = GetParralelMovementVector(player, speedVector, speedVectorLength, intersectionObject, offset);
 
             // Update speed vector
             return (speedVectorNormalized * offset) + parralelVector;
         }
 
-        private Vector3 GetParralelMovementVector(Player player, Vector3 speedVector, float speedVectorLength, MapObject intersectionObject, float offset)
+        private Vector2 GetParralelMovementVector(Player player, Vector2 speedVector, float speedVectorLength, MapObject intersectionObject, float offset)
         {
-            Vector3 parralelVector = new Vector3(0, 0, 0);
+            Vector2 parralelVector = new Vector2(0, 0);
 
             // Parralel movemnt
             if (intersectionObject != null)
             {
-                Vector3 forwardVector = Vector3.Normalize(speedVector);
-                Vector3 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
-                Vector3 upVector = new Vector3(0, 1, 0);
+                Vector2 forwardVector = Vector2.Normalize(speedVector);
+                Vector2 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
+                Vector2 upVector = new Vector2(0, 1);
 
                 Ray[] rays = new Ray[]
                 {
@@ -105,7 +105,7 @@ namespace GameServer.Physics
                 if (closestTrace != null)
                 {
                     float leftDistance = speedVectorLength - offset;
-                    Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
+                    Vector2 leftSpeedVector = Vector2.Normalize(speedVector) * leftDistance;
                     parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
                 }
             }
@@ -113,16 +113,16 @@ namespace GameServer.Physics
             return parralelVector;
         }
 
-        public MapObject CheckAnyIntersectionWithWorld(MapSphere s)
+        public MapObject CheckAnyIntersectionWithWorld(MapEllipse s)
         {
             // Check intersection with all map objects
             foreach (MapObject obj in MapState.Instance.MapObjects)
             {
                 bool intersects = false;
-                if (obj is MapBox)
-                    intersects = Intersection.CheckIntersection((MapBox)obj, s);
-                else if (obj is MapSphere)
-                    intersects = Intersection.CheckIntersection((MapSphere)obj, s);
+                if (obj is MapRect)
+                    intersects = Intersection.CheckIntersection((MapRect)obj, s);
+                else if (obj is MapEllipse)
+                    intersects = Intersection.CheckIntersection((MapEllipse)obj, s);
 
                 if (intersects)
                     return obj;
@@ -140,16 +140,16 @@ namespace GameServer.Physics
                 player.Speed *= Config.PLAYER_DECCELERATION;
 
                 // Process movement caused by input
-                Vector3 speedVector = player.Speed + CalculateSpeedVector(player);
+                Vector2 speedVector = player.Speed + CalculateSpeedVector(player);
                 UpdatePlayerPosition(player, speedVector);
             }
         }
 
-        public void UpdatePlayerPosition(Player player, Vector3 speedVector, int iterations = 1)
+        public void UpdatePlayerPosition(Player player, Vector2 speedVector, int iterations = 1)
         {
             // Get movement vectors
             Trace closestTrace = null;
-            Vector3 movementVector = GetPlayerMovementVector(player, speedVector, ref closestTrace);
+            Vector2 movementVector = GetPlayerMovementVector(player, speedVector, ref closestTrace);
 
             // Save data about movement
             player.Position += movementVector;
@@ -165,8 +165,8 @@ namespace GameServer.Physics
                 // Now player will collide so we can move him along the wall
                 if (leftDistance > 0.001 && iterations <= 1)
                 {
-                    Vector3 leftSpeedVector = Vector3.Normalize(speedVector) * leftDistance;
-                    Vector3 parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
+                    Vector2 leftSpeedVector = Vector2.Normalize(speedVector) * leftDistance;
+                    Vector2 parralelVector = GetVectorParralelProjectionToObjectNormal(leftSpeedVector, closestTrace.ObjectNormal);
 
                     iterations++;
                     UpdatePlayerPosition(player, parralelVector, iterations);
@@ -175,16 +175,16 @@ namespace GameServer.Physics
             }
         }
 
-        public Vector3 GetPlayerMovementVector(Player player, Vector3 speedVector, ref Trace closestTrace)
+        public Vector2 GetPlayerMovementVector(Player player, Vector2 speedVector, ref Trace closestTrace)
         {
             // Get movement vectors
             if (speedVector.LengthSquared() == 0)
-                return new Vector3(0, 0, 0);
+                return new Vector2(0, 0);
 
             // Calculate direction vectors
-            Vector3 forwardVector = Vector3.Normalize(speedVector);
-            Vector3 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
-            Vector3 upVector = new Vector3(0, 1, 0);
+            Vector2 forwardVector = Vector2.Normalize(speedVector);
+            Vector2 leftVector = RotateVectorAroundYAxis(forwardVector, (float)Math.PI / 2f);
+            Vector2 upVector = new Vector2(0, 1);
 
             // Create player ray
             // TODO? Maybe add forward vector (forwardVector * player.Radius)
@@ -208,7 +208,7 @@ namespace GameServer.Physics
 
             // Calculate how far I can go that direction
             float moveDistance = closestTrace.Distance - player.Radius;
-            speedVector = Vector3.Normalize(speedVector) * moveDistance;
+            speedVector = Vector2.Normalize(speedVector) * moveDistance;
 
             return speedVector;
         }
@@ -240,10 +240,10 @@ namespace GameServer.Physics
             foreach (MapObject obj in MapState.Instance.MapObjects)
             {
                 Trace trace = null;
-                if (obj is MapBox)
-                    trace = RayCast.CheckBulletTrace((MapBox)obj, ray);
-                else if (obj is MapSphere)
-                    trace = RayCast.CheckBulletTrace((MapSphere)obj, ray);
+                if (obj is MapRect)
+                    trace = RayCast.CheckBulletTrace((MapRect)obj, ray);
+                else if (obj is MapEllipse)
+                    trace = RayCast.CheckBulletTrace((MapEllipse)obj, ray);
 
                 // No collision with this object - check next one
                 if (trace == null)
@@ -257,11 +257,11 @@ namespace GameServer.Physics
             return closestTrace;
         }
 
-        private Vector3 CalculateSpeedVector(Player player)
+        private Vector2 CalculateSpeedVector(Player player)
         {
-            Vector3 forwardAngle = new Vector3((float)Math.Sin(player.Angles.Y), 0, (float)Math.Cos(player.Angles.Y));
-            Vector3 leftAngle = new Vector3((float)Math.Sin(player.Angles.Y - (float)Math.PI / 2), 0, (float)Math.Cos(player.Angles.Y - Math.PI / 2));
-            Vector3 speedVector = new Vector3(0, 0, 0);
+            Vector2 forwardAngle = new Vector2((float)Math.Sin(player.Angle), (float)Math.Cos(player.Angle));
+            Vector2 leftAngle = new Vector2((float)Math.Sin(player.Angle - (float)Math.PI / 2), (float)Math.Cos(player.Angle - (float)Math.PI / 2));
+            Vector2 speedVector = new Vector2(0, 0);
 
             // First get direction
             if (player.Keys.Contains("w"))
@@ -276,7 +276,7 @@ namespace GameServer.Physics
             // Scale vector to be speed length
             if (speedVector.LengthSquared() > 0)
             {
-                Vector3 normalizedSpeed = Vector3.Normalize(speedVector);
+                Vector2 normalizedSpeed = Vector2.Normalize(speedVector);
                 float vectorLength = Config.PLAYER_SPEED / (float)Config.SERVER_TICK;
                 speedVector = normalizedSpeed * vectorLength;
             }
@@ -291,12 +291,12 @@ namespace GameServer.Physics
         /// <param name="vector"></param>
         /// <param name="radians"></param>
         /// <returns>Rotated vector</returns>
-        public static Vector3 RotateVectorAroundYAxis(Vector3 vector, float radians)
+        public static Vector2 RotateVectorAroundYAxis(Vector2 vector, float radians)
         {
             float ca = (float)Math.Cos(radians);
             float sa = (float)Math.Sin(radians);
 
-            return new Vector3(ca * vector.X - sa * vector.Y, vector.Y, sa * vector.X + ca * vector.Y);
+            return new Vector2(ca * vector.X - sa * vector.Y, sa * vector.X + ca * vector.Y);
         }
 
         /// <summary>
@@ -305,11 +305,11 @@ namespace GameServer.Physics
         /// <param name="vector"></param>
         /// <param name="objectNormal"></param>
         /// <returns>Perpendicular vector to objectNormal</returns>
-        public static Vector3 GetVectorParralelProjectionToObjectNormal(Vector3 vector, Vector3 objectNormal)
+        public static Vector2 GetVectorParralelProjectionToObjectNormal(Vector2 vector, Vector2 objectNormal)
         {
-            float a = Vector3.Dot(vector, objectNormal) / objectNormal.Length();
-            Vector3 b = objectNormal / objectNormal.Length();
-            Vector3 projection = Vector3.Negate(a * b);
+            float a = Vector2.Dot(vector, objectNormal) / objectNormal.Length();
+            Vector2 b = objectNormal / objectNormal.Length();
+            Vector2 projection = Vector2.Negate(a * b);
 
             return vector + projection;
         }

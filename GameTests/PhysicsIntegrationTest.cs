@@ -22,7 +22,7 @@ namespace GameTests
             float vectorLength = (Config.PLAYER_SPEED / (float)Config.SERVER_TICK);
             const float TICKS = 100;
             const float MAX_DIFF_PER_TICK = 0.0125f;
-            Vector3 initialPosition = new Vector3(0, Config.PLAYER_SIZE / 2, 0);
+            Vector2 initialPosition = new Vector2(0, Config.PLAYER_SIZE / 2, 0);
 
             var servicesProvider = Startup.BuildDi();
             GameEngine GE = servicesProvider.GetRequiredService<GameEngine>();
@@ -31,7 +31,7 @@ namespace GameTests
             Player player = new Player()
             {
                 Position = initialPosition,
-                Angles = new Vector2(0, (float)Math.PI / 4)
+                Angle = new Vector2(0, (float)Math.PI / 4)
             };
 
             GameState.Instance.value.Players.Add(player);
@@ -42,7 +42,7 @@ namespace GameTests
                 GE.PhysicsEngine.ApplyPhysics();
 
             // assert  
-            float actualDistance = Vector3.Distance(initialPosition, player.Position);
+            float actualDistance = Vector2.Distance(initialPosition, player.Position);
             float expectedMaxDistance = TICKS * vectorLength;
             float distanceDiff = actualDistance - expectedMaxDistance;
             float maxDiff = TICKS * MAX_DIFF_PER_TICK;
@@ -55,7 +55,7 @@ namespace GameTests
             // arrange  
             Config.PLAYER_DECCELERATION = 0;
             const float TICKS = 200;
-            Vector3 initialPosition = new Vector3(0, Config.PLAYER_SIZE / 2, 0);
+            Vector2 initialPosition = new Vector2(0, Config.PLAYER_SIZE / 2, 0);
 
             var servicesProvider = Startup.BuildDi();
             GameEngine GE = servicesProvider.GetRequiredService<GameEngine>();
@@ -64,7 +64,7 @@ namespace GameTests
             Player player = new Player()
             {
                 Position = initialPosition,
-                Angles = new Vector2(0, (float)Math.PI / 4)
+                Angle = new Vector2(0, (float)Math.PI / 4)
             };
 
             GameState.Instance.value.Players.Add(player);
@@ -84,7 +84,7 @@ namespace GameTests
         //    // arrange  
         //    Config.PLAYER_DECCELERATION = 0;
         //    const float TICKS = 150;
-        //    Vector3 initialPosition = new Vector3(0, Config.PLAYER_SIZE / 2, 64);
+        //    Vector2 initialPosition = new Vector2(0, Config.PLAYER_SIZE / 2, 64);
 
         //    var servicesProvider = Startup.BuildDi();
         //    GameEngine GE = servicesProvider.GetRequiredService<GameEngine>();
@@ -112,7 +112,7 @@ namespace GameTests
         {
             // arrange  
             Config.PLAYER_DECCELERATION = 0;
-            Vector3 initialPosition = new Vector3(59.41173f, Config.PLAYER_SIZE / 2, 79.99442f);
+            Vector2 initialPosition = new Vector2(59.41173f, Config.PLAYER_SIZE / 2, 79.99442f);
 
             var servicesProvider = Startup.BuildDi();
             GameEngine GE = servicesProvider.GetRequiredService<GameEngine>();
@@ -121,7 +121,7 @@ namespace GameTests
             Player player = new Player()
             {
                 Position = initialPosition,
-                Angles = new Vector2(0, (float)Math.PI / 4)
+                Angle = new Vector2(0, (float)Math.PI / 4)
             };
 
             GameState.Instance.value.Players.Add(player);

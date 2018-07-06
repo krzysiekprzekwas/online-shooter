@@ -8,24 +8,28 @@ namespace GameServer.Models
 {
     public class Trace
     {
-        public Trace(Vector3 position, Vector3 source, float distance, MapObject mapObject, Vector3 objectNormal)
+        public Trace(Vector2 position, Vector2 source, MapObject mapObject, Vector2 objectNormal, float distance = -1)
         {
             Position = position;
             Source = source;
-            Distance = distance;
             MapObject = mapObject;
             ObjectNormal = objectNormal;
+
+            Distance = distance;
+            if(Distance == -1)
+                Distance = Vector2.Distance(position, source);
         }
 
-        public Vector3 Position { get; private set; }
+        public Vector2 Position { get; private set; }
 
-        public Vector3 Source { get; private set; }
+        public Vector2 Source { get; private set; }
+
         public float Distance { get; private set; }
 
         public MapObject MapObject { get; set; }
 
-        private Vector3 _objectNormal;
-        public Vector3 ObjectNormal
+        private Vector2 _objectNormal;
+        public Vector2 ObjectNormal
         {
             get
             {
@@ -33,7 +37,7 @@ namespace GameServer.Models
             }
             private set
             {
-                _objectNormal = Vector3.Normalize(value);
+                _objectNormal = Vector2.Normalize(value);
             }
         }
     }

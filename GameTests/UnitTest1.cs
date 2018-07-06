@@ -14,8 +14,8 @@ namespace GameTests
         public void CubeSphereIntersection1()
         {
             // arrange  
-            MapSphere o1 = new MapSphere(0, 0, 0, 2);
-            MapBox o2 = new MapBox(0, 0, 20, 1, 1, 1);
+            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapRect o2 = new MapRect(0, 0, 20, 1, 1, 1);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -28,8 +28,8 @@ namespace GameTests
         public void CubeSphereIntersection2()
         {
             // arrange  
-            MapSphere o1 = new MapSphere(0, 0, 0, 2);
-            MapBox o2 = new MapBox(0, 0, 1, 1, 1, 1);
+            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapRect o2 = new MapRect(0, 0, 1, 1, 1, 1);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -42,8 +42,8 @@ namespace GameTests
         public void CubeSphereIntersection3()
         {
             // arrange  
-            MapSphere o1 = new MapSphere(0, 0, 0, 2);
-            MapBox o2 = new MapBox(0, 2, 2, 1, 1, 1);
+            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapRect o2 = new MapRect(0, 2, 2, 1, 1, 1);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -57,8 +57,8 @@ namespace GameTests
         public void SphereSphereIntersection1()
         {
             // arrange  
-            MapSphere o1 = new MapSphere(0, 0, 0, 2);
-            MapSphere o2 = new MapSphere(0, 0, 1, 0.1f);
+            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapEllipse o2 = new MapEllipse(0, 0, 1, 0.1f);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -72,8 +72,8 @@ namespace GameTests
         public void SphereSphereIntersection2()
         {
             // arrange  
-            MapSphere o1 = new MapSphere(0, 0, 0, 2);
-            MapSphere o2 = new MapSphere(0, 0, 2, 2);
+            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapEllipse o2 = new MapEllipse(0, 0, 2, 2);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -87,8 +87,8 @@ namespace GameTests
         public void SphereSphereIntersection3()
         {
             // arrange  
-            MapSphere o1 = new MapSphere(0, 0, 0, (float)Math.Sqrt(2) * 2f - 0.01f);
-            MapSphere o2 = new MapSphere(2, 0, 2, (float)Math.Sqrt(2) * 2f);
+            MapEllipse o1 = new MapEllipse(0, 0, 0, (float)Math.Sqrt(2) * 2f - 0.01f);
+            MapEllipse o2 = new MapEllipse(2, 0, 2, (float)Math.Sqrt(2) * 2f);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -102,8 +102,8 @@ namespace GameTests
         public void PointBoxIntersection1()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
-            Vector3 pos = new Vector3(1, 1, 1);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
+            Vector2 pos = new Vector2(1, 1, 1);
 
             // act  
             bool intersects = Intersection.CheckIntersection(box, pos);
@@ -116,8 +116,8 @@ namespace GameTests
         public void PointBoxIntersection2()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
-            Vector3 pos = new Vector3(2, 0, 0);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
+            Vector2 pos = new Vector2(2, 0, 0);
 
             // act  
             bool intersects = Intersection.CheckIntersection(box, pos);
@@ -130,7 +130,7 @@ namespace GameTests
         public void BoxRayIntersection1()
         {
             // arrange  
-            MapBox box = new MapBox(10, 0, 0, 1, 1, 1);
+            MapRect box = new MapRect(10, 0, 0, 1, 1, 1);
             Ray ray = new Ray(0, 0, 0, 1, 0, 0);
 
             // act  
@@ -144,7 +144,7 @@ namespace GameTests
         public void BoxRayIntersection2()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 1, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 1, 2, 2, 2);
             Ray ray = new Ray(0, 0, -1, 0, 0, 1);
 
             // act  
@@ -158,7 +158,7 @@ namespace GameTests
         public void BoxRayIntersection3()
         {
             // arrange  
-            MapBox box = new MapBox(0, 3, 1, 2, 2, 2);
+            MapRect box = new MapRect(0, 3, 1, 2, 2, 2);
             Ray ray = new Ray(0, 0, -1, 0, 0, 1);
 
             // act 
@@ -172,7 +172,7 @@ namespace GameTests
         public void BoxRayIntersection4()
         {
             // arrange  
-            MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
+            MapRect box = new MapRect(2, 0, 2, 2, 2, 2);
             Ray ray = new Ray(-2, 0.5f, 1, 2, 0, 1);
 
             // act 
@@ -186,7 +186,7 @@ namespace GameTests
         public void BoxRayIntersection5()
         {
             // arrange  
-            MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
+            MapRect box = new MapRect(2, 0, 2, 2, 2, 2);
             Ray ray = new Ray(5, 0.75f, 3, -2, -0.3f, -2);
             // act 
             Trace trace = RayCast.CheckBulletTrace(box, ray);
@@ -199,7 +199,7 @@ namespace GameTests
         public void BoxRayIntersection6()
         {
             // arrange  
-            MapBox box = new MapBox(2, 0, 2, 2, 2, 2);
+            MapRect box = new MapRect(2, 0, 2, 2, 2, 2);
             Ray ray = new Ray(5, 0.3f, 3, -2f, 0, -2.1f);
             // act 
             Trace trace = RayCast.CheckBulletTrace(box, ray);
@@ -212,7 +212,7 @@ namespace GameTests
         public void BoxRayIntersection7()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
             Ray ray = new Ray(1, 0, 2, 0, 0, 1);
 
             // act 
@@ -226,14 +226,14 @@ namespace GameTests
         public void BoxRayIntersection8()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 1200, 1, 1);
+            MapRect box = new MapRect(0, 0, 0, 1200, 1, 1);
             Ray ray = new Ray(-500, 0, -1, 0, 0, 1);
 
             // act 
             Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Vector3 expectedPosition = new Vector3(-500, 0, -0.5f);
+            Vector2 expectedPosition = new Vector2(-500, 0, -0.5f);
             Assert.IsNotNull(trace);
             Assert.AreEqual(trace.Position, expectedPosition);
         }
@@ -242,9 +242,9 @@ namespace GameTests
         public void TriangleRayIntersection1()
         {
             // arrange  
-            Vector3 T0 = new Vector3(-2.0f, -2.0f, 3.0f);
-            Vector3 T1 = new Vector3(2.0f, -2.0f, 3.0f);
-            Vector3 T2 = new Vector3(-2.0f, 6.0f, 3.0f);
+            Vector2 T0 = new Vector2(-2.0f, -2.0f, 3.0f);
+            Vector2 T1 = new Vector2(2.0f, -2.0f, 3.0f);
+            Vector2 T2 = new Vector2(-2.0f, 6.0f, 3.0f);
 
             MapTriangle triangle = new MapTriangle(T0, T1, T2);
 
@@ -261,9 +261,9 @@ namespace GameTests
         public void TriangleRayIntersection2()
         {
             // arrange  
-            Vector3 T0 = new Vector3(-2.0f, -2.0f, 3.0f);
-            Vector3 T1 = new Vector3(2.0f, -2.0f, 3.0f);
-            Vector3 T2 = new Vector3(-2.0f, 6.0f, 3.0f);
+            Vector2 T0 = new Vector2(-2.0f, -2.0f, 3.0f);
+            Vector2 T1 = new Vector2(2.0f, -2.0f, 3.0f);
+            Vector2 T2 = new Vector2(-2.0f, 6.0f, 3.0f);
 
             MapTriangle triangle = new MapTriangle(T0, T1, T2);
 
@@ -280,10 +280,10 @@ namespace GameTests
         public void QuadRayIntersection1()
         {
             // arrange  
-            Vector3 Q0 = new Vector3(1, -2, 4);
-            Vector3 Q1 = new Vector3(2, -2, 3);
-            Vector3 Q2 = new Vector3(2, 2, 3);
-            Vector3 Q3 = new Vector3(1, 2, 4);
+            Vector2 Q0 = new Vector2(1, -2, 4);
+            Vector2 Q1 = new Vector2(2, -2, 3);
+            Vector2 Q2 = new Vector2(2, 2, 3);
+            Vector2 Q3 = new Vector2(1, 2, 4);
 
             MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
 
@@ -299,10 +299,10 @@ namespace GameTests
         public void QuadRayIntersection2()
         {
             // arrange  
-            Vector3 Q0 = new Vector3(1, -2, 4);
-            Vector3 Q1 = new Vector3(2, -2, 3);
-            Vector3 Q2 = new Vector3(2, 2, 3);
-            Vector3 Q3 = new Vector3(1, 2, 4);
+            Vector2 Q0 = new Vector2(1, -2, 4);
+            Vector2 Q1 = new Vector2(2, -2, 3);
+            Vector2 Q2 = new Vector2(2, 2, 3);
+            Vector2 Q3 = new Vector2(1, 2, 4);
 
             MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
 
@@ -318,10 +318,10 @@ namespace GameTests
         public void QuadRayIntersection3()
         {
             // arrange  
-            Vector3 Q0 = new Vector3(1, -2, 4);
-            Vector3 Q1 = new Vector3(2, -2, 3);
-            Vector3 Q2 = new Vector3(2, 2, 3);
-            Vector3 Q3 = new Vector3(1, 2, 4);
+            Vector2 Q0 = new Vector2(1, -2, 4);
+            Vector2 Q1 = new Vector2(2, -2, 3);
+            Vector2 Q2 = new Vector2(2, 2, 3);
+            Vector2 Q3 = new Vector2(1, 2, 4);
 
             MapQuad quad = new MapQuad(Q0, Q3, Q2, Q1);
 
@@ -338,10 +338,10 @@ namespace GameTests
         public void QuadRayIntersection4()
         {
             // arrange  
-            Vector3 Q0 = new Vector3(-2, -2, 2);
-            Vector3 Q1 = new Vector3(-2, 2, 2);
-            Vector3 Q2 = new Vector3(2, 2, 2);
-            Vector3 Q3 = new Vector3(2, -2, 2);
+            Vector2 Q0 = new Vector2(-2, -2, 2);
+            Vector2 Q1 = new Vector2(-2, 2, 2);
+            Vector2 Q2 = new Vector2(2, 2, 2);
+            Vector2 Q3 = new Vector2(2, -2, 2);
 
             MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
 
@@ -358,10 +358,10 @@ namespace GameTests
         public void QuadRayIntersection5()
         {
             // arrange  
-            Vector3 Q0 = new Vector3(-3, -2, 3);
-            Vector3 Q1 = new Vector3(-3, 2, 3);
-            Vector3 Q2 = new Vector3(3, 2, -3);
-            Vector3 Q3 = new Vector3(3, -2, -3);
+            Vector2 Q0 = new Vector2(-3, -2, 3);
+            Vector2 Q1 = new Vector2(-3, 2, 3);
+            Vector2 Q2 = new Vector2(3, 2, -3);
+            Vector2 Q3 = new Vector2(3, -2, -3);
 
             MapQuad quad = new MapQuad(Q0, Q1, Q2, Q3);
 
@@ -378,16 +378,16 @@ namespace GameTests
         public void FindClosestPointOnLine1()
         {
             // arrange  
-            Vector3 A = new Vector3(-1, -1, -1);
-            Vector3 B = new Vector3(1, -1, -1);
+            Vector2 A = new Vector2(-1, -1, -1);
+            Vector2 B = new Vector2(1, -1, -1);
 
-            Vector3 P = new Vector3(0, 0, 0);
+            Vector2 P = new Vector2(0, 0, 0);
 
             // act 
-            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+            Vector2 Q = RayCast.GetClosestPointOnLine(A, B, P);
 
             // assert  
-            Vector3 expectedQ = new Vector3(0, -1, -1);
+            Vector2 expectedQ = new Vector2(0, -1, -1);
             Assert.AreEqual(expectedQ, Q);
         }
 
@@ -395,16 +395,16 @@ namespace GameTests
         public void FindClosestPointOnLine2()
         {
             // arrange  
-            Vector3 A = new Vector3(-1, 0, -1);
-            Vector3 B = new Vector3(1, 0, -1);
+            Vector2 A = new Vector2(-1, 0, -1);
+            Vector2 B = new Vector2(1, 0, -1);
 
-            Vector3 P = new Vector3(0, 0, 0);
+            Vector2 P = new Vector2(0, 0, 0);
 
             // act 
-            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+            Vector2 Q = RayCast.GetClosestPointOnLine(A, B, P);
 
             // assert  
-            Vector3 expectedQ = new Vector3(0, 0, -1);
+            Vector2 expectedQ = new Vector2(0, 0, -1);
             Assert.AreEqual(expectedQ, Q);
         }
 
@@ -412,16 +412,16 @@ namespace GameTests
         public void FindClosestPointOnLine3()
         {
             // arrange  
-            Vector3 A = new Vector3(-4, -1, 0);
-            Vector3 B = new Vector3(-2, 0, 0);
+            Vector2 A = new Vector2(-4, -1, 0);
+            Vector2 B = new Vector2(-2, 0, 0);
 
-            Vector3 P = new Vector3(3, 0, 0);
+            Vector2 P = new Vector2(3, 0, 0);
 
             // act 
-            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+            Vector2 Q = RayCast.GetClosestPointOnLine(A, B, P);
 
             // assert  
-            Vector3 expectedQ = new Vector3(2, 2, 0);
+            Vector2 expectedQ = new Vector2(2, 2, 0);
             Assert.AreEqual(expectedQ, Q);
         }
 
@@ -429,16 +429,16 @@ namespace GameTests
         public void FindClosestPointOnLine4()
         {
             // arrange  
-            Vector3 A = new Vector3(6, 1, 0);
-            Vector3 B = new Vector3(5, 2, 0);
+            Vector2 A = new Vector2(6, 1, 0);
+            Vector2 B = new Vector2(5, 2, 0);
 
-            Vector3 P = new Vector3(3, 3, 0);
+            Vector2 P = new Vector2(3, 3, 0);
 
             // act 
-            Vector3 Q = RayCast.GetClosestPointOnLine(A, B, P);
+            Vector2 Q = RayCast.GetClosestPointOnLine(A, B, P);
 
             // assert  
-            Vector3 expectedQ = new Vector3(3.5f, 3.5f, 0);
+            Vector2 expectedQ = new Vector2(3.5f, 3.5f, 0);
             Assert.AreEqual(expectedQ, Q);
         }
 
@@ -446,7 +446,7 @@ namespace GameTests
         public void SphereRayIntersection1()
         {
             // arrange  
-            MapSphere sphere = new MapSphere(0, 0, 0, 2);
+            MapEllipse sphere = new MapEllipse(0, 0, 0, 2);
             Ray ray = new Ray(-2, 0, 0, 1, 0, 0);
 
             // act 
@@ -455,7 +455,7 @@ namespace GameTests
             // assert  
             Assert.IsNotNull(trace);
 
-            Vector3 expectedPos = new Vector3(-1, 0, 0);
+            Vector2 expectedPos = new Vector2(-1, 0, 0);
             Assert.AreEqual(trace.Position, expectedPos);
         }
 
@@ -463,7 +463,7 @@ namespace GameTests
         public void SphereRayIntersection2()
         {
             // arrange  
-            MapSphere sphere = new MapSphere(0, 1, 0, 2);
+            MapEllipse sphere = new MapEllipse(0, 1, 0, 2);
             Ray ray = new Ray(1, -1, 0, 0, 1, 0);
 
             // act 
@@ -472,7 +472,7 @@ namespace GameTests
             // assert  
             Assert.IsNotNull(trace);
 
-            Vector3 expectedPos = new Vector3(1, 1, 0);
+            Vector2 expectedPos = new Vector2(1, 1, 0);
             Assert.AreEqual(trace.Position, expectedPos);
         }
 
@@ -480,7 +480,7 @@ namespace GameTests
         public void SphereRayIntersection3()
         {
             // arrange  
-            MapSphere sphere = new MapSphere(0, 0, 0, 2);
+            MapEllipse sphere = new MapEllipse(0, 0, 0, 2);
             Ray ray = new Ray(1.5f, 0, 0, 1, 0, 0);
 
             // act 
@@ -494,7 +494,7 @@ namespace GameTests
         public void SphereRayIntersection4()
         {
             // arrange  
-            MapSphere sphere = new MapSphere(3, 3, 0, 2);
+            MapEllipse sphere = new MapEllipse(3, 3, 0, 2);
             Ray ray = new Ray(6, 1, 0, -1, 1, 0);
 
             // act 
@@ -505,7 +505,7 @@ namespace GameTests
 
             const float TOLERANCE = 0.001f;
 
-            Vector3 expectedPos = new Vector3(4, 3, 0);
+            Vector2 expectedPos = new Vector2(4, 3, 0);
 
             bool areAlmostEqual = Math.Abs(trace.Position.X - expectedPos.X) < TOLERANCE &&
                                     Math.Abs(trace.Position.Y - expectedPos.Y) < TOLERANCE &&
@@ -518,7 +518,7 @@ namespace GameTests
         public void SphereRayIntersectionFromInside()
         {
             // arrange  
-            MapSphere sphere = new MapSphere(2, 2, 0, 2);
+            MapEllipse sphere = new MapEllipse(2, 2, 0, 2);
             Ray ray = new Ray(2, 2, 0, -1, 1, 0);
 
             // act 
@@ -532,14 +532,14 @@ namespace GameTests
         public void GetVectorParralelProjectionToObjectNormal1()
         {
             // arrange  
-            Vector3 speedVector = new Vector3(3, 0, 4);
-            Vector3 objectNorm = new Vector3(0, 0, -1);
+            Vector2 speedVector = new Vector2(3, 0, 4);
+            Vector2 objectNorm = new Vector2(0, 0, -1);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
+            Vector2 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
-            Vector3 expectedU = new Vector3(3, 0, 0);
+            Vector2 expectedU = new Vector2(3, 0, 0);
             Assert.AreEqual(u, expectedU);
         }
 
@@ -547,14 +547,14 @@ namespace GameTests
         public void GetVectorParralelProjectionToObjectNormal2()
         {
             // arrange  
-            Vector3 speedVector = new Vector3(4, 0, 1);
-            Vector3 objectNorm = new Vector3(-1, 0, -1);
+            Vector2 speedVector = new Vector2(4, 0, 1);
+            Vector2 objectNorm = new Vector2(-1, 0, -1);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
+            Vector2 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
-            Vector3 expectedU = new Vector3(1.5f, 0, -1.5f);
+            Vector2 expectedU = new Vector2(1.5f, 0, -1.5f);
             Assert.AreEqual(u, expectedU);
         }
 
@@ -562,14 +562,14 @@ namespace GameTests
         public void GetVectorParralelProjectionToObjectNormal3()
         {
             // arrange  
-            Vector3 speedVector = new Vector3(-1, 0, 0);
-            Vector3 objectNorm = new Vector3(-1, 0, 0);
+            Vector2 speedVector = new Vector2(-1, 0, 0);
+            Vector2 objectNorm = new Vector2(-1, 0, 0);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
+            Vector2 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
-            Vector3 expectedU = new Vector3(0, 0, 0);
+            Vector2 expectedU = new Vector2(0, 0, 0);
             Assert.AreEqual(u, expectedU);
         }
 
@@ -577,14 +577,14 @@ namespace GameTests
         public void GetVectorParralelProjectionToObjectNormal4()
         {
             // arrange  
-            Vector3 speedVector = new Vector3(-1, 0, -4);
-            Vector3 objectNorm = new Vector3(1, 0, 1);
+            Vector2 speedVector = new Vector2(-1, 0, -4);
+            Vector2 objectNorm = new Vector2(1, 0, 1);
 
             // act 
-            Vector3 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
+            Vector2 u = PhysicsEngine.GetVectorParralelProjectionToObjectNormal(speedVector, objectNorm);
 
             // assert
-            Vector3 expectedU = new Vector3(1.5f, 0, -1.5f);
+            Vector2 expectedU = new Vector2(1.5f, 0, -1.5f);
             Assert.AreEqual(u, expectedU);
         }
 
@@ -592,7 +592,7 @@ namespace GameTests
         public void GetTracePosition1()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
             Ray ray = new Ray(-1, 0, 4, 1, 0, -3);
 
             // act 
@@ -603,7 +603,7 @@ namespace GameTests
 
             const float TOLERANCE = 0.001f;
 
-            Vector3 expectedPos = new Vector3(0, 0, 1);
+            Vector2 expectedPos = new Vector2(0, 0, 1);
 
             bool areAlmostEqual = Math.Abs(trace.Position.X - expectedPos.X) < TOLERANCE &&
                                     Math.Abs(trace.Position.Y - expectedPos.Y) < TOLERANCE &&
@@ -616,7 +616,7 @@ namespace GameTests
         public void GetTracePosition2()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
             Ray ray = new Ray(-1, 0, 2, 0.5f, 0, -2);
 
             // act 
@@ -625,7 +625,7 @@ namespace GameTests
             // assert  
             Assert.IsNotNull(trace);
 
-            Vector3 expectedPos = new Vector3(-0.75f, 0, 1);
+            Vector2 expectedPos = new Vector2(-0.75f, 0, 1);
             Assert.AreEqual(trace.Position, expectedPos);
         }
 
@@ -633,7 +633,7 @@ namespace GameTests
         public void GetTraceDistance1()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
             Ray ray = new Ray(-5, -1, -3, 4, 0, 3);
 
             // act 
@@ -647,7 +647,7 @@ namespace GameTests
         public void GetTraceDistance2()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
             Ray ray = new Ray(-6, -1, -12, 5, 0, 12);
 
             // act 
@@ -661,14 +661,14 @@ namespace GameTests
         public void GetTraceSphereNormal()
         {
             // arrange  
-            MapSphere sphere = new MapSphere(0, 0, 1, 2);
+            MapEllipse sphere = new MapEllipse(0, 0, 1, 2);
             Ray ray = new Ray(-1, -1, 0, 1, 1, 1);
 
             // act 
             Trace trace = RayCast.CheckBulletTrace(sphere, ray);
 
             // assert  
-            Vector3 expectedNormal = Vector3.Normalize(new Vector3(-1, -1, -1));
+            Vector2 expectedNormal = Vector2.Normalize(new Vector2(-1, -1, -1));
             Assert.AreEqual(trace.ObjectNormal, expectedNormal);
         }
 
@@ -676,14 +676,14 @@ namespace GameTests
         public void GetTraceBoxNormal()
         {
             // arrange  
-            MapBox box = new MapBox(0, 0, 0, 2, 2, 2);
+            MapRect box = new MapRect(0, 0, 0, 2, 2, 2);
             Ray ray = new Ray(-2, -0.5f, 2, 1, 0.5f, -2);
 
             // act 
             Trace trace = RayCast.CheckBulletTrace(box, ray);
 
             // assert  
-            Vector3 expectedNormal = Vector3.Normalize(new Vector3(-1, 0, 0));
+            Vector2 expectedNormal = Vector2.Normalize(new Vector2(-1, 0, 0));
             Assert.AreEqual(trace.ObjectNormal, expectedNormal);
         }
 
@@ -691,14 +691,14 @@ namespace GameTests
         public void RotateVectorAroundYAxis1()
         {
             // arrange  
-            Vector3 vector = new Vector3(1, 1, 1);
+            Vector2 vector = new Vector2(1, 1, 1);
             float radians = (float)Math.PI / 2f;
 
             // act 
-            Vector3 rotatedVector = PhysicsEngine.RotateVectorAroundYAxis(vector, radians);
+            Vector2 rotatedVector = PhysicsEngine.RotateVectorAroundYAxis(vector, radians);
             
             // assert  
-            Vector3 expectedVector = new Vector3(-1, 1, 1);
+            Vector2 expectedVector = new Vector2(-1, 1, 1);
 
             const float TOLERANCE = 0.001f;
             bool areAlmostEqual = Math.Abs(rotatedVector.X - expectedVector.X) < TOLERANCE &&

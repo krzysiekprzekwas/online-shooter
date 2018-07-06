@@ -2,17 +2,16 @@
 using GameServer.States;
 using System.Collections;
 using System.Numerics;
-using GameServer.States;
 
 namespace GameServer.MapObjects
 {
     public class MapObject
     {
-        public MapObject(float x, float y, float z, MapObject parent, Color color, int textureId)
+        public MapObject(float x, float y, MapObject parent, Color color, int textureId)
         {
             Id = MapState.Instance.AssingMapObjectId();
 
-            Position = new Vector3(x, y, z);
+            Position = new Vector2(x, y);
             Parent = parent;
 
             TextureId = textureId;
@@ -24,7 +23,7 @@ namespace GameServer.MapObjects
             }
         }
 
-        public Vector3 Position { get; set; }
+        public Vector2 Position { get; set; }
         public int Id { get; set; }
 
         public Color Color { get; set; }
@@ -35,8 +34,8 @@ namespace GameServer.MapObjects
 
     public class MapObjectDistanceToPositionComparer : IComparer
     {
-        private Vector3 _position;
-        public MapObjectDistanceToPositionComparer(Vector3 position)
+        private Vector2 _position;
+        public MapObjectDistanceToPositionComparer(Vector2 position)
         {
             _position = position;
         }

@@ -74,11 +74,8 @@ namespace GameServer.States
             player.Keys = new List<string>();
             foreach (var key in playerState.Keys)
                 player.Keys.Add(key.Value);
-
-            float ax = (float)playerState.Angles.X.Value;
-            float ay = (float)playerState.Angles.Y.Value;
-
-            player.Angles = new Vector2(ax, ay);
+            
+            player.Angle = (float)playerState.Angle.Value;
         }
 
         public static void SendConnectedConfirmation(WebSocket webSocket, Player player)
