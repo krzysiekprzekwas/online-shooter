@@ -9,16 +9,25 @@ namespace GameServer.Physics
 {
     public class RayCast
     {
-
-        public static Trace CheckBulletTrace(MapRect rect, Ray ray)
+        public static Trace CheckBulletTrace(Ray ray, MapRect rect)
         {
-            throw new NotImplementedException();
+            Trace closestTrace = null;
+
+            var verticies = rect.GetVerticies();
+            for(int i = 0; i < verticies.Length - 1; i++)
+            {
+                Trace trace = CheckBulletTrace(ray, verticies[i], verticies[i + 1]);
+                if (closestTrace == null || trace.Distance < closestTrace.Distance)
+                    closestTrace = trace;
+            }
+
+            closestTrace.MapObject = rect;
+            return closestTrace;
         }
 
-        public static Trace CheckBulletTrace(MapEllipse ellipse, Ray ray)
+        public static Trace CheckBulletTrace(Ray ray, MapEllipse ellipse)
         {
             throw new NotImplementedException();
-
             //if (rect.Height / rect.Width != (ray.Direction.Y - ray.Origin.Y) / (ray.Direction.X - ray.Origin.X))
             //{
             //    var d = ((rect.Width * (ray.Direction.Y - ray.Origin.Y)) - rect.Height * (ray.Direction.X - ray.Origin.X));
@@ -37,7 +46,8 @@ namespace GameServer.Physics
             //return null;
         }
 
-        public double? GetRayToLineSegmentIntersection(Ray ray, Vector2 p1, Vector2 p2)
+
+        public static Trace CheckBulletTrace(Ray ray, Vector2 p1, Vector2 p2)
         {
             var v = ray.Origin - p1;
             var u = p2 - p1;
@@ -47,15 +57,19 @@ namespace GameServer.Physics
             if (Math.Abs(dot) < 0.000001)
                 return null;
 
-            var t1 = ((u.X * v.Y) - (u.Y * v.X)) / dot;
+            float distance = ((u.X * v.Y) - (u.Y * v.X)) / dot;
+            var t2 = Vector2.Dot(v, v3) / dot;
 
-
-            var t2 = (v * v3) / dot;
-
-            //if (t1 >= 0.0 && (t2 >= 0.0 && t2 <= 1.0))
-            //    return t1;
+            if (distance >= 0.0 && (t2 >= 0.0 && t2 <= 1.0))
+            {
+                var hitPosition = ray.Origin + (ray.Direction * distance);
+                var normal = new Vector2(u.Y, -u.X);
+                var trace = new Trace(hitPosition, ray.Origin, null, normal);
+                return trace;
+            }
 
             return null;
         }
+
     }
 }

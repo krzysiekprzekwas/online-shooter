@@ -241,9 +241,9 @@ namespace GameServer.Physics
             {
                 Trace trace = null;
                 if (obj is MapRect)
-                    trace = RayCast.CheckBulletTrace((MapRect)obj, ray);
+                    trace = RayCast.CheckBulletTrace(ray, (MapRect)obj);
                 else if (obj is MapEllipse)
-                    trace = RayCast.CheckBulletTrace((MapEllipse)obj, ray);
+                    trace = RayCast.CheckBulletTrace(ray, (MapEllipse)obj);
 
                 // No collision with this object - check next one
                 if (trace == null)
