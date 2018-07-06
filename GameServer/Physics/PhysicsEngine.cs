@@ -41,7 +41,7 @@ namespace GameServer.Physics
             {
                 // Create moved sphere
                 Vector2 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
-                MapEllipse s = new MapEllipse(checkPosition, player.Diameter);
+                MapCircle s = new MapCircle(checkPosition, player.Diameter);
 
                 // Check for intersection
                 intersectionObject = CheckAnyIntersectionWithWorld(s);
@@ -113,7 +113,7 @@ namespace GameServer.Physics
             return parralelVector;
         }
 
-        public MapObject CheckAnyIntersectionWithWorld(MapEllipse s)
+        public MapObject CheckAnyIntersectionWithWorld(MapCircle s)
         {
             // Check intersection with all map objects
             foreach (MapObject obj in MapState.Instance.MapObjects)
@@ -121,8 +121,8 @@ namespace GameServer.Physics
                 bool intersects = false;
                 if (obj is MapRect)
                     intersects = Intersection.CheckIntersection((MapRect)obj, s);
-                else if (obj is MapEllipse)
-                    intersects = Intersection.CheckIntersection((MapEllipse)obj, s);
+                else if (obj is MapCircle)
+                    intersects = Intersection.CheckIntersection((MapCircle)obj, s);
 
                 if (intersects)
                     return obj;
@@ -242,8 +242,8 @@ namespace GameServer.Physics
                 Trace trace = null;
                 if (obj is MapRect)
                     trace = RayCast.CheckBulletTrace(ray, (MapRect)obj);
-                else if (obj is MapEllipse)
-                    trace = RayCast.CheckBulletTrace(ray, (MapEllipse)obj);
+                else if (obj is MapCircle)
+                    trace = RayCast.CheckBulletTrace(ray, (MapCircle)obj);
 
                 // No collision with this object - check next one
                 if (trace == null)

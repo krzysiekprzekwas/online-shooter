@@ -21,13 +21,13 @@ namespace GameServer.Models
         public IPAddress IpAddress;
         public float Angle { get; set; }
         [JsonIgnore]
-        private MapEllipse _worldObject;
-        public MapEllipse WorldObject
+        private MapCircle _worldObject;
+        public MapCircle WorldObject
         {
             get
             {
                 if (_worldObject == null)
-                    _worldObject = new MapEllipse(Position.X, Position.Y, Diameter);
+                    _worldObject = new MapCircle(Position.X, Position.Y, Diameter);
                 else
                     _worldObject.Position = Position;
 

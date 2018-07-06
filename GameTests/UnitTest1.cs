@@ -14,7 +14,7 @@ namespace GameTests
         public void CubeSphereIntersection1()
         {
             // arrange  
-            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapCircle o1 = new MapCircle(0, 0, 0, 2);
             MapRect o2 = new MapRect(0, 0, 20, 1, 1, 1);
 
             // act  
@@ -28,7 +28,7 @@ namespace GameTests
         public void CubeSphereIntersection2()
         {
             // arrange  
-            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapCircle o1 = new MapCircle(0, 0, 0, 2);
             MapRect o2 = new MapRect(0, 0, 1, 1, 1, 1);
 
             // act  
@@ -42,7 +42,7 @@ namespace GameTests
         public void CubeSphereIntersection3()
         {
             // arrange  
-            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
+            MapCircle o1 = new MapCircle(0, 0, 0, 2);
             MapRect o2 = new MapRect(0, 2, 2, 1, 1, 1);
 
             // act  
@@ -57,8 +57,8 @@ namespace GameTests
         public void SphereSphereIntersection1()
         {
             // arrange  
-            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
-            MapEllipse o2 = new MapEllipse(0, 0, 1, 0.1f);
+            MapCircle o1 = new MapCircle(0, 0, 0, 2);
+            MapCircle o2 = new MapCircle(0, 0, 1, 0.1f);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -72,8 +72,8 @@ namespace GameTests
         public void SphereSphereIntersection2()
         {
             // arrange  
-            MapEllipse o1 = new MapEllipse(0, 0, 0, 2);
-            MapEllipse o2 = new MapEllipse(0, 0, 2, 2);
+            MapCircle o1 = new MapCircle(0, 0, 0, 2);
+            MapCircle o2 = new MapCircle(0, 0, 2, 2);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -87,8 +87,8 @@ namespace GameTests
         public void SphereSphereIntersection3()
         {
             // arrange  
-            MapEllipse o1 = new MapEllipse(0, 0, 0, (float)Math.Sqrt(2) * 2f - 0.01f);
-            MapEllipse o2 = new MapEllipse(2, 0, 2, (float)Math.Sqrt(2) * 2f);
+            MapCircle o1 = new MapCircle(0, 0, 0, (float)Math.Sqrt(2) * 2f - 0.01f);
+            MapCircle o2 = new MapCircle(2, 0, 2, (float)Math.Sqrt(2) * 2f);
 
             // act  
             bool intersects = Intersection.CheckIntersection(o2, o1);
@@ -446,7 +446,7 @@ namespace GameTests
         public void SphereRayIntersection1()
         {
             // arrange  
-            MapEllipse sphere = new MapEllipse(0, 0, 0, 2);
+            MapCircle sphere = new MapCircle(0, 0, 0, 2);
             Ray ray = new Ray(-2, 0, 0, 1, 0, 0);
 
             // act 
@@ -463,7 +463,7 @@ namespace GameTests
         public void SphereRayIntersection2()
         {
             // arrange  
-            MapEllipse sphere = new MapEllipse(0, 1, 0, 2);
+            MapCircle sphere = new MapCircle(0, 1, 0, 2);
             Ray ray = new Ray(1, -1, 0, 0, 1, 0);
 
             // act 
@@ -480,7 +480,7 @@ namespace GameTests
         public void SphereRayIntersection3()
         {
             // arrange  
-            MapEllipse sphere = new MapEllipse(0, 0, 0, 2);
+            MapCircle sphere = new MapCircle(0, 0, 0, 2);
             Ray ray = new Ray(1.5f, 0, 0, 1, 0, 0);
 
             // act 
@@ -494,7 +494,7 @@ namespace GameTests
         public void SphereRayIntersection4()
         {
             // arrange  
-            MapEllipse sphere = new MapEllipse(3, 3, 0, 2);
+            MapCircle sphere = new MapCircle(3, 3, 0, 2);
             Ray ray = new Ray(6, 1, 0, -1, 1, 0);
 
             // act 
@@ -518,7 +518,7 @@ namespace GameTests
         public void SphereRayIntersectionFromInside()
         {
             // arrange  
-            MapEllipse sphere = new MapEllipse(2, 2, 0, 2);
+            MapCircle sphere = new MapCircle(2, 2, 0, 2);
             Ray ray = new Ray(2, 2, 0, -1, 1, 0);
 
             // act 
@@ -661,7 +661,7 @@ namespace GameTests
         public void GetTraceSphereNormal()
         {
             // arrange  
-            MapEllipse sphere = new MapEllipse(0, 0, 1, 2);
+            MapCircle sphere = new MapCircle(0, 0, 1, 2);
             Ray ray = new Ray(-1, -1, 0, 1, 1, 1);
 
             // act 

@@ -19,12 +19,12 @@ namespace GameServer.Physics
             return Vector2.DistanceSquared(p1, p2);
         }
 
-        public static bool CheckIntersection(MapEllipse s1, MapEllipse s2)
+        public static bool CheckIntersection(MapCircle s1, MapCircle s2)
         {
             return (DistanceSquared(s1.Position, s2.Position) < Math.Pow(s1.Radius + s2.Radius, 2));
         }
 
-        public static bool CheckIntersection(MapRect b, MapEllipse s)
+        public static bool CheckIntersection(MapRect b, MapCircle s)
         {
             float x = Math.Abs(s.Position.X - b.Position.X);
             float y = Math.Abs(s.Position.Y - b.Position.Y);
@@ -44,7 +44,7 @@ namespace GameServer.Physics
             return cornerDistance_sq <= s.RadiusSquared;
         }
 
-        public static bool CheckIntersection(MapEllipse s, MapRect b)
+        public static bool CheckIntersection(MapCircle s, MapRect b)
         {
             return CheckIntersection(b, s);
         }
