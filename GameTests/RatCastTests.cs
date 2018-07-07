@@ -11,7 +11,7 @@ namespace GameTests
     public class RayCastTests
     {
         [TestMethod]
-        public void RectRayCastingShouldReturnHitPosition1()
+        public void RectRayCasting_ShouldReturnHitPosition_1()
         {
             // arrange
             MapRect rect = new MapRect(0, 0, 1, 1);
@@ -26,7 +26,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void RectRayCastingShouldReturnHitPosition2()
+        public void RectRayCasting_ShouldReturnHitPosition_2()
         {
             // arrange
             MapRect rect = new MapRect(1.5f, -0.5f, 1, 1);
@@ -41,7 +41,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void RectRayCastingShouldReturnHitPosition3()
+        public void RectRayCasting_ShouldReturnHitPosition_3()
         {
             // arrange
             MapRect rect = new MapRect(10, 10, 1, 1);
@@ -56,7 +56,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void RectRayCastingShouldNotReturnHitPositionWhenInOppositeDirection()
+        public void RectRayCasting_ShouldReturnNull_WhenInOppositeDirection()
         {
             // arrange
             MapRect rect = new MapRect(1, 0, 2, 2);
@@ -70,7 +70,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void CircleRayCastingShouldReturnHitPosition1()
+        public void CircleRayCasting_ShouldReturnHitPosition_1()
         {
             // arrange
             MapCircle circle = new MapCircle(10, 10, 2);
@@ -88,7 +88,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void CircleRayCastingShouldReturnHitPosition2()
+        public void CircleRayCasting_ShouldReturnHitPosition_2()
         {
             // arrange
             MapCircle circle = new MapCircle(10, 10, 2);
@@ -103,7 +103,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void CircleRayCastingShouldReturnHitPosition3()
+        public void CircleRayCasting_ShouldReturnHitPosition_3()
         {
             // arrange
             MapCircle circle = new MapCircle(1, 0, 2);
@@ -118,7 +118,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void CircleRayCastingShouldNotReturnHitPositionWhenInOppositeDirection()
+        public void CircleRayCasting_ShouldReturnNull_WhenInOppositeDirection()
         {
             // arrange
             MapCircle circle = new MapCircle(1, 0, 2);
