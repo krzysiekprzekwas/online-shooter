@@ -17,11 +17,13 @@ namespace GameServer.Physics
             for(int i = 0; i < verticies.Length - 1; i++)
             {
                 Trace trace = CheckBulletTrace(ray, verticies[i], verticies[i + 1]);
-                if (closestTrace == null || trace.Distance < closestTrace.Distance)
+                if (trace != null && (closestTrace == null || trace.Distance < closestTrace.Distance))
                     closestTrace = trace;
             }
 
-            closestTrace.MapObject = rect;
+            if(closestTrace != null)
+                closestTrace.MapObject = rect;
+
             return closestTrace;
         }
 
@@ -86,7 +88,7 @@ namespace GameServer.Physics
             float lf = Vector2.Dot(ray.Direction, h);
             float s = (circle.RadiusSquared) - Vector2.Dot(h, h) + (lf * lf);   // s=r^2-h^2+lf^2
 
-            if (s < 0.0) return null;                    // no intersection points ?
+            if (s < 0.0 || lf < 0.0) return null;                    // no intersection points ?
             s = (float)Math.Sqrt(s);                              // s=sqrt(r^2-h^2+lf^2)
 
             s = (lf < s && lf + s >= 0) ? -s : s; // S1 behind A ? AND S2 before A ? -> swap S1 <-> S2
