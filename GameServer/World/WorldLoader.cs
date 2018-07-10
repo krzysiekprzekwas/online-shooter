@@ -36,7 +36,7 @@ namespace GameServer.World
                 new MapRect(-7, -14, 1, 1, null, new Color(1, 0.75f, 0)),
             };
 
-            MapState.Instance.MapObjects.AddRange(objs);
+            MapState.Instance.MapObjects = objs;
         }
 
         public static void MapFirstArena()
@@ -73,7 +73,7 @@ namespace GameServer.World
                 new MapRect(-4.5f * g, -0.5f * g, 1 * g, 3 * g, null, red, 2), // 23
             };
 
-            MapState.Instance.MapObjects.AddRange(objs);
+            MapState.Instance.MapObjects = objs;
         }
 
     }

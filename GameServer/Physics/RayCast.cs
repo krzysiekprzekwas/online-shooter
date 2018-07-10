@@ -27,61 +27,6 @@ namespace GameServer.Physics
             return closestTrace;
         }
 
-        //public static Trace CheckBulletTrace(Ray ray, MapCircle ellipse)
-        //{
-        //    throw new NotImplementedException();
-        //    //if (rect.Height / rect.Width != (ray.Direction.Y - ray.Origin.Y) / (ray.Direction.X - ray.Origin.X))
-        //    //{
-        //    //    var d = ((rect.Width * (ray.Direction.Y - ray.Origin.Y)) - rect.Height * (ray.Direction.X - ray.Origin.X));
-        //    //    if (d != 0)
-        //    //    {
-        //    //        var r = (((rect.Position.Y - ray.Origin.Y) * (ray.Direction.X - ray.Origin.X)) - (rect.Position.X - ray.Origin.X) * (ray.Direction.Y - ray.Origin.Y)) / d;
-        //    //        var s = (((rect.Position.Y - ray.Origin.Y) * rect.Width) - (rect.Position.X - ray.Origin.X) * rect.Height) / d;
-        //    //        if (r >= 0 && s >= 0 && s <= 1)
-        //    //        {
-        //    //            Vector2 position = new Vector2(rect.Position.X + r * rect.Width, rect.Position.Y + r * rect.Height);
-        //    //            return new Trace(position, ray.Origin, rect, new Vector2(0, 0));
-        //    //        }
-        //    //    }
-        //    //}
-
-        //    //return null;
-
-
-        //    // TODO: Seems like solid ray circle intersection
-        //    //int rayCircleIntersection(Ray ray, Circle c, PVector S1, PVector S2)
-        //    //{
-        //    //    PVector e = new PVector(ray.direction.x, ray.direction.y, ray.direction.z);   // e=ray.dir
-        //    //    e.normalize();                            // e=g/|g|
-        //    //    PVector h = PVector.sub(c.center, ray.origin);  // h=r.o-c.M
-        //    //    float lf = e.dot(h);                      // lf=e.h
-        //    //    float s = sq(c.radius) - h.dot(h) + sq(lf);   // s=r^2-h^2+lf^2
-        //    //    if (s < 0.0) return 0;                    // no intersection points ?
-        //    //    s = sqrt(s);                              // s=sqrt(r^2-h^2+lf^2)
-
-        //    //    int result = 0;
-        //    //    if (lf < s)                               // S1 behind A ?
-        //    //    {
-        //    //        if (lf + s >= 0)                          // S2 before A ?}
-        //    //        {
-        //    //            s = -s;                               // swap S1 <-> S2}
-        //    //            result = 1;                           // one intersection point
-        //    //        }
-        //    //    }
-        //    //    else result = 2;                          // 2 intersection points
-
-        //    //    S1.set(PVector.mult(e, lf - s)); S1.add(ray.origin); // S1=A+e*(lf-s)
-        //    //    S2.set(PVector.mult(e, lf + s)); S2.add(ray.origin); // S2=A+e*(lf+s)
-
-        //    //    // only for testing
-        //    //    fill(0);
-        //    //    text(" s=" + nf(s, 0, 2), 160, 40);
-        //    //    text("lf=" + nf(lf, 0, 2), 240, 40);
-
-        //    //    return result;
-        //    //}
-        //}
-
         public static Trace CheckBulletTrace(Ray ray, MapCircle circle)
         {
             Vector2 h = Vector2.Subtract(circle.Position, ray.Origin);

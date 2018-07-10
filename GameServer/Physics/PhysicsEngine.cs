@@ -20,7 +20,7 @@ namespace GameServer.Physics
         {
             foreach (Player player in GameState.Instance.value.Players)
             {
-                player.Speed *= Config.PLAYER_DECCELERATION;
+                player.Speed *= (1 - Config.PLAYER_DECCELERATION);
                 Vector2 speedVector = player.Speed + CalculateSpeedVector(player);
 
                 speedVector = GetNewPlayerPosition(player, speedVector);
@@ -67,7 +67,7 @@ namespace GameServer.Physics
             // Calculate length
             float speedVectorLength = speedVector.Length();
 
-            // Get movement vectors
+            // Almost standing still
             if (speedVectorLength == 0)
                 return new Vector2(0, 0);
 

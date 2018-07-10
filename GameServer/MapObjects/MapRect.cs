@@ -15,13 +15,11 @@ namespace GameServer.MapObjects
 
         public float Width { get; set; }
         public float Height { get; set; }
-        public float Depth { get; set; }
 
         public Vector2[] GetVerticies()
         {
             float hw = Width / 2.0f;
             float hh = Height / 2.0f;
-            float hd = Depth / 2.0f;
 
             return new Vector2[]
             {

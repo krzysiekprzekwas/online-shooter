@@ -25,7 +25,7 @@ let world = {
             const mapObject = {
 
                 width: obj.Width,
-                height: obj.Depth,
+                height: obj.Height,
                 x: obj.Position.X,
                 y: obj.Position.Z,
                 textureId: obj.TextureId,
