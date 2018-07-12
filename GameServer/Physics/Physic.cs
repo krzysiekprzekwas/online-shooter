@@ -8,13 +8,21 @@ namespace GameServer.Physics
 {
     public class Physic
     {
-        public void A(Vector2 movementVector, float intersectionDistance, Vector2 intersectionNormal)
+        public static Vector2 GetLeftParallelVectorToIntersectionNormal(Vector2 movementVector, float intersectionDistance, Vector2 intersectionNormal)
         {
             float movementVectorLength = movementVector.Length();
             var realMovementDirectionVector = Vector2.Normalize(movementVector) * intersectionDistance;
 
             var leftMovementDirectionVector = movementVector - realMovementDirectionVector;
+            return GetParallelVectorToNormal(leftMovementDirectionVector, intersectionNormal);
+        }
 
+        public static double GetAngleBetweenVectors(Vector2 a, Vector2 b)
+        {
+            var sin = b.X * a.Y - a.X * b.Y;
+            var cos = b.X * a.X + b.Y * a.Y;
+
+            return Math.Atan2(sin, cos);
         }
 
         public static Vector2 GetParallelVectorToNormal(Vector2 vector, Vector2 normal)
@@ -40,10 +48,3 @@ namespace GameServer.Physics
         }
     }
 }
-
-
-//float a = Vector2.Dot(vector, objectNormal) / objectNormal.Length();
-//Vector2 b = objectNormal / objectNormal.Length();
-//Vector2 projection = Vector2.Negate(a * b);
-
-//            return vector + projection;

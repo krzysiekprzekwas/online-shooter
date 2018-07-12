@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GameTests
 {
     [TestClass]
-    public class PhysicsTests
+    public class PhysicsEngineTests
     {
         [TestMethod]
         public void PhysicsEngine_ShouldNotAllowPassingThroughWalls()
@@ -77,8 +77,8 @@ namespace GameTests
                 gameEngine.PhysicsEngine.ApplyPhysics();
 
             // Assert
-            //Assert.AreEqual(player.Position.Y, mapRect1.Position.Y - (mapRect1.Height / 2) - player.Radius, Config.INTERSECTION_INTERVAL * 2);
-            //Assert.AreEqual(player.Position.X, mapRect2.Position.X - (mapRect2.Width / 2) - player.Radius, Config.INTERSECTION_INTERVAL * 2);
+            Assert.AreEqual(player.Position.Y, mapRect1.Position.Y - (mapRect1.Height / 2) - player.Radius, Config.INTERSECTION_INTERVAL * 2);
+            Assert.AreEqual(player.Position.X, mapRect2.Position.X - (mapRect2.Width / 2) - player.Radius, Config.INTERSECTION_INTERVAL * 2);
         }
 
 
