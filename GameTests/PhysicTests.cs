@@ -166,7 +166,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal()
+        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal1()
         {
             // Arrage
             var movementVector = new Vector2(0, 2);
@@ -182,5 +182,22 @@ namespace GameTests
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
         }
 
+
+        [TestMethod]
+        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal2()
+        {
+            // Arrage
+            var movementVector = new Vector2(-3, 3);
+            var intersectionDistance = (float)Math.Sqrt(2);
+            var intersectionNormal = new Vector2(-1, 0);
+
+            // Act
+            var parallelVector = Physic.GetLeftParallelVectorToIntersectionNormal(movementVector, intersectionDistance, intersectionNormal);
+
+            // Assert
+            var expectedVector = Vector2.Normalize(new Vector2(0, 1)) * (((movementVector.Length() - intersectionDistance) * (float)Math.Sqrt(2)) / 2);
+            Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
+            Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
+        }
     }
 }
