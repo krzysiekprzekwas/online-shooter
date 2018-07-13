@@ -17,6 +17,38 @@ namespace GameTests
     public class PhysicsEngineTests
     {
         [TestMethod]
+        public void PhysicsEngine_ShouldCalculateSpeedVectorFromPlayerInput()
+        {
+            // Arrange
+            var player = new Player();
+            player.Keys.Add("w");
+            player.Keys.Add("a");
+
+            // Act
+            var speedVector = PhysicsEngine.GetSpeedFromPlayerInput(player);
+
+            // Assert
+            var expectedSpeedVectorDirection = Vector2.Normalize(new Vector2(-1, 1));
+            Assert.AreEqual(expectedSpeedVectorDirection, Vector2.Normalize(speedVector));
+        }
+        
+        [TestMethod]
+        public void PhysicsEngine_ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
+        {
+            // Arrange
+            var player = new Player();
+            player.Keys.Add("s");
+            player.Keys.Add("w");
+
+            // Act
+            var speedVector = PhysicsEngine.GetSpeedFromPlayerInput(player);
+
+            // Assert
+            var expectedSpeedVectorDirection = new Vector2(0, 0);
+            Assert.AreEqual(expectedSpeedVectorDirection, speedVector);
+        }
+
+        [TestMethod]
         public void PhysicsEngine_ShouldNotAllowPassingThroughWalls()
         {
             // Arrange
