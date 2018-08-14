@@ -18,15 +18,15 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
-            foreach (Player player in GameState.Instance.value.Players)
+            foreach (Player player in GameState.Instance.Players)
             {
                 player.Speed *= (1 - Config.PLAYER_DECCELERATION);
                 Vector2 speedVector = player.Speed + GetSpeedFromPlayerInput(player);
 
                 speedVector = CalculatePossibleMovementVector(player, speedVector);
 
-                player.Speed = speedVector;
-                player.Position += speedVector;
+                //player.Speed = speedVector;
+                //player.Position += speedVector;
             }
         }
 

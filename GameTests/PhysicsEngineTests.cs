@@ -127,7 +127,7 @@ namespace GameTests
                 Angle = 0.0f
             };
 
-            GameState.Instance.value.Players.Add(player);
+            GameState.Instance.Players.Add(player);
 
             return GE;
         }

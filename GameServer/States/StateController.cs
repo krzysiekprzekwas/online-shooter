@@ -24,19 +24,10 @@ namespace GameServer.States
 
         public static void SendGameState(WebSocket webSocket)
         {
-            var plrs = GameState.Instance.value.Players.Select(player =>
-                player.DeepCopy()).ToList();
-
-            var newGameStateValue = new GameStateValue();
-
-            newGameStateValue.Players = plrs;
-            newGameStateValue.PlayerId = GameState.Instance.value.PlayerId;
-
-
             var gameStateResponse = new
             {
                 Type = "gamestate",
-                GameState = newGameStateValue
+                GameState = GameState.Instance
             };
 
             SendState(gameStateResponse, webSocket);

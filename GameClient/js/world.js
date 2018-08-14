@@ -27,13 +27,13 @@ let world = {
                 width: obj.Width,
                 height: obj.Height,
                 x: obj.Position.X,
-                y: obj.Position.Z,
-                textureId: obj.TextureId,
+                y: obj.Position.Y,
+                textureId: obj.Texture,
                 type: obj.Type
             };
 
             // Add mesh to objects array
-            this.mapObjects[obj.Id] = mapObject;
+            world.mapObjects[obj.Id] = mapObject;
         }
 
         logger.info("Loaded map objects " + mapstate.MapObjects.length);
@@ -43,11 +43,11 @@ let world = {
     onGameStateReceived: function (gamestate) {
 
         // Change variable so players wont be extrapolated on current frame
-        this.receivedGameStateOnCurrentFrame = true;
-        this.lastGamestate = gamestate;
+        world.receivedGameStateOnCurrentFrame = true;
+        world.lastGamestate = gamestate;
 
         // Load players
-        this.players = Array();
+        world.players = Array();
         for (player of gamestate.Players) {
 
             const playerObject = {
@@ -57,10 +57,10 @@ let world = {
                 diameter: player.WorldObject.Diameter
             };
 
-            if (playerObject.id == this.playerId)
-                this.myPlayer = playerObject;
+            if (playerObject.id == world.playerId)
+                world.myPlayer = playerObject;
 
-            this.players.push(playerObject);
+            world.players.push(playerObject);
         }
     },
 
@@ -94,7 +94,7 @@ let world = {
             stroke(243, 156, 18);
             noFill();
 
-            texture(texturesService.getTexture(obj.textureId));
+            //texture(texturesService.getTexture(obj.textureId));
             rect(obj.x - center.x, obj.y - center.y, obj.width, obj.height);
 
             if (world.printCoordinates) {

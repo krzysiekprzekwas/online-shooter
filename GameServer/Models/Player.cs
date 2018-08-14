@@ -37,9 +37,7 @@ namespace GameServer.Models
         [JsonIgnore]
         public List<string> Keys;
         [JsonIgnore]
-        public bool IsJumping;
         private float _playerRadius;
-        [JsonIgnore]
         public float Radius
         {
             get
@@ -69,30 +67,13 @@ namespace GameServer.Models
 
         public Player()
         {
-            Id = GameState.Instance.value.Players.Count + 1;
+            Id = GameState.Instance.Players.Count + 1; // TODO: possible same ids
             Keys = new List<string>();
             Angle = 0.0f;
             Position = new Vector2(0, 0);
             Speed = new Vector2(0, 0);
-
-            IsJumping = false;
+            
             Diameter = Config.PLAYER_SIZE;
-        }
-
-        public Player DeepCopy()
-        {
-            var copy = new Player
-            {
-                Id = Id,
-                Keys = Keys,
-                Angle = Angle,
-                Position = Position,
-                Speed = Speed,
-                IsJumping = IsJumping,
-                Name = Name
-            };
-
-            return copy;
         }
     }
 }
