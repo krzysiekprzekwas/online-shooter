@@ -59,7 +59,32 @@ namespace GameServer.Physics
 
         public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector)
         {
-            return new Vector2(0, 0);
+            // Variables used to calculate speed vector
+            var offset = 0f;
+            var speedVectorLength = speedvector.Length();
+            var speedVectorNormalized = Vector2.Normalize(speedvector);
+            float currentPrecision = speedVectorLength / 2f;
+            MapObject intersectionObject = null;
+
+            do
+            {
+                // Create moved sphere
+                Vector2 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
+                MapCircle s = new MapCircle(checkPosition, player.Diameter);
+
+                // Check for intersection
+                intersectionObject = CheckAnyIntersectionWithWorld(s);
+
+                // Update new position and offset
+                currentPrecision /= 2f;
+                if (intersectionObject == null) //  No object found, increase offset
+                    offset += currentPrecision;
+
+            } // Do this as long as we reach desired precision
+            while (currentPrecision >= Config.INTERSECTION_INTERVAL);
+
+            return player.Position + (speedVectorNormalized * offset);
+            //return new Vector2(0, 0);
         }
 
         //public MapObject GetIntersectionObjectTowardsDirection(out float offset, Player player, Vector2 speedVectorNormalized, float speedVectorLength)
@@ -114,22 +139,22 @@ namespace GameServer.Physics
         //    return (speedVectorNormalized * offset) + parralelVector;
         //}
 
-        //public MapObject CheckAnyIntersectionWithWorld(MapCircle s)
-        //{
-        //    // Check intersection with all map objects
-        //    foreach (MapObject obj in MapState.Instance.MapObjects)
-        //    {
-        //        bool intersects = false;
-        //        if (obj is MapRect)
-        //            intersects = Intersection.CheckIntersection((MapRect)obj, s);
-        //        else if (obj is MapCircle)
-        //            intersects = Intersection.CheckIntersection((MapCircle)obj, s);
+        public MapObject CheckAnyIntersectionWithWorld(MapCircle s)
+        {
+            // Check intersection with all map objects
+            foreach (MapObject obj in MapState.Instance.MapObjects)
+            {
+                bool intersects = false;
+                if (obj is MapRect)
+                    intersects = Intersection.CheckIntersection((MapRect)obj, s);
+                else if (obj is MapCircle)
+                    intersects = Intersection.CheckIntersection((MapCircle)obj, s);
 
-        //        if (intersects)
-        //            return obj;
-        //    }
+                if (intersects)
+                    return obj;
+            }
 
-        //    return null;
-        //}
+            return null;
+        }
     }
 }

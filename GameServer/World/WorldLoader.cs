@@ -18,22 +18,22 @@ namespace GameServer.World
         {
             var objs = new List<MapObject>
             {
-                new MapRect(-14, -14, 1, 1, null, new Color(1, 0, 0), 1),
-                new MapRect(14, -14, 1, 1, null, new Color(0.2f, 0.2f, 1),1),
-                new MapRect(-14, 14, 1, 1, null, new Color(0.2f, 0.2f, 1),2),
-                new MapRect(14, 14, 1, 1, null, new Color(0, 0, 1),2),
-                new MapRect(14, 0, 1, 1, null, new Color(0, 0.2f, 1),1),
-                new MapRect(14, 7, 1, 1, null, new Color(0, 0.75f, 1),1),
-                new MapRect(14, -7, 1, 1, null, new Color(0.2f, 0.2f, 1),1),
-                new MapRect(-14, 0, 1, 1, null, new Color(1, 0.2f, 0),1),
-                new MapRect(-14, 7, 1, 1, null, new Color(0.2f, 0.2f, 1),1),
-                new MapRect(-14, -7, 1, 1, null, new Color(1, 0.75f, 0),1),
-                new MapRect(0, 14, 1, 1, null, new Color(0, 0.2f, 1),1),
-                new MapRect(7, 14, 1, 1, null, new Color(0, 0.75f, 1)),
-                new MapRect(-7, 14, 1, 1, null, new Color(0.2f, 0.2f, 1)),
-                new MapRect(0, -14, 1, 1, null, new Color(1, 0.2f, 0)),
-                new MapRect(7, -14, 1, 1, null, new Color(0.2f, 0.2f, 1)),
-                new MapRect(-7, -14, 1, 1, null, new Color(1, 0.75f, 0)),
+                new MapRect(-14, -14, 1, 1),
+                new MapRect(14, -14, 1, 1),
+                new MapRect(-14, 14, 1, 1),
+                new MapRect(14, 14, 1, 1),
+                new MapRect(14, 0, 1, 1),
+                new MapRect(14, 7, 1, 1),
+                new MapRect(14, -7, 1, 1),
+                new MapRect(-14, 0, 1, 1),
+                new MapRect(-14, 7, 1, 1),
+                new MapRect(-14, -7, 1, 1),
+                new MapRect(0, 14, 1, 1),
+                new MapRect(7, 14, 1, 1),
+                new MapRect(-7, 14, 1, 1),
+                new MapRect(0, -14, 1, 1),
+                new MapRect(7, -14, 1, 1),
+                new MapRect(-7, -14, 1, 1),
             };
 
             MapState.Instance.MapObjects = objs;
@@ -49,28 +49,28 @@ namespace GameServer.World
 
             var objs = new List<MapObject>
             {
-                new MapRect(3 * g, 0, 2 * g, 2 * g, null, orange, 1), // 1
-                new MapRect(-1 * g, -3.5f * g, 2 * g, 5 * g, null, orange, 1), // 3
-                new MapRect(2 * g, -5.5f * g, 4 * g, 1 * g, null, orange, 1), // 4
-                new MapRect(10.5f * g, 0 * g, 1 * g, 12 * g,null, null, 1), // 7
-                new MapRect(7 * g, 4 * g, 2 * g, 2 * g, null, red, 1), // 8
-                new MapRect(1 * g, 4 * g, 2 * g, 2 * g,null,  red, 1), // 9
-                new MapRect(-3.5f * g, 3 * g, 3 * g, 4 * g,null, null, 1), // 10
-                new MapRect(-3f * g, -1.5f * g, 2 * g, 1 * g, null, green, 1), // 13
-                new MapRect(9.5f * g, 6.5f * g, 1 * g, 1 * g, null, orange, 1), // 16
-                new MapRect(8.5f * g, 7.5f * g, 1 * g, 1 * g, null, green, 1), // 17
-                new MapRect(7.5f * g, 8.5f * g, 1 * g, 1 * g, null, orange, 1), // 18
-                new MapRect(6.5f * g, 9.5f * g, 1 * g, 1 * g, null, green, 1), // 19
-                new MapRect(2.5f * g, 9.5f * g, 1 * g, 1 * g, null, orange, 1), // 21
-                new MapRect(-0.5f * g, 9.5f * g, 1 * g, 1 * g, null, green, 1), // 22
+                new MapRect(3 * g, 0, 2 * g, 2 * g), // 1
+                new MapRect(-1 * g, -3.5f * g, 2 * g, 5 * g), // 3
+                new MapRect(2 * g, -5.5f * g, 4 * g, 1 * g), // 4
+                new MapRect(10.5f * g, 0 * g, 1 * g, 12 * g), // 7
+                new MapRect(7 * g, 4 * g, 2 * g, 2 * g), // 8
+                new MapRect(1 * g, 4 * g, 2 * g, 2 * g), // 9
+                new MapRect(-3.5f * g, 3 * g, 3 * g, 4 * g), // 10
+                new MapRect(-3f * g, -1.5f * g, 2 * g, 1 * g), // 13
+                new MapRect(9.5f * g, 6.5f * g, 1 * g, 1 * g), // 16
+                new MapRect(8.5f * g, 7.5f * g, 1 * g, 1 * g), // 17
+                new MapRect(7.5f * g, 8.5f * g, 1 * g, 1 * g), // 18
+                new MapRect(6.5f * g, 9.5f * g, 1 * g, 1 * g), // 19
+                new MapRect(2.5f * g, 9.5f * g, 1 * g, 1 * g), // 21
+                new MapRect(-0.5f * g, 9.5f * g, 1 * g, 1 * g), // 22
 
-                new MapRect(2 * g, -2 * g, 4 * g, 2 * g, null, orange, 2), // 2
-                new MapRect(7 * g, -5.5f * g, 6 * g, 1 * g, null, green, 2), // 5
-                new MapRect(7 * g, -1 * g, 2 * g, 4 * g, null, orange, 2), // 6
-                new MapRect(-4.5f * g, 6.5f * g, 1 * g, 5 * g, null, red, 2), // 14
-                new MapRect(4 * g, 4 * g, 4 * g, 2 * g, null, green, 2), // 15
-                new MapRect(1 * g, 9.5f * g, 10 * g, 1 * g, null, orange, 2), // 20
-                new MapRect(-4.5f * g, -0.5f * g, 1 * g, 3 * g, null, red, 2), // 23
+                new MapRect(2 * g, -2 * g, 4 * g, 2 * g), // 2
+                new MapRect(7 * g, -5.5f * g, 6 * g, 1 * g), // 5
+                new MapRect(7 * g, -1 * g, 2 * g, 4 * g), // 6
+                new MapRect(-4.5f * g, 6.5f * g, 1 * g, 5 * g), // 14
+                new MapRect(4 * g, 4 * g, 4 * g, 2 * g), // 15
+                new MapRect(1 * g, 9.5f * g, 10 * g, 1 * g), // 20
+                new MapRect(-4.5f * g, -0.5f * g, 1 * g, 3 * g), // 23
             };
 
             MapState.Instance.MapObjects = objs;

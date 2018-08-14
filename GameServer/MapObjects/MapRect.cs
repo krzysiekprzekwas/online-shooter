@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameServer.Models;
+using System;
 using System.Numerics;
 
 namespace GameServer.MapObjects
@@ -6,13 +7,13 @@ namespace GameServer.MapObjects
     public class MapRect : MapObject
     {
         public string Type = @"box";
-        public MapRect(float x, float y, float w, float h, MapObject parent = null, Color color = null, int texture =0)
-            : base(x, y, parent, color, texture)
+        public MapRect(float x, float y, float w, float h, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+            : base(x, y, texture, parent)
         {
             Width = w;
             Height = h;
         }
-
+        
         public float Width { get; set; }
         public float Height { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GameServer.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -9,16 +10,15 @@ namespace GameServer.MapObjects
     public class MapCircle : MapObject
     {
 
-        public MapCircle(float x, float y, float diameter, MapObject parent = null, Color color = null, int texture = 0)
-            : base(x, y, parent, color, texture)
+        public MapCircle(float x, float y, float diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+            : base(x, y, texture, parent)
         {
             Diameter = diameter;
         }
 
-        public MapCircle(Vector2 pos, float diameter, MapObject parent = null, Color color = null, int texture = 0)
-            : base(pos.X, pos.Y, parent, color, texture)
+        public MapCircle(Vector2 pos, float diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+            : this(pos.X, pos.Y, diameter, texture, parent)
         {
-            Diameter = diameter;
         }
 
 
@@ -45,7 +45,5 @@ namespace GameServer.MapObjects
                 return (float)Math.Pow(Radius, 2);
             }
         }
-
-
     }
 }

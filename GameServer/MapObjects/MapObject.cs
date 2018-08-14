@@ -5,55 +5,23 @@ using System.Numerics;
 
 namespace GameServer.MapObjects
 {
-    public class MapObject
+    public abstract class MapObject
     {
-        public MapObject(float x, float y, MapObject parent, Color color, int textureId)
+        public MapObject(float x, float y, TextureEnum texture, MapObject parent)
         {
             Id = MapState.Instance.AssingMapObjectId();
 
             Position = new Vector2(x, y);
             Parent = parent;
 
-            TextureId = textureId;
-
-            Color = color;
-            if (color == null)
-            {
-                Color = new Color(1, 1, 1);
-            }
+            Texture = texture;
         }
 
         public Vector2 Position { get; set; }
         public int Id { get; set; }
 
-        public Color Color { get; set; }
-        public int TextureId { get; set; }
+        public TextureEnum Texture { get; set; }
 
         public MapObject Parent { get; set; }
-    }
-
-    public class MapObjectDistanceToPositionComparer : IComparer
-    {
-        private Vector2 _position;
-        public MapObjectDistanceToPositionComparer(Vector2 position)
-        {
-            _position = position;
-        }
-
-        public int Compare(object x, object y)
-        {
-            MapObject a = x as MapObject;
-            MapObject b = y as MapObject;
-
-            float da = (_position - a.Position).LengthSquared();
-            float db = (_position - b.Position).LengthSquared();
-
-            if (da > db)
-                return 1;
-            else if (da == db)
-                return 0;
-
-            return -1;
-        }
     }
 }

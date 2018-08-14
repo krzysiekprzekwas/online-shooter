@@ -6,9 +6,9 @@
         this.loadedTexturesCount = 0;
 
         // Load defined textures
-        this.registerTexture(1, "textures/brick.jpg");
-        this.registerTexture(2, "textures/wall.jpg");
-        this.registerTexture(3, "textures/ground.jpg");
+        this.registerTexture(1, location.href + "textures/brick.jpg");
+        this.registerTexture(2, location.href + "textures/wall.jpg");
+        this.registerTexture(3, location.href + "textures/ground.jpg");
 
         logger.info(`Loaded ${this.loadedTexturesCount} textures.`);
     },
@@ -29,7 +29,7 @@
     getTexture(textureId) {
 
         // Textutre already loaded
-        if (this.loadedTextures[textureId] !== undefined) {
+        if (this.loadedTextures[textureId] === undefined) {
             logger.error(`Trying to display not loaded texture #${textureId}.`);
             return null;
         }
