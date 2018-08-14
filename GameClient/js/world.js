@@ -69,13 +69,11 @@ let world = {
         // Start a new drawing state
         push();
 
-        // Centralize map
+        // myPlayer should be in the center
         const center = {
             x: (this.myPlayer !== null) ? this.myPlayer.x : 0,
             y: (this.myPlayer !== null) ? this.myPlayer.y : 0
         };
-
-        translate((windowWidth / 2), (windowHeight / 2));
 
         // Draw map components
         this.drawMapObjects(center);
@@ -92,7 +90,7 @@ let world = {
 
             strokeWeight(2);
             stroke(243, 156, 18);
-            noFill();
+            fill(255, 255, 255);
 
             //texture(texturesService.getTexture(obj.textureId));
             rect(obj.x - center.x, obj.y - center.y, obj.width, obj.height);

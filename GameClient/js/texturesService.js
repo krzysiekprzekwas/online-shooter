@@ -6,11 +6,11 @@
         this.loadedTexturesCount = 0;
 
         // Load defined textures
-        this.registerTexture(0, location.href + "textures/brick.jpg"); // DEFAULT TEXTURE
+        this.registerTexture(0, "textures/brick.jpg"); // DEFAULT TEXTURE
 
-        this.registerTexture(1, location.href + "textures/brick.jpg");
-        this.registerTexture(2, location.href + "textures/wall.jpg");
-        this.registerTexture(3, location.href + "textures/ground.jpg");
+        this.registerTexture(1, "textures/brick.jpg");
+        this.registerTexture(2, "textures/wall.jpg");
+        this.registerTexture(3, "textures/ground.jpg");
 
         logger.info(`Loaded ${this.loadedTexturesCount} textures.`);
     },
@@ -24,7 +24,8 @@
         }
 
         // Load texture
-        this.loadedTextures[textureId] = loadImage(textureUrl);
+        const loadedImage = loadImage(textureUrl);
+        this.loadedTextures[textureId] = loadedImage;
         this.loadedTexturesCount += 1;
     },
 

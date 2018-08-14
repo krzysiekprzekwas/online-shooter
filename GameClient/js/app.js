@@ -11,6 +11,9 @@ function setup() {
     mouse.initialize();
     world.initialize();
     texturesService.initialize();
+
+    // Connection last - we may receive response faster than other class initalization
+    connection.initialize();
 }
 
 function draw() {
