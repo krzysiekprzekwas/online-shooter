@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 using GameServer.MapObjects;
+using GameServer.Models;
 
 namespace GameServer.Physics
 {
     public static class Intersection
     {
-        private static float Distance(Vector2 p1, Vector2 p2)
+        private static double Distance(Vector2 p1, Vector2 p2)
         {
             return Vector2.Distance(p1, p2);
         }
 
-        private static float DistanceSquared(Vector2 p1, Vector2 p2)
+        private static double DistanceSquared(Vector2 p1, Vector2 p2)
         {
             return Vector2.DistanceSquared(p1, p2);
         }
@@ -26,8 +26,8 @@ namespace GameServer.Physics
 
         public static bool CheckIntersection(MapRect b, MapCircle s)
         {
-            float x = Math.Abs(s.Position.X - b.Position.X);
-            float y = Math.Abs(s.Position.Y - b.Position.Y);
+            var x = Math.Abs(s.Position.X - b.Position.X);
+            var y = Math.Abs(s.Position.Y - b.Position.Y);
 
             if (x > b.Width / 2 + s.Radius ||
                 y > b.Height / 2 + s.Radius)

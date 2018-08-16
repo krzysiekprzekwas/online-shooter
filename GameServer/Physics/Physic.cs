@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
+using GameServer.Models;
 
 namespace GameServer.Physics
 {
@@ -10,19 +10,11 @@ namespace GameServer.Physics
     {
         public static Vector2 GetLeftParallelVectorToIntersectionNormal(Vector2 movementVector, float intersectionDistance, Vector2 intersectionNormal)
         {
-            float movementVectorLength = movementVector.Length();
+            var movementVectorLength = movementVector.Length();
             var realMovementDirectionVector = Vector2.Normalize(movementVector) * intersectionDistance;
 
             var leftMovementDirectionVector = movementVector - realMovementDirectionVector;
             return GetParallelVectorToNormal(leftMovementDirectionVector, intersectionNormal);
-        }
-
-        public static double GetAngleBetweenVectors(Vector2 a, Vector2 b)
-        {
-            var sin = b.X * a.Y - a.X * b.Y;
-            var cos = b.X * a.X + b.Y * a.Y;
-
-            return Math.Atan2(sin, cos);
         }
 
         public static Vector2 GetParallelVectorToNormal(Vector2 vector, Vector2 normal)

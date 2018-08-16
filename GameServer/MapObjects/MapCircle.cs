@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text;
 
 namespace GameServer.MapObjects
@@ -10,7 +9,7 @@ namespace GameServer.MapObjects
     public class MapCircle : MapObject
     {
 
-        public MapCircle(float x, float y, float diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+        public MapCircle(double x, double y, float diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
             : base(x, y, texture, parent)
         {
             Diameter = diameter;

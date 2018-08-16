@@ -1,13 +1,12 @@
 ﻿using GameServer.Models;
 using GameServer.States;
 using System.Collections;
-using System.Numerics;
 
 namespace GameServer.MapObjects
 {
     public abstract class MapObject
     {
-        public MapObject(float x, float y, TextureEnum texture, MapObject parent)
+        public MapObject(double x, double y, TextureEnum texture, MapObject parent)
         {
             Id = MapState.Instance.AssingMapObjectId();
 

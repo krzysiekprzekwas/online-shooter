@@ -2,7 +2,6 @@
 using GameServer.MapObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Numerics;
 using GameServer.Models;
 
 namespace GameTests
@@ -84,7 +83,8 @@ namespace GameTests
 
             float c = (float)Math.Sqrt(2) / 2;
             Vector2 expectedPosition = circle.Position - new Vector2(c, c);
-            Assert.AreEqual(trace.Position, expectedPosition);
+            Assert.AreEqual(expectedPosition.X, trace.Position.X, 1e-6);
+            Assert.AreEqual(expectedPosition.Y, trace.Position.Y, 1e-6);
         }
 
         [TestMethod]

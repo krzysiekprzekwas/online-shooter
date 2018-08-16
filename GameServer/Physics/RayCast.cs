@@ -2,7 +2,6 @@
 using GameServer.Models;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text;
 
 namespace GameServer.Physics
@@ -30,8 +29,8 @@ namespace GameServer.Physics
         public static Trace CheckBulletTrace(Ray ray, MapCircle circle)
         {
             Vector2 h = Vector2.Subtract(circle.Position, ray.Origin);
-            float lf = Vector2.Dot(ray.Direction, h);
-            float s = (circle.RadiusSquared) - Vector2.Dot(h, h) + (lf * lf);   // s=r^2-h^2+lf^2
+            var lf = Vector2.Dot(ray.Direction, h);
+            var s = (circle.RadiusSquared) - Vector2.Dot(h, h) + (lf * lf);   // s=r^2-h^2+lf^2
 
             if (s < 0.0 || lf < 0.0) return null;                    // no intersection points ?
             s = (float)Math.Sqrt(s);                              // s=sqrt(r^2-h^2+lf^2)
@@ -54,7 +53,7 @@ namespace GameServer.Physics
             if (Math.Abs(dot) < 0.000001)
                 return null;
 
-            float distance = ((u.X * v.Y) - (u.Y * v.X)) / dot;
+            var distance = ((u.X * v.Y) - (u.Y * v.X)) / dot;
             var t2 = Vector2.Dot(v, v3) / dot;
 
             if (distance >= 0.0 && (t2 >= 0.0 && t2 <= 1.0))

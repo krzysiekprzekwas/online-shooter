@@ -1,7 +1,6 @@
 ﻿using GameServer.MapObjects;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text;
 
 namespace GameServer.Models
@@ -24,7 +23,7 @@ namespace GameServer.Models
 
         public Vector2 Source { get; private set; }
 
-        public float Distance { get; private set; }
+        public double Distance { get; private set; }
 
         public MapObject MapObject { get; set; }
 

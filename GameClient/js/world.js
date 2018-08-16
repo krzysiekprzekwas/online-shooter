@@ -57,7 +57,7 @@ let world = {
                 diameter: player.WorldObject.Diameter
             };
 
-            if (playerObject.id == world.playerId)
+            if (playerObject.id === world.playerId)
                 world.myPlayer = playerObject;
 
             world.players.push(playerObject);
@@ -106,13 +106,12 @@ let world = {
     },
 
     drawPlayers: function (center) {
-
-
+        
         this.players.forEach((player, i) => {
 
             strokeWeight(4);
             fill(255, 190, 118);
-            if (this.myPlayer !== null && player.id == this.myPlayer.id)
+            if (this.myPlayer !== null && player.id === this.myPlayer.id)
                 stroke(52, 152, 219);
             else
                 stroke(0);

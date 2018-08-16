@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using GameServer.Game;
 using GameServer.MapObjects;
 using GameServer.Models;
@@ -20,9 +19,10 @@ namespace GameServer.Physics
         {
             foreach (Player player in GameState.Instance.Players)
             {
-                player.Speed *= (1 - Config.PLAYER_DECCELERATION);
-                Vector2 speedVector = player.Speed + GetSpeedFromPlayerInput(player);
+                player.Speed *= 1 - Config.PLAYER_DECCELERATION;
 
+                var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
+                    
                 speedVector = CalculatePossibleMovementVector(player, speedVector);
 
                 //player.Speed = speedVector;
@@ -32,24 +32,22 @@ namespace GameServer.Physics
 
         public static Vector2 GetSpeedFromPlayerInput(Player player)
         {
-            Vector2 upVector = new Vector2(0, 1);
-            Vector2 rightVector = new Vector2(1, 0);
-            Vector2 calculatedSpeedVector = new Vector2(0, 0);
+            Vector2 calculatedSpeedVector = new Vector2();
 
             // First get direction
             if (player.Keys.Contains("w"))
-                calculatedSpeedVector += upVector;
+                calculatedSpeedVector += Vector2.UP_VECTOR;
             if (player.Keys.Contains("s"))
-                calculatedSpeedVector -= upVector;
+                calculatedSpeedVector += Vector2.DOWN_VECTOR;
             if (player.Keys.Contains("a"))
-                calculatedSpeedVector -= rightVector;
+                calculatedSpeedVector += Vector2.LEFT_VECTOR;
             if (player.Keys.Contains("d"))
-                calculatedSpeedVector += rightVector;
+                calculatedSpeedVector += Vector2.RIGHT_VECTOR;
 
             // Scale vector to be speed length
             if (calculatedSpeedVector.LengthSquared() > 0)
             {
-                Vector2 normalizedSpeed = Vector2.Normalize(calculatedSpeedVector);
+                Vector2 normalizedSpeed = calculatedSpeedVector.Normalize();
                 float vectorLength = Config.PLAYER_SPEED / (float)Config.SERVER_TICK;
                 calculatedSpeedVector = normalizedSpeed * vectorLength;
             }
@@ -60,10 +58,10 @@ namespace GameServer.Physics
         public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector)
         {
             // Variables used to calculate speed vector
-            var offset = 0f;
+            var offset = 0d;
             var speedVectorLength = speedvector.Length();
-            var speedVectorNormalized = Vector2.Normalize(speedvector);
-            float currentPrecision = speedVectorLength / 2f;
+            var speedVectorNormalized = speedvector.Normalize();
+            var currentPrecision = speedVectorLength / 2f;
             MapObject intersectionObject = null;
 
             do

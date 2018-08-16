@@ -103,7 +103,7 @@ namespace GameServer
             Player player = new Player
             {
                 Name = json.Name,
-                Position = new System.Numerics.Vector2(-300, 200),
+                Position = new Vector2(-300, 200),
                 WebSocket = webSocket,
                 IpAddress = context.Connection.RemoteIpAddress
             };

@@ -2,8 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text;
+using GameServer.Models;
 
 namespace GameTests
 {
@@ -22,7 +22,8 @@ namespace GameTests
 
             // Assert
             var expectedVector = Vector2.Normalize(new Vector2(1, 1)) * vector.Length();
-            Assert.AreEqual(rotatedVector, expectedVector);
+            Assert.AreEqual(expectedVector.X, rotatedVector.X, 1e-6);
+            Assert.AreEqual(expectedVector.Y, rotatedVector.Y, 1e-6);
         }
 
         [TestMethod]
@@ -133,36 +134,6 @@ namespace GameTests
             var expectedVector = Vector2.Normalize(new Vector2(-1, 1)) * ((vector.Length() * (float)Math.Sqrt(2)) / 2);
             Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
-        }
-
-        [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateAngleBetweenVectors1()
-        {
-            // Arrage
-            var a = new Vector2(1, 1);
-            var b = new Vector2(1, -1);
-
-            // Act
-            var angle = Physic.GetAngleBetweenVectors(a, b);
-
-            // Assert
-            var expectedAngle = Math.PI / 2;
-            Assert.AreEqual(angle, expectedAngle, 0.0001);
-        }
-
-        [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateAngleBetweenVectors2()
-        {
-            // Arrage
-            var a = new Vector2(0, 3);
-            var b = new Vector2(-1, 0);
-
-            // Act
-            var angle = Physic.GetAngleBetweenVectors(a, b);
-
-            // Assert
-            var expectedAngle = Math.PI / -2;
-            Assert.AreEqual(angle, expectedAngle, 0.0001);
         }
 
         [TestMethod]
