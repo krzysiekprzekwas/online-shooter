@@ -24,11 +24,12 @@ namespace GameTests
             player.Keys.Add("a");
 
             // Act
-            var speedVector = PhysicsEngine.GetSpeedFromPlayerInput(player);
+            var nromalizedSpeedVector = PhysicsEngine.GetSpeedFromPlayerInput(player).Normalize();
 
             // Assert
             var expectedSpeedVectorDirection = Vector2.Normalize(new Vector2(-1, 1));
-            Assert.AreEqual(expectedSpeedVectorDirection, Vector2.Normalize(speedVector));
+            Assert.AreEqual(expectedSpeedVectorDirection.X, nromalizedSpeedVector.X, 1e-6);
+            Assert.AreEqual(expectedSpeedVectorDirection.Y, nromalizedSpeedVector.Y, 1e-6);
         }
         
         [TestMethod]

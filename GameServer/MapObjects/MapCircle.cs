@@ -9,22 +9,22 @@ namespace GameServer.MapObjects
     public class MapCircle : MapObject
     {
 
-        public MapCircle(double x, double y, float diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+        public MapCircle(double x, double y, double diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
             : base(x, y, texture, parent)
         {
             Diameter = diameter;
         }
 
-        public MapCircle(Vector2 pos, float diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+        public MapCircle(Vector2 pos, double diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
             : this(pos.X, pos.Y, diameter, texture, parent)
         {
         }
 
 
-        public float Diameter { get; set; }
+        public double Diameter { get; set; }
 
         [JsonIgnore]
-        public float Radius
+        public double Radius
         {
             get
             {
@@ -37,11 +37,11 @@ namespace GameServer.MapObjects
         }
 
         [JsonIgnore]
-        public float RadiusSquared
+        public double RadiusSquared
         {
             get
             {
-                return (float)Math.Pow(Radius, 2);
+                return Math.Pow(Radius, 2);
             }
         }
     }

@@ -45,10 +45,10 @@ namespace GameServer.Physics
                 calculatedSpeedVector += Vector2.RIGHT_VECTOR;
 
             // Scale vector to be speed length
-            if (calculatedSpeedVector.LengthSquared() > 0)
+            if (!calculatedSpeedVector.IsDegenerated())
             {
-                Vector2 normalizedSpeed = calculatedSpeedVector.Normalize();
-                float vectorLength = Config.PLAYER_SPEED / (float)Config.SERVER_TICK;
+                var normalizedSpeed = calculatedSpeedVector.Normalize();
+                var vectorLength = Config.PLAYER_SPEED / Config.SERVER_TICK;
                 calculatedSpeedVector = normalizedSpeed * vectorLength;
             }
 
@@ -67,8 +67,8 @@ namespace GameServer.Physics
             do
             {
                 // Create moved sphere
-                Vector2 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
-                MapCircle s = new MapCircle(checkPosition, player.Diameter);
+                var checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
+                var s = new MapCircle(checkPosition, player.Diameter);
 
                 // Check for intersection
                 intersectionObject = CheckAnyIntersectionWithWorld(s);

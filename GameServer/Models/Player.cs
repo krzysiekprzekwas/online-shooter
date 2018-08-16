@@ -36,8 +36,8 @@ namespace GameServer.Models
         [JsonIgnore]
         public List<string> Keys;
         [JsonIgnore]
-        private float _playerRadius;
-        public float Radius
+        private double _playerRadius;
+        public double Radius
         {
             get
             {
@@ -51,16 +51,16 @@ namespace GameServer.Models
         }
 
         [JsonIgnore]
-        public float Diameter
+        public double Diameter
         {
             get
             {
-                return _playerRadius * 2f;
+                return _playerRadius * 2;
             }
             set
             {
                 if(value > 0)
-                    _playerRadius = value / 2f;
+                    _playerRadius = value / 2;
             }
         }
 

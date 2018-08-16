@@ -14,19 +14,19 @@ namespace GameServer
         [JsonProperty]
         public static int SERVER_TICK = 64;
         [JsonProperty]
-        public static float PLAYER_SPEED = 50; // PER SECOND
+        public static double PLAYER_SPEED = 50; // PER SECOND
         [JsonProperty]
-        public static float GRAVITY = 10; // PER SECOND
+        public static double GRAVITY = 10; // PER SECOND
         [JsonProperty]
-        public static float JUMP_POWER = 2;
+        public static double JUMP_POWER = 2;
         [JsonProperty]
-        public static float PLAYER_DECCELERATION = 0.8f;
+        public static double PLAYER_DECCELERATION = 0.8f;
         [JsonProperty]
-        public static float PLAYER_SIZE = 32;
+        public static double PLAYER_SIZE = 32;
 
         // Note that can be physics will be less acurate than this value because of float precission
         [JsonProperty]
-        public static float INTERSECTION_INTERVAL = 0.01f; 
+        public static double INTERSECTION_INTERVAL = 0.01f; 
 
         private static Config instance;
         public static Config Instance

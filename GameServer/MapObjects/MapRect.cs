@@ -6,20 +6,20 @@ namespace GameServer.MapObjects
     public class MapRect : MapObject
     {
         public string Type = @"box";
-        public MapRect(float x, float y, float w, float h, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+        public MapRect(double x, double y, double w, double h, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
             : base(x, y, texture, parent)
         {
             Width = w;
             Height = h;
         }
         
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
 
         public Vector2[] GetVerticies()
         {
-            float hw = Width / 2.0f;
-            float hh = Height / 2.0f;
+            double hw = Width / 2.0;
+            double hh = Height / 2.0;
 
             return new Vector2[]
             {
