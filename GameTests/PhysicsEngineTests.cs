@@ -56,6 +56,7 @@ namespace GameTests
 
             // Act  
             player.Keys.Add("w");
+            player.Keys.Add("a");
             player.Angle = (float)Math.PI / 4f;
             for (int i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();

@@ -23,10 +23,10 @@ namespace GameServer.Physics
 
                 var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
                     
-                speedVector = CalculatePossibleMovementVector(player, speedVector);
+                //speedVector = CalculatePossibleMovementVector(player, speedVector);
 
-                //player.Speed = speedVector;
-                //player.Position += speedVector;
+                player.Speed = speedVector;
+                player.Position += speedVector;
             }
         }
 

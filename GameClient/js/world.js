@@ -92,7 +92,7 @@ let world = {
             stroke(243, 156, 18);
             fill(255, 255, 255);
 
-            //texture(texturesService.getTexture(obj.textureId));
+            texture(texturesService.getTexture(obj.textureId));
             rect(obj.x - center.x, obj.y - center.y, obj.width, obj.height);
 
             if (world.printCoordinates) {
