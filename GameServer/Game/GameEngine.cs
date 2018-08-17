@@ -38,8 +38,8 @@ namespace GameServer.Game
         {
             PhysicsEngine.ApplyPhysics();
 
-            var currentPlayers = new Player[GameState.value.Players.Count];
-            GameState.value.Players.CopyTo(currentPlayers);
+            var currentPlayers = new Player[GameState.Instance.Players.Count];
+            GameState.Instance.Players.CopyTo(currentPlayers);
 
             // Send game state for each client
             foreach (var player in currentPlayers)
@@ -56,7 +56,7 @@ namespace GameServer.Game
         {
             _logger.LogInformation(string.Format("Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
 
-            GameState.value.Players.Add(player);
+            GameState.Instance.Players.Add(player);
 
             GameEvents.OnPlayerConnected(player);
 
@@ -69,7 +69,7 @@ namespace GameServer.Game
 
             GameEvents.OnPlayerDisconnected(player);
 
-            GameState.value.Players.Remove(player);
+            GameState.Instance.Players.Remove(player);
         }
     }
 }

@@ -1,6 +1,11 @@
 window.onkeyup = function (e) { keys.keyUp(e.keyCode); };
 window.onkeydown = function (e) { keys.keyDown(e.keyCode); };
 
+function preload() {
+
+    texturesService.initialize();
+}
+
 function setup() {
     createCanvas(displayWidth, displayHeight, WEBGL);
     stroke(0);
@@ -10,7 +15,9 @@ function setup() {
 
     mouse.initialize();
     world.initialize();
-    texturesService.initialize();
+
+    // Connection last - we may receive response faster than other class initalization
+    connection.initialize();
 }
 
 function draw() {

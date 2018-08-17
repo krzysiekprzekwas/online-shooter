@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
-using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,19 +23,10 @@ namespace GameServer.States
 
         public static void SendGameState(WebSocket webSocket)
         {
-            var plrs = GameState.Instance.value.Players.Select(player =>
-                player.DeepCopy()).ToList();
-
-            var newGameStateValue = new GameStateValue();
-
-            newGameStateValue.Players = plrs;
-            newGameStateValue.PlayerId = GameState.Instance.value.PlayerId;
-
-
             var gameStateResponse = new
             {
                 Type = "gamestate",
-                GameState = newGameStateValue
+                GameState = GameState.Instance
             };
 
             SendState(gameStateResponse, webSocket);
@@ -74,11 +64,8 @@ namespace GameServer.States
             player.Keys = new List<string>();
             foreach (var key in playerState.Keys)
                 player.Keys.Add(key.Value);
-
-            float ax = (float)playerState.Angles.X.Value;
-            float ay = (float)playerState.Angles.Y.Value;
-
-            player.Angles = new Vector2(ax, ay);
+            
+            player.Angle = (float)playerState.Angle.Value;
         }
 
         public static void SendConnectedConfirmation(WebSocket webSocket, Player player)

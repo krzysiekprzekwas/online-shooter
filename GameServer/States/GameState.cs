@@ -9,33 +9,26 @@ namespace GameServer.States
 {
     public class GameState
     {
-        private static GameState instance;
-        public GameStateValue value;
+        private static GameState _instance;
 
-        public GameState()
+        // Gamestate properties
+        public List<Player> Players { get; set; }
+        public int PlayerId { get; set; }
+
+        private GameState()
         {
-            value = new GameStateValue();
-            value.Players = new List<Player>();
+            Players = new List<Player>();
         }
 
         public static GameState Instance
         {
             get
             {
-                if (instance == null)
-                    instance = new GameState();
+                if (_instance == null)
+                    _instance = new GameState();
 
-                return instance;
+                return _instance;
             }
         }
-    }
-
-    public struct GameStateValue
-    {
-        public List<Player> Players { get; set; }
-
-
-        [JsonIgnore]
-        public int PlayerId { get; set; }
     }
 }

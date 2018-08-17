@@ -1,83 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 using GameServer.MapObjects;
+using GameServer.Models;
 
 namespace GameServer.Physics
 {
     public static class Intersection
     {
-        public static double DistanceSquared(Vector3 v1, Vector3 v2)
+        private static double Distance(Vector2 p1, Vector2 p2)
         {
-            double dx = Math.Abs(v1.X - v2.X);
-            double dy = Math.Abs(v1.Y - v2.Y);
-            double dz = Math.Abs(v1.Z - v2.Z);
-
-            return Math.Pow(dx, 2) + Math.Pow(dy, 2) + Math.Pow(dz, 2);
+            return Vector2.Distance(p1, p2);
         }
 
-        public static double Distance(Vector3 v1, Vector3 v2)
+        private static double DistanceSquared(Vector2 p1, Vector2 p2)
         {
-            return Math.Sqrt(DistanceSquared(v1, v2));
+            return Vector2.DistanceSquared(p1, p2);
         }
 
-        // Checking intersection for each type of MapObjects
-
-        public static bool CheckIntersection(MapSphere s, MapBox c)
+        public static bool CheckIntersection(MapCircle s1, MapCircle s2)
         {
-            return CheckIntersection(c, s);
+            return (DistanceSquared(s1.Position, s2.Position) <= Math.Pow(s1.Radius + s2.Radius, 2));
         }
-        public static bool CheckIntersection(MapBox c, MapSphere s)
-        {
-            double distanceSquared = Math.Pow(s.Diameter / 2, 2);
 
-            Vector3 c1 = new Vector3()
+        public static bool CheckIntersection(MapRect b, MapCircle s)
+        {
+            var x = Math.Abs(s.Position.X - b.Position.X);
+            var y = Math.Abs(s.Position.Y - b.Position.Y);
+
+            if (x > b.Width / 2 + s.Radius ||
+                y > b.Height / 2 + s.Radius)
             {
-                X = c.Position.X - (c.Width / 2),
-                Y = c.Position.Y - (c.Height / 2),
-                Z = c.Position.Z - (c.Depth / 2)
-            };
+                return false;
+            }
 
-            Vector3 c2 = new Vector3()
+            if (x <= b.Width / 2 || y <= b.Height / 2)
             {
-                X = c.Position.X + (c.Width / 2),
-                Y = c.Position.Y + (c.Height / 2),
-                Z = c.Position.Z + (c.Depth / 2)
-            };
+                return true;
+            }
 
-            if (s.Position.X < c1.X) distanceSquared -= Math.Pow(s.Position.X - c1.X, 2);
-            else if (s.Position.X > c2.X) distanceSquared -= Math.Pow(s.Position.X - c2.X, 2);
-            if (s.Position.Y < c1.Y) distanceSquared -= Math.Pow(s.Position.Y - c1.Y, 2);
-            else if (s.Position.Y > c2.Y) distanceSquared -= Math.Pow(s.Position.Y - c2.Y, 2);
-            if (s.Position.Z < c1.Z) distanceSquared -= Math.Pow(s.Position.Z - c1.Z, 2);
-            else if (s.Position.Z > c2.Z) distanceSquared -= Math.Pow(s.Position.Z - c2.Z, 2);
-
-            return distanceSquared > 0;
+            var cornerDistance_sq = Math.Pow(x - b.Width / 2, 2) + Math.Pow(y - b.Height / 2, 2);
+            return cornerDistance_sq <= s.RadiusSquared;
         }
 
-        public static bool CheckIntersection(MapSphere s1, MapSphere s2)
+        public static bool CheckIntersection(MapCircle s, MapRect b)
         {
-            double distanceSquared = DistanceSquared(s1.Position, s2.Position);
-            double diameterSquared = Math.Pow((s1.Diameter / 2) + (s2.Diameter / 2), 2);
-
-            return diameterSquared > distanceSquared;
+            return CheckIntersection(b, s);
         }
 
-        public static bool CheckIntersection(Vector3 position, MapBox c)
+        public static bool CheckIntersection(MapRect r1, MapRect r2)
         {
-            return CheckIntersection(c, position);
-        }
-        public static bool CheckIntersection(MapBox c, Vector3 position)
-        {
-            float hw = c.Width / 2f;
-            float hh = c.Height / 2f;
-            float hz = c.Depth / 2f;
+            var r1x1 = r1.Position.X - (r1.Width / 2);
+            var r1x2 = r1.Position.X + (r1.Width / 2);
+            var r1y1 = r1.Position.Y - (r1.Height / 2);
+            var r1y2 = r1.Position.Y + (r1.Height / 2);
 
-            return ((position.X >= c.Position.X - hw && position.X <= c.Position.X + hw) &&
-                (position.Y >= c.Position.Y - hh && position.Y <= c.Position.Y + hh) &&
-                (position.Z >= c.Position.Z - hz && position.Z <= c.Position.Z + hz));
+            var r2x1 = r2.Position.X - (r2.Width / 2);
+            var r2x2 = r2.Position.X + (r2.Width / 2);
+            var r2y1 = r2.Position.Y - (r2.Height / 2);
+            var r2y2 = r2.Position.Y + (r2.Height / 2);
+
+            return (r2x2 >= r1x1 && r2x1 <= r1x2) && (r2y2 >= r1y1 && r2y1 <= r1y2);
+        }
+        
+        private static bool DoesRectContainsVertex(MapRect rect, Vector2 point)
+        {
+            return (point.X >= rect.Position.X - (rect.Width / 2) &&
+                point.X <= rect.Position.X + (rect.Width / 2) &&
+                point.Y >= rect.Position.Y - (rect.Height / 2) &&
+                point.Y <= rect.Position.Y + (rect.Height / 2));
         }
     }
 }

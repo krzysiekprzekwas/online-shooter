@@ -25,15 +25,15 @@ let world = {
             const mapObject = {
 
                 width: obj.Width,
-                height: obj.Depth,
+                height: obj.Height,
                 x: obj.Position.X,
-                y: obj.Position.Z,
-                textureId: obj.TextureId,
+                y: obj.Position.Y,
+                textureId: obj.Texture,
                 type: obj.Type
             };
 
             // Add mesh to objects array
-            this.mapObjects[obj.Id] = mapObject;
+            world.mapObjects[obj.Id] = mapObject;
         }
 
         logger.info("Loaded map objects " + mapstate.MapObjects.length);
@@ -43,11 +43,11 @@ let world = {
     onGameStateReceived: function (gamestate) {
 
         // Change variable so players wont be extrapolated on current frame
-        this.receivedGameStateOnCurrentFrame = true;
-        this.lastGamestate = gamestate;
+        world.receivedGameStateOnCurrentFrame = true;
+        world.lastGamestate = gamestate;
 
         // Load players
-        this.players = Array();
+        world.players = Array();
         for (player of gamestate.Players) {
 
             const playerObject = {
@@ -57,10 +57,10 @@ let world = {
                 diameter: player.WorldObject.Diameter
             };
 
-            if (playerObject.id == this.playerId)
-                this.myPlayer = playerObject;
+            if (playerObject.id === world.playerId)
+                world.myPlayer = playerObject;
 
-            this.players.push(playerObject);
+            world.players.push(playerObject);
         }
     },
 
@@ -69,13 +69,11 @@ let world = {
         // Start a new drawing state
         push();
 
-        // Centralize map
+        // myPlayer should be in the center
         const center = {
             x: (this.myPlayer !== null) ? this.myPlayer.x : 0,
             y: (this.myPlayer !== null) ? this.myPlayer.y : 0
         };
-
-        translate((windowWidth / 2), (windowHeight / 2));
 
         // Draw map components
         this.drawMapObjects(center);
@@ -92,7 +90,7 @@ let world = {
 
             strokeWeight(2);
             stroke(243, 156, 18);
-            noFill();
+            fill(255, 255, 255);
 
             texture(texturesService.getTexture(obj.textureId));
             rect(obj.x - center.x, obj.y - center.y, obj.width, obj.height);
@@ -108,13 +106,12 @@ let world = {
     },
 
     drawPlayers: function (center) {
-
-
+        
         this.players.forEach((player, i) => {
 
             strokeWeight(4);
             fill(255, 190, 118);
-            if (this.myPlayer !== null && player.id == this.myPlayer.id)
+            if (this.myPlayer !== null && player.id === this.myPlayer.id)
                 stroke(52, 152, 219);
             else
                 stroke(0);

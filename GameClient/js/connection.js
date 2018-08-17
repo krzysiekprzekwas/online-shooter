@@ -1,42 +1,50 @@
-// Create WebSocket connection.
-const socket = ((location.hostname === "" || location.hostname === "localhost" || location.hostname === "127.0.0.1") && !location.href.includes('remote')
-    ? new WebSocket('ws://localhost:1000/ws')
-    : new WebSocket('ws://145.239.86.84:1000/ws'));
-// Connect to server
-socket.addEventListener('open', function (event) {
+const connection = {
 
-    const connectionString = JSON.stringify({
-        Type: "connect",
-        Name: "Player"
-    });
+    initialize: function () {
 
-    socket.send(connectionString);
-});
+        // Create WebSocket connection.
+        this.socket = ((location.hostname === "" || location.hostname === "localhost" || location.hostname === "127.0.0.1") && !location.href.includes('remote')
+            ? new WebSocket('ws://localhost:1000/ws')
+            : new WebSocket('ws://145.239.86.84:1000/ws'));
 
-// Listen for messages
-socket.addEventListener('message', function (event) {
+        // Connect to server
+        this.socket.addEventListener('open', function (event) {
 
-    let response = JSON.parse(event.data);
-    responseController.processResponse(response);
-});
+            const connectionString = JSON.stringify({
+                Type: "connect",
+                Name: "Player"
+            });
 
-setInterval(function () {
+            connection.socket.send(connectionString);
+        });
 
+        // Listen for messages
+        this.socket.addEventListener('message', function (event) {
 
-    if (config.DEBUG_STOP)
-        return;
+            let response = JSON.parse(event.data);
+            responseController.processResponse(response);
+        });
 
-    if (socket.readyState !== socket.OPEN)
-        return true;
+        // Set up interval (sending player state to server)
+        setInterval(this.connectionInterval, 50);
+    },
 
-    const playerStateString = JSON.stringify({
-        Type: "playerstate",
-        Keys: keys.getKeysState(),
-        Angles: mouse.getCurrentAngles(),
-        PingStart: new Date().getTime()
-    });
+    connectionInterval: function () {
 
-    
-    socket.send(playerStateString);
+        if (config.DEBUG_STOP)
+            return;
 
-}, 50);
+        if (connection.socket.readyState !== connection.socket.OPEN)
+            return true;
+
+        const playerStateString = JSON.stringify({
+            Type: "playerstate",
+            Keys: keys.getKeysState(),
+            Angles: mouse.getCurrentAngles(),
+            PingStart: new Date().getTime()
+        });
+
+        connection.socket.send(playerStateString);
+    },
+
+};
