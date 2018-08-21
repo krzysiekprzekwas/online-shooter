@@ -16,7 +16,7 @@ namespace GameTests
     public class PhysicsEngineTests
     {
         [TestMethod]
-        public void PhysicsEngine_ShouldCalculateSpeedVectorFromPlayerInput()
+        public void ShouldCalculateSpeedVectorFromPlayerInput()
         {
             // Arrange
             var player = new Player();
@@ -33,7 +33,7 @@ namespace GameTests
         }
         
         [TestMethod]
-        public void PhysicsEngine_ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
+        public void ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
         {
             // Arrange
             var player = new Player();
@@ -49,7 +49,22 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void PhysicsEngine_ShouldAllowMovement()
+        public void ShouldNotThrowExceptionsWhenPlayerIsStandingStill()
+        {
+            // Arrange
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+
+            // Act
+            for (int i = 1; i <= 200; i++)
+                gameEngine.PhysicsEngine.ApplyPhysics();
+
+            // Assert
+            Assert.AreEqual(player.Position.Y, 0);
+            Assert.AreEqual(player.Position.X, 0);
+        }
+
+        [TestMethod]
+        public void ShouldAllowMovement()
         {
             // Arrange
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
@@ -67,7 +82,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void PhysicsEngine_ShouldNotAllowPassingThroughWalls()
+        public void ShouldNotAllowPassingThroughWalls()
         {
             // Arrange
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
@@ -91,7 +106,7 @@ namespace GameTests
         }
         
         [TestMethod]
-        public void PhysicsEngine_ShouldStuckPlayerBetweenTwoWalls()
+        public void ShouldStuckPlayerBetweenTwoWalls()
         {
             // Arrange
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
@@ -128,7 +143,7 @@ namespace GameTests
             player = new Player()
             {
                 Position = new Vector2(0, 0),
-                Angle = 0.0f
+                Angle = 0.0
             };
 
             GameState.Instance.Players.Add(player);

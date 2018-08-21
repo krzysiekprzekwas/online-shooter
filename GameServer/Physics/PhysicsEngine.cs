@@ -57,6 +57,9 @@ namespace GameServer.Physics
 
         public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector)
         {
+            if (speedvector.IsDegenerated())
+                return Vector2.ZERO_VECTOR;
+
             // Variables used to calculate speed vector
             var offset = 0d;
             var speedVectorLength = speedvector.Length();
@@ -74,7 +77,7 @@ namespace GameServer.Physics
                 intersectionObject = CheckAnyIntersectionWithWorld(validationObject);
 
                 // Update new position and offset
-                if (intersectionObject == null) //  No object found, increase offset
+                if (intersectionObject == null) // No object found, increase offset
                     offset += currentPrecision;
 
                 currentPrecision /= 2.0;

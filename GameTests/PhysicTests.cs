@@ -11,7 +11,7 @@ namespace GameTests
     public class PhysicTests
     {
         [TestMethod]
-        public void Physic_ShouldCorrectlyRotateVector1()
+        public void ShouldCorrectlyRotateVector1()
         {
             // Arrage
             var vector = new Vector2(10, 0);
@@ -27,7 +27,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyRotateVectorByNegativeAngle()
+        public void ShouldCorrectlyRotateVectorByNegativeAngle()
         {
             // Arrage
             var vector = new Vector2(0, -3);
@@ -43,7 +43,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyProjectVectorOntoAnother1()
+        public void ShouldCorrectlyProjectVectorOntoAnother1()
         {
             // Arrage
             var vector = new Vector2(2, 1);
@@ -58,7 +58,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyProjectVectorOntoAnother2()
+        public void ShouldCorrectlyProjectVectorOntoAnother2()
         {
             // Arrage
             var vector = new Vector2(-2, -1);
@@ -73,7 +73,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal1()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal1()
         {
             // Arrage
             var vector = new Vector2(2, 1);
@@ -89,7 +89,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal2()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal2()
         {
             // Arrage
             var vector = new Vector2(-2, -1);
@@ -105,7 +105,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal3()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal3()
         {
             // Arrage
             var vector = new Vector2(-1, -1);
@@ -121,7 +121,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal4()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal4()
         {
             // Arrage
             var vector = new Vector2(0, 3);
@@ -137,7 +137,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal1()
+        public void ShouldCalculateParallelVectorToIntersectionNormal1()
         {
             // Arrage
             var movementVector = new Vector2(0, 2);
@@ -155,7 +155,7 @@ namespace GameTests
 
 
         [TestMethod]
-        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal2()
+        public void ShouldCalculateParallelVectorToIntersectionNormal2()
         {
             // Arrage
             var movementVector = new Vector2(-3, 3);
@@ -172,7 +172,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateVectorFromAngle()
+        public void ShouldCalculateVectorFromAngle()
         {
             // Arrange
             var angle = Math.PI * 3 / 2;
@@ -187,7 +187,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateAngleFromVector()
+        public void ShouldCalculateAngleFromVector()
         {
             // Arrange
             var vector = new Vector2(-1, 1);

@@ -12,7 +12,7 @@ namespace GameTests
     public class Vector2Tests
     {
         [TestMethod]
-        public void Vectors_ShouldAddCorrectly()
+        public void ShouldAddCorrectly()
         {
             // Arrage
             var a = new Vector2(1, 0);
@@ -33,7 +33,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldSubtractCorrectly()
+        public void ShouldSubtractCorrectly()
         {
             // Arrage
             var a = new Vector2(1, 1);
@@ -54,7 +54,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldMultiplyCorrectly()
+        public void ShouldMultiplyCorrectly()
         {
             // Arrage
             var a = new Vector2(1, 3);
@@ -72,7 +72,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldDivideCorrectly()
+        public void ShouldDivideCorrectly()
         {
             // Arrage
             var a = new Vector2(-1, 3);
@@ -90,7 +90,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldCalculateLength()
+        public void ShouldCalculateLength()
         {
             // Arrage
             var a = new Vector2(3, 4);
@@ -103,7 +103,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldCalculateSquaredLength()
+        public void ShouldCalculateSquaredLength()
         {
             // Arrage
             var a = new Vector2(3, 4);
@@ -116,7 +116,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldBeCopyable()
+        public void ShouldBeCopyable()
         {
             // Arrage
             var a = new Vector2(11, 13);
@@ -129,7 +129,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldAllowToCalculateDistanceFromPoints()
+        public void ShouldAllowToCalculateDistanceFromPoints()
         {
             // Arrage
             var a = new Vector2(11, 13);
@@ -145,7 +145,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldAllowToCalculateSquaredDistanceFrom()
+        public void ShouldAllowToCalculateSquaredDistanceFrom()
         {
             // Arrage
             var a = new Vector2(11, 13);
@@ -161,7 +161,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldCalculateNormalizedVectors()
+        public void ShouldCalculateNormalizedVectors()
         {
             // Arrage
             var a = new Vector2(-1, 1);
@@ -183,7 +183,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldBeInitializableWithNoArguments()
+        public void ShouldBeInitializableWithNoArguments()
         {
             // Arrage
             var a = new Vector2();
@@ -195,7 +195,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldCorrectlyCalculateAngleBetweenVectors1()
+        public void ShouldCorrectlyCalculateAngleBetweenVectors1()
         {
             // Arrage
             var a = new Vector2(1, 1);
@@ -210,7 +210,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldCorrectlyCalculateAngleBetweenVectors2()
+        public void ShouldCorrectlyCalculateAngleBetweenVectors2()
         {
             // Arrage
             var a = new Vector2(0, 3);
@@ -225,7 +225,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldCorrectlyCalculateLengthAfterPropertiesChanged()
+        public void ShouldCorrectlyCalculateLengthAfterPropertiesChanged()
         {
             // Arrage
             var a = new Vector2();
@@ -255,7 +255,7 @@ namespace GameTests
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void Vectors_ShouldThrowExceptionWhenTryingToNormalizeZeroVector()
+        public void ShouldThrowExceptionWhenTryingToNormalizeZeroVector()
         {
             // Arrage
             var a = new Vector2();
@@ -267,7 +267,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Vectors_ShouldNotThrowExceptionWhenTryingToSafeNormalizeZeroVector()
+        public void ShouldNotThrowExceptionWhenTryingToSafeNormalizeZeroVector()
         {
             // Arrage
             var a = new Vector2();
@@ -282,7 +282,7 @@ namespace GameTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Vectors_ShouldThrowExceptionWhenTryingToDivideBy0()
+        public void ShouldThrowExceptionWhenTryingToDivideBy0()
         {
             // Arrage
             var a = new Vector2();
@@ -295,7 +295,7 @@ namespace GameTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Vectors_ShouldThrowExceptionWhenTryingToCalculateAngleBetweenZeroVector()
+        public void ShouldThrowExceptionWhenTryingToCalculateAngleBetweenZeroVector()
         {
             // Arrage
             var a = new Vector2();

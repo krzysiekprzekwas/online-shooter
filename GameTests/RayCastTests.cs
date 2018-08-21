@@ -21,14 +21,14 @@ namespace GameTests
 
             // assert  
             Assert.IsNotNull(trace);
-            Assert.AreEqual(trace.Position, new Vector2(0, -0.5f));
+            Assert.AreEqual(trace.Position, new Vector2(0, -0.5));
         }
 
         [TestMethod]
         public void RectRayCasting_ShouldReturnHitPosition_2()
         {
             // arrange
-            MapRect rect = new MapRect(1.5f, -0.5f, 1, 1);
+            MapRect rect = new MapRect(1.5, -0.5, 1, 1);
             Ray ray = new Ray(2, -2, -1, 1);
 
             // act
@@ -51,7 +51,7 @@ namespace GameTests
 
             // assert  
             Assert.IsNotNull(trace);
-            Assert.AreEqual(trace.Position, new Vector2(10, 10.5f));
+            Assert.AreEqual(trace.Position, new Vector2(10, 10.5));
         }
 
         [TestMethod]
