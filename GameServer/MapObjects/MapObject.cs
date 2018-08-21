@@ -1,10 +1,11 @@
 ﻿using GameServer.Models;
 using GameServer.States;
+using System;
 using System.Collections;
 
 namespace GameServer.MapObjects
 {
-    public abstract class MapObject
+    public abstract class MapObject : ICloneable, IEquatable<MapObject>
     {
         public MapObject(double x, double y, TextureEnum texture, MapObject parent)
         {
@@ -22,5 +23,8 @@ namespace GameServer.MapObjects
         public TextureEnum Texture { get; set; }
 
         public MapObject Parent { get; set; }
+
+        public abstract object Clone();
+        public abstract bool Equals(MapObject other);
     }
 }

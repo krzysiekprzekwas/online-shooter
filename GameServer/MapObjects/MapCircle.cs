@@ -8,33 +8,23 @@ namespace GameServer.MapObjects
 {
     public class MapCircle : MapObject
     {
-
-        public MapCircle(double x, double y, double diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+        public MapCircle(double x, double y, double radius, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
             : base(x, y, texture, parent)
         {
-            Diameter = diameter;
+            Radius = radius;
         }
 
-        public MapCircle(Vector2 pos, double diameter, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
-            : this(pos.X, pos.Y, diameter, texture, parent)
+        public MapCircle(Vector2 pos, double radius, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+            : this(pos.X, pos.Y, radius, texture, parent)
         {
         }
 
-
-        public double Diameter { get; set; }
-
-        [JsonIgnore]
-        public double Radius
+        public MapCircle(MapCircle c)
+            : this(c.Position.X, c.Position.Y, c.Radius, c.Texture, c.Parent)
         {
-            get
-            {
-                return Diameter / 2f;
-            }
-            set
-            {
-                Diameter = value * 2f;
-            }
         }
+
+        public double Radius { get; set; }
 
         [JsonIgnore]
         public double RadiusSquared
@@ -43,6 +33,26 @@ namespace GameServer.MapObjects
             {
                 return Math.Pow(Radius, 2);
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Circle<x:{Position.X} y:{Position.Y}, r:{Radius}>";
+        }
+
+        public override object Clone()
+        {
+            return new MapCircle(this);
+        }
+
+        public override bool Equals(MapObject other)
+        {
+            var c = other as MapCircle;
+
+            if (c == null)
+                return false;
+
+            return Position.Equals(c.Position) && Radius == c.Radius;
         }
     }
 }

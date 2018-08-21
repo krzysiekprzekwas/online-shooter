@@ -55,17 +55,21 @@ namespace GameServer.States
                 long pingStart = jsonObject.PingStart;
                 StateController.SendReceivedState(webSocket, pingStart);
             }
+            else if(jsonObject.Type == "connect")
+            {
+                player.Name = jsonObject.Name.ToString();
+            }
             else
                 Console.WriteLine("Received unknown " + jsonObject.Type + " request from player #" + player.Id);
         }
 
         public static void ProcessPlayerState(dynamic playerState, Player player)
         {
-            player.Keys = new List<string>();
+            player.Keys = new List<KeyEnum>();
             foreach (var key in playerState.Keys)
                 player.Keys.Add(key.Value);
             
-            player.Angle = (float)playerState.Angle.Value;
+            player.Angle = playerState.Angle.Value;
         }
 
         public static void SendConnectedConfirmation(WebSocket webSocket, Player player)

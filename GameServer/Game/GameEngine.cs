@@ -54,7 +54,7 @@ namespace GameServer.Game
 
         public bool ConnectPlayer(Player player)
         {
-            _logger.LogInformation(string.Format("Player #{0} ({1}) IP={2} connected.", player.Id, player.Name, player.IpAddress));
+            _logger.LogInformation($"Player #{player.Id} ({player.Name}) IP={player.IpAddress} connected.");
 
             GameState.Instance.Players.Add(player);
 
@@ -65,7 +65,7 @@ namespace GameServer.Game
 
         public void DisconnectPlayer(Player player)
         {
-            _logger.LogInformation(string.Format("Player #{0} ({1}) IP={2} disconnected.", player.Id, player.Name, player.IpAddress));
+            _logger.LogInformation($"Player #{player.Id} ({player.Name}) IP={player.IpAddress} disconnected.");
 
             GameEvents.OnPlayerDisconnected(player);
 

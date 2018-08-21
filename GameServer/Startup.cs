@@ -92,7 +92,6 @@ namespace GameServer
 
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
-
             // Player connecting - sending connect request
             var buffer = new byte[Config.BUFFER_SIZE];
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -128,7 +127,6 @@ namespace GameServer
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
 
             _gameEngine.DisconnectPlayer(player);
-
         }
     }
 }

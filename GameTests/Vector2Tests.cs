@@ -267,6 +267,20 @@ namespace GameTests
         }
 
         [TestMethod]
+        public void Vectors_ShouldNotThrowExceptionWhenTryingToSafeNormalizeZeroVector()
+        {
+            // Arrage
+            var a = new Vector2();
+
+            // Act
+            var v = a.SafeNormalize();
+
+            // Assert
+            var expected = Vector2.ZERO_VECTOR;
+            Assert.AreEqual(expected, v);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Vectors_ShouldThrowExceptionWhenTryingToDivideBy0()
         {

@@ -44,6 +44,7 @@ const connection = {
             PingStart: new Date().getTime()
         });
 
+        console.log(playerStateString);
         connection.socket.send(playerStateString);
     },
 

@@ -18,6 +18,12 @@ namespace GameServer.States
         private GameState()
         {
             Players = new List<Player>();
+            PlayerId = 1;
+        }
+
+        public int GeneratePlayerUniqueId()
+        {
+            return PlayerId++;
         }
 
         public static GameState Instance
