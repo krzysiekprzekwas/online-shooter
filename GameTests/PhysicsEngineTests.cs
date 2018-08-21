@@ -105,7 +105,7 @@ namespace GameTests
             for (var i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();
 
-            player.Keys = new List<KeyEnum> { KeyEnum.Left };
+            player.Keys = new List<KeyEnum> { KeyEnum.Right };
             for (var i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();
 

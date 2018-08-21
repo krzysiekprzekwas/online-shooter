@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.WebSockets;
 using GameServer.MapObjects;
@@ -23,7 +24,6 @@ namespace GameServer.Models
         [JsonIgnore]
         public List<KeyEnum> Keys;
 
-
         public Player()
         {
             Id = GameState.Instance.GeneratePlayerUniqueId();
@@ -34,6 +34,11 @@ namespace GameServer.Models
             Speed = new Vector2();
             
             Radius = Config.PLAYER_RADIUS;
+        }
+
+        public override string ToString()
+        {
+            return $"Player<Id:{Id} Name:{Name}, Pos:{Position} R:{Radius}>";
         }
     }
 }
