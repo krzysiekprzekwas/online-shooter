@@ -22,7 +22,7 @@ namespace GameServer
         [JsonProperty]
         public static double PLAYER_DECCELERATION = 0.8;
         [JsonProperty]
-        public static double PLAYER_RADIUS = 32;
+        public static double PLAYER_RADIUS = 16;
         [JsonProperty]
         public static double INTERSECTION_INTERVAL = 0.01; 
 

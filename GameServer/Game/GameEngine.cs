@@ -44,9 +44,12 @@ namespace GameServer.Game
             // Send game state for each client
             foreach (var player in currentPlayers)
             {
-                if (player.WebSocket.State != WebSocketState.Open)
-                    DisconnectPlayer(player);
-                else
+                //if (player.WebSocket.State != WebSocketState.Open)
+                //{
+                //    DisconnectPlayer(player);
+                //    Console.WriteLine($"Connection closed by client {player}");
+                //}
+                //else
                     StateController.SendGameState(player.WebSocket);
 
             }

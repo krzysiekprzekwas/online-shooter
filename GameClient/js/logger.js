@@ -9,27 +9,12 @@ let logger = {
     
     log(logLevelName, message) {
         
-        let $output = document.getElementById('output');
-
-        $output.innerHTML = this.formatMessage(logLevelName, message) + $output.innerHTML;
-
         if(logLevelName == "WARN")
             console.warn(message);
         else if(logLevelName == "ERROR")
             console.error(message);
         else
             console.log(message);
-    },
-
-    formatMessage(logLevelName, message) {
-
-        let formattedMessage = '<span class="' + logLevelName + '">';
-        formattedMessage += '<span class="logLevelName">[' + logLevelName + ']</span> ';
-        formattedMessage += '<span class="timestamp">' + this.getFormattedDate() + '</span> | ';
-        formattedMessage += '<span class="message">' + message + '</span>';
-        formattedMessage += '</span>\n';
-
-        return formattedMessage;
     },
 
     getFormattedDate() {

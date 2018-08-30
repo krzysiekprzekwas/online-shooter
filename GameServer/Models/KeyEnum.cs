@@ -11,5 +11,7 @@ namespace GameServer.Models
         Down = 2,
         Left = 3,
         Right = 4,
+
+        Space = 5,
     }
 }

@@ -67,7 +67,7 @@ namespace GameServer.States
         {
             player.Keys = new List<KeyEnum>();
             foreach (var key in playerState.Keys)
-                player.Keys.Add(key.Value);
+                player.Keys.Add((KeyEnum)int.Parse(key.Value));
             
             player.Angle = playerState.Angle.Value;
         }
