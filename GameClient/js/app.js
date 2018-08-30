@@ -7,7 +7,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(displayWidth, displayHeight, WEBGL);
+    createCanvas(window.innerWidth, window.innerHeight, WEBGL);
     stroke(0);
 
     ellipseMode(CENTER);
@@ -22,7 +22,11 @@ function setup() {
 
 function draw() {
     background(61);
-    world.draw();
+
+    if (blackScreen.ShouldBeDisplayed())
+        blackScreen.Display()
+    else
+        world.draw();
 }
 
 function windowResized() {

@@ -23,7 +23,7 @@ namespace GameServer.Physics
 
                 var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
                     
-                //speedVector = CalculatePossibleMovementVector(player, speedVector);
+                speedVector = CalculatePossibleMovementVector(player, speedVector);
 
                 player.Speed = speedVector;
                 player.Position += speedVector;
@@ -35,13 +35,13 @@ namespace GameServer.Physics
             Vector2 calculatedSpeedVector = new Vector2();
 
             // First get direction
-            if (player.Keys.Contains("w"))
+            if (player.Keys.Contains(KeyEnum.Up))
                 calculatedSpeedVector += Vector2.UP_VECTOR;
-            if (player.Keys.Contains("s"))
+            if (player.Keys.Contains(KeyEnum.Down))
                 calculatedSpeedVector += Vector2.DOWN_VECTOR;
-            if (player.Keys.Contains("a"))
+            if (player.Keys.Contains(KeyEnum.Left))
                 calculatedSpeedVector += Vector2.LEFT_VECTOR;
-            if (player.Keys.Contains("d"))
+            if (player.Keys.Contains(KeyEnum.Right))
                 calculatedSpeedVector += Vector2.RIGHT_VECTOR;
 
             // Scale vector to be speed length
@@ -57,86 +57,37 @@ namespace GameServer.Physics
 
         public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector)
         {
+            if (speedvector.IsDegenerated())
+                return Vector2.ZERO_VECTOR;
+
             // Variables used to calculate speed vector
             var offset = 0d;
             var speedVectorLength = speedvector.Length();
             var speedVectorNormalized = speedvector.Normalize();
-            var currentPrecision = speedVectorLength / 2f;
+            var currentPrecision = speedVectorLength / 2d;
             MapObject intersectionObject = null;
 
             do
             {
                 // Create moved sphere
                 var checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
-                var s = new MapCircle(checkPosition, player.Diameter);
 
                 // Check for intersection
-                intersectionObject = CheckAnyIntersectionWithWorld(s);
+                var validationObject = new MapCircle(checkPosition, player.Radius);
+                intersectionObject = CheckAnyIntersectionWithWorld(validationObject);
 
                 // Update new position and offset
-                currentPrecision /= 2f;
-                if (intersectionObject == null) //  No object found, increase offset
+                if (intersectionObject == null) // No object found, increase offset
                     offset += currentPrecision;
+
+                currentPrecision /= 2.0;
 
             } // Do this as long as we reach desired precision
             while (currentPrecision >= Config.INTERSECTION_INTERVAL);
 
-            return player.Position + (speedVectorNormalized * offset);
-            //return new Vector2(0, 0);
+            return speedVectorNormalized * offset;
         }
-
-        //public MapObject GetIntersectionObjectTowardsDirection(out float offset, Player player, Vector2 speedVectorNormalized, float speedVectorLength)
-        //{
-        //    // Variables used to calculate speed vector
-        //    offset = 0f;
-        //    float currentPrecision = speedVectorLength / 2f;
-        //    MapObject intersectionObject = null;
-
-        //    do
-        //    {
-        //        // Create moved sphere
-        //        Vector2 checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
-        //        MapCircle s = new MapCircle(checkPosition, player.Diameter);
-
-        //        // Check for intersection
-        //        intersectionObject = CheckAnyIntersectionWithWorld(s);
-
-        //        // Update new position and offset
-        //        if (intersectionObject != null) // Object found try a bit closer
-        //            currentPrecision /= 2f;
-        //        else // No object found, increase offset
-        //        {
-        //            offset += currentPrecision;
-        //            currentPrecision /= 2f;
-        //        }
-
-
-        //    } // Do this as long as we reach desired precision
-        //    while (currentPrecision >= Config.INTERSECTION_INTERVAL);
-
-        //    return intersectionObject;
-        //}
-
-        //public Vector2 GetNewPlayerPosition(Player player, Vector2 speedVector)
-        //{
-        //    // Calculate length
-        //    float speedVectorLength = speedVector.Length();
-
-        //    // Almost standing still
-        //    if (speedVectorLength == 0)
-        //        return new Vector2(0, 0);
-
-        //    Vector2 speedVectorNormalized = Vector2.Normalize(speedVector);
-
-        //    // Get intersection object
-        //    MapObject intersectionObject = GetIntersectionObjectTowardsDirection(out float offset, player, speedVectorNormalized, speedVectorLength);
-
-        //    Vector2 parralelVector = GetParralelMovementVector(player, speedVector, speedVectorLength, intersectionObject, offset);
-
-        //    // Update speed vector
-        //    return (speedVectorNormalized * offset) + parralelVector;
-        //}
-
+        
         public MapObject CheckAnyIntersectionWithWorld(MapCircle s)
         {
             // Check intersection with all map objects

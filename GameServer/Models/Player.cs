@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.WebSockets;
 using GameServer.MapObjects;
@@ -10,6 +11,7 @@ namespace GameServer.Models
     public class Player
     {
         public Vector2 Position { get; set; }
+        public double Radius { get; set; }
         public Vector2 Speed { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
@@ -18,61 +20,25 @@ namespace GameServer.Models
 
         [JsonIgnore]
         public IPAddress IpAddress;
-        public float Angle { get; set; }
+        public double Angle { get; set; }
         [JsonIgnore]
-        private MapCircle _worldObject;
-        public MapCircle WorldObject
-        {
-            get
-            {
-                if (_worldObject == null)
-                    _worldObject = new MapCircle(Position.X, Position.Y, Diameter);
-                else
-                    _worldObject.Position = Position;
-
-                return _worldObject;
-            }
-        }
-        [JsonIgnore]
-        public List<string> Keys;
-        [JsonIgnore]
-        private double _playerRadius;
-        public double Radius
-        {
-            get
-            {
-                return _playerRadius;
-            }
-            set
-            {
-                if (value > 0)
-                    _playerRadius = value;
-            }
-        }
-
-        [JsonIgnore]
-        public double Diameter
-        {
-            get
-            {
-                return _playerRadius * 2;
-            }
-            set
-            {
-                if(value > 0)
-                    _playerRadius = value / 2;
-            }
-        }
+        public List<KeyEnum> Keys;
 
         public Player()
         {
-            Id = GameState.Instance.Players.Count + 1; // TODO: possible same ids
-            Keys = new List<string>();
-            Angle = 0.0f;
-            Position = new Vector2(0, 0);
-            Speed = new Vector2(0, 0);
+            Id = GameState.Instance.GeneratePlayerUniqueId();
+            Keys = new List<KeyEnum>();
+
+            Angle = 0;
+            Position = new Vector2();
+            Speed = new Vector2();
             
-            Diameter = Config.PLAYER_SIZE;
+            Radius = Config.PLAYER_RADIUS;
+        }
+
+        public override string ToString()
+        {
+            return $"Player<Id:{Id} Name:{Name}, Pos:{Position} R:{Radius}>";
         }
     }
 }

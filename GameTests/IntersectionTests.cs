@@ -14,8 +14,8 @@ namespace GameTests
         public void CircleCircleIntersection_ShouldReturnTrue_IfTheyIntersect()
         {
             // Arrage
-            MapCircle c1 = new MapCircle(0, 0, 2);
-            MapCircle c2 = new MapCircle(1, 1, 1);
+            MapCircle c1 = new MapCircle(0, 0, 1);
+            MapCircle c2 = new MapCircle(1, 1, 0.5);
 
             // Act
             bool intersects = Intersection.CheckIntersection(c1, c2);
@@ -28,8 +28,8 @@ namespace GameTests
         public void CircleCircleIntersection_ShouldReturnTrue_IfTheyTouchesEachOther()
         {
             // Arrage
-            MapCircle c1 = new MapCircle(0, 0, 2);
-            MapCircle c2 = new MapCircle(0, 2, 2);
+            MapCircle c1 = new MapCircle(0, 0, 1);
+            MapCircle c2 = new MapCircle(0, 2, 1);
 
             // Act
             bool intersects = Intersection.CheckIntersection(c1, c2);
@@ -42,8 +42,8 @@ namespace GameTests
         public void CircleCircleIntersection_ShouldReturnFalse_IfTheyDontIntersect()
         {
             // Arrage
-            MapCircle c1 = new MapCircle(0, 0, 2);
-            MapCircle c2 = new MapCircle(0, 2.1f, 2);
+            MapCircle c1 = new MapCircle(0, 0, 1);
+            MapCircle c2 = new MapCircle(0, 2.1, 1);
 
             // Act
             bool intersects = Intersection.CheckIntersection(c1, c2);
@@ -56,8 +56,8 @@ namespace GameTests
         public void CircleCircleIntersection_ShouldReturnTrue_IfOneIsInsideAnother()
         {
             // Arrage
-            MapCircle c1 = new MapCircle(0, 0, 2);
-            MapCircle c2 = new MapCircle(0, 0, 1);
+            MapCircle c1 = new MapCircle(0, 0, 1);
+            MapCircle c2 = new MapCircle(0, 0, 0.5);
 
             // Act
             bool intersects = Intersection.CheckIntersection(c1, c2);
@@ -140,7 +140,7 @@ namespace GameTests
         public void RectCircleIntersection_ShouldReturnTrue_IfTheyIntersect()
         {
             // Arrange
-            MapCircle c = new MapCircle(0, 0, 2);
+            MapCircle c = new MapCircle(0, 0, 1);
             MapRect r = new MapRect(1, 0, 1, 1);
 
             // Act
@@ -154,7 +154,7 @@ namespace GameTests
         public void RectCircleIntersection_ShouldReturnFalse_IfTheyDontIntersect()
         {
             // Arrange
-            MapCircle c = new MapCircle(0, 0, 2);
+            MapCircle c = new MapCircle(0, 0, 1);
             MapRect r = new MapRect(2, 0, 1, 1);
 
             // Act
@@ -168,7 +168,7 @@ namespace GameTests
         public void RectCircleIntersection_ShouldReturnTrue_IfRectIsInsideCircle()
         {
             // Arrange
-            MapCircle c = new MapCircle(0, 0, 10);
+            MapCircle c = new MapCircle(0, 0, 5);
             MapRect r = new MapRect(0, 0, 1, 1);
 
             // Act
@@ -182,7 +182,7 @@ namespace GameTests
         public void RectCircleIntersection_ShouldReturnTrue_IfCircleIsInsideRect()
         {
             // Arrange
-            MapCircle c = new MapCircle(0, 0, 1);
+            MapCircle c = new MapCircle(0, 0, 0.5);
             MapRect r = new MapRect(0, 0, 5, 5);
 
             // Act
@@ -196,7 +196,7 @@ namespace GameTests
         public void RectCircleIntersection_ShouldReturnTrue_IfTheyTouchEachOther()
         {
             // Arrange
-            MapCircle c = new MapCircle(0, 0, 2);
+            MapCircle c = new MapCircle(0, 0, 1);
             MapRect r = new MapRect(2, 0, 2, 2);
 
             // Act
@@ -210,8 +210,8 @@ namespace GameTests
         public void RectCircleIntersection_ShouldReturnFalse_IfTheyAlmostTouchEachOther()
         {
             // Arrange
-            MapCircle c = new MapCircle(0, 0, 2);
-            MapRect r = new MapRect(2.01f, 0, 2, 2);
+            MapCircle c = new MapCircle(0, 0, 1);
+            MapRect r = new MapRect(2.01, 0, 2, 2);
 
             // Act
             bool intersects = Intersection.CheckIntersection(r, c);

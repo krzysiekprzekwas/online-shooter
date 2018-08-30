@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GameServer.Models
 {
-    public class Vector2
+    public class Vector2 : IEquatable<object>, ICloneable
     {
         /*
          * Vector logic
@@ -85,6 +85,18 @@ namespace GameServer.Models
             var v = new Vector2(this);
             v /= Length();
             return v;
+        }
+
+        public Vector2 SafeNormalize()
+        {
+            try
+            {
+                return Normalize();
+            }
+            catch
+            {
+                return new Vector2();
+            }
         }
 
         public bool IsDegenerated()
@@ -208,6 +220,11 @@ namespace GameServer.Models
                 hash = hash * 23 + Y.GetHashCode();
                 return hash;
             }
+        }
+        
+        public object Clone()
+        {
+            return new Vector2(this);
         }
 
         /*

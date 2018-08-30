@@ -16,12 +16,12 @@ namespace GameTests
     public class PhysicsEngineTests
     {
         [TestMethod]
-        public void PhysicsEngine_ShouldCalculateSpeedVectorFromPlayerInput()
+        public void ShouldCalculateSpeedVectorFromPlayerInput()
         {
             // Arrange
             var player = new Player();
-            player.Keys.Add("w");
-            player.Keys.Add("a");
+            player.Keys.Add(KeyEnum.Up);
+            player.Keys.Add(KeyEnum.Left);
 
             // Act
             var nromalizedSpeedVector = PhysicsEngine.GetSpeedFromPlayerInput(player).Normalize();
@@ -33,12 +33,12 @@ namespace GameTests
         }
         
         [TestMethod]
-        public void PhysicsEngine_ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
+        public void ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
         {
             // Arrange
             var player = new Player();
-            player.Keys.Add("s");
-            player.Keys.Add("w");
+            player.Keys.Add(KeyEnum.Down);
+            player.Keys.Add(KeyEnum.Up);
 
             // Act
             var speedVector = PhysicsEngine.GetSpeedFromPlayerInput(player);
@@ -49,15 +49,30 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void PhysicsEngine_ShouldAllowMovement()
+        public void ShouldNotThrowExceptionsWhenPlayerIsStandingStill()
+        {
+            // Arrange
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+
+            // Act
+            for (int i = 1; i <= 200; i++)
+                gameEngine.PhysicsEngine.ApplyPhysics();
+
+            // Assert
+            Assert.AreEqual(player.Position.Y, 0);
+            Assert.AreEqual(player.Position.X, 0);
+        }
+
+        [TestMethod]
+        public void ShouldAllowMovement()
         {
             // Arrange
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
 
             // Act  
-            player.Keys.Add("w");
-            player.Keys.Add("a");
-            player.Angle = (float)Math.PI / 4f;
+            player.Keys.Add(KeyEnum.Up);
+            player.Keys.Add(KeyEnum.Left);
+            player.Angle = Math.PI / 4;
             for (int i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();
 
@@ -67,19 +82,22 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void PhysicsEngine_ShouldNotAllowPassingThroughWalls()
+        public void ShouldNotAllowPassingThroughWalls()
         {
             // Arrange
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
-            var mapRect = new MapRect(0, 30, 2, 2);
+            var r = player.Radius;
+            var mapRect = new MapRect(0, r * 2, 2, 2);
             MapState.Instance.MapObjects = new List<MapObject> { mapRect };
 
             // Act  
-            player.Keys.Add("w");
+            player.Keys.Add(KeyEnum.Up);
             for (int i = 1; i <= 200; i++)
             {
                 gameEngine.PhysicsEngine.ApplyPhysics();
-                Assert.IsFalse(Intersection.CheckIntersection(player.WorldObject, mapRect));
+
+                var playerObject = new MapCircle(player.Position, player.Radius);
+                Assert.IsFalse(Intersection.CheckIntersection(playerObject, mapRect));
             }
 
             // Assert
@@ -88,7 +106,7 @@ namespace GameTests
         }
         
         [TestMethod]
-        public void PhysicsEngine_ShouldStuckPlayerBetweenTwoWalls()
+        public void ShouldStuckPlayerBetweenTwoWalls()
         {
             // Arrange
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
@@ -98,12 +116,12 @@ namespace GameTests
             MapState.Instance.MapObjects = new List<MapObject> { mapRect1, mapRect2 };
 
             // Act  
-            player.Keys = new List<string> { "w" };
-            for (int i = 1; i <= 200; i++)
+            player.Keys = new List<KeyEnum> { KeyEnum.Up };
+            for (var i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();
 
-            player.Keys = new List<string> { "a" };
-            for (int i = 1; i <= 200; i++)
+            player.Keys = new List<KeyEnum> { KeyEnum.Right };
+            for (var i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();
 
             // Assert
@@ -125,7 +143,7 @@ namespace GameTests
             player = new Player()
             {
                 Position = new Vector2(0, 0),
-                Angle = 0.0f
+                Angle = 0.0
             };
 
             GameState.Instance.Players.Add(player);

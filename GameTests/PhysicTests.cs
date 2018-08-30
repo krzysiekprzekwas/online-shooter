@@ -11,11 +11,11 @@ namespace GameTests
     public class PhysicTests
     {
         [TestMethod]
-        public void Physic_ShouldCorrectlyRotateVector1()
+        public void ShouldCorrectlyRotateVector1()
         {
             // Arrage
             var vector = new Vector2(10, 0);
-            var angle = (float)Math.PI / 4;
+            var angle = Math.PI / 4;
 
             // Act
             var rotatedVector = Physic.RotateVector(vector, angle);
@@ -27,11 +27,11 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyRotateVectorByNegativeAngle()
+        public void ShouldCorrectlyRotateVectorByNegativeAngle()
         {
             // Arrage
             var vector = new Vector2(0, -3);
-            var angle = (float)Math.PI / -2;
+            var angle = Math.PI / -2;
 
             // Act
             var rotatedVector = Physic.RotateVector(vector, angle);
@@ -43,7 +43,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyProjectVectorOntoAnother1()
+        public void ShouldCorrectlyProjectVectorOntoAnother1()
         {
             // Arrage
             var vector = new Vector2(2, 1);
@@ -58,7 +58,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyProjectVectorOntoAnother2()
+        public void ShouldCorrectlyProjectVectorOntoAnother2()
         {
             // Arrage
             var vector = new Vector2(-2, -1);
@@ -73,7 +73,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal1()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal1()
         {
             // Arrage
             var vector = new Vector2(2, 1);
@@ -89,7 +89,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal2()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal2()
         {
             // Arrage
             var vector = new Vector2(-2, -1);
@@ -105,7 +105,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal3()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal3()
         {
             // Arrage
             var vector = new Vector2(-1, -1);
@@ -121,7 +121,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCorrectlyCalculateParallelVectorToNormal4()
+        public void ShouldCorrectlyCalculateParallelVectorToNormal4()
         {
             // Arrage
             var vector = new Vector2(0, 3);
@@ -131,13 +131,13 @@ namespace GameTests
             var parallelVector = Physic.GetParallelVectorToNormal(vector, normalvector);
 
             // Assert
-            var expectedVector = Vector2.Normalize(new Vector2(-1, 1)) * ((vector.Length() * (float)Math.Sqrt(2)) / 2);
+            var expectedVector = Vector2.Normalize(new Vector2(-1, 1)) * ((vector.Length() * Math.Sqrt(2)) / 2);
             Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal1()
+        public void ShouldCalculateParallelVectorToIntersectionNormal1()
         {
             // Arrage
             var movementVector = new Vector2(0, 2);
@@ -148,34 +148,34 @@ namespace GameTests
             var parallelVector = Physic.GetLeftParallelVectorToIntersectionNormal(movementVector, intersectionDistance, intersectionNormal);
 
             // Assert
-            var expectedVector = Vector2.Normalize(new Vector2(-1, 1)) * (((movementVector.Length() - intersectionDistance) * (float)Math.Sqrt(2)) / 2);
+            var expectedVector = Vector2.Normalize(new Vector2(-1, 1)) * (((movementVector.Length() - intersectionDistance) * Math.Sqrt(2)) / 2);
             Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
         }
 
 
         [TestMethod]
-        public void Physic_ShouldCalculateParallelVectorToIntersectionNormal2()
+        public void ShouldCalculateParallelVectorToIntersectionNormal2()
         {
             // Arrage
             var movementVector = new Vector2(-3, 3);
-            var intersectionDistance = (float)Math.Sqrt(2);
+            var intersectionDistance = Math.Sqrt(2);
             var intersectionNormal = new Vector2(-1, 0);
 
             // Act
             var parallelVector = Physic.GetLeftParallelVectorToIntersectionNormal(movementVector, intersectionDistance, intersectionNormal);
 
             // Assert
-            var expectedVector = Vector2.Normalize(new Vector2(0, 1)) * (((movementVector.Length() - intersectionDistance) * (float)Math.Sqrt(2)) / 2);
+            var expectedVector = Vector2.Normalize(new Vector2(0, 1)) * (((movementVector.Length() - intersectionDistance) * Math.Sqrt(2)) / 2);
             Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateVectorFromAngle()
+        public void ShouldCalculateVectorFromAngle()
         {
             // Arrange
-            var angle = (float)Math.PI * 3 / 2;
+            var angle = Math.PI * 3 / 2;
 
             // Act
             var vector = Physic.AngleToVector(angle);
@@ -187,7 +187,7 @@ namespace GameTests
         }
 
         [TestMethod]
-        public void Physic_ShouldCalculateAngleFromVector()
+        public void ShouldCalculateAngleFromVector()
         {
             // Arrange
             var vector = new Vector2(-1, 1);
@@ -196,7 +196,7 @@ namespace GameTests
             var angle = Physic.VectorToAngle(vector);
 
             // Assert
-            var expectedAngle = (float)Math.PI * -1 / 4;
+            var expectedAngle = Math.PI * -1 / 4;
             Assert.AreEqual(expectedAngle, angle, 0.0001);
         }
     }

@@ -21,14 +21,14 @@ namespace GameTests
 
             // assert  
             Assert.IsNotNull(trace);
-            Assert.AreEqual(trace.Position, new Vector2(0, -0.5f));
+            Assert.AreEqual(trace.Position, new Vector2(0, -0.5));
         }
 
         [TestMethod]
         public void RectRayCasting_ShouldReturnHitPosition_2()
         {
             // arrange
-            MapRect rect = new MapRect(1.5f, -0.5f, 1, 1);
+            MapRect rect = new MapRect(1.5, -0.5, 1, 1);
             Ray ray = new Ray(2, -2, -1, 1);
 
             // act
@@ -51,7 +51,7 @@ namespace GameTests
 
             // assert  
             Assert.IsNotNull(trace);
-            Assert.AreEqual(trace.Position, new Vector2(10, 10.5f));
+            Assert.AreEqual(trace.Position, new Vector2(10, 10.5));
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace GameTests
         public void CircleRayCasting_ShouldReturnHitPosition_1()
         {
             // arrange
-            MapCircle circle = new MapCircle(10, 10, 2);
+            MapCircle circle = new MapCircle(10, 10, 1);
             Ray ray = new Ray(0, 0, 1, 1);
 
             // act
@@ -81,7 +81,7 @@ namespace GameTests
             // assert  
             Assert.IsNotNull(trace);
 
-            float c = (float)Math.Sqrt(2) / 2;
+            var c = Math.Sqrt(2) / 2;
             Vector2 expectedPosition = circle.Position - new Vector2(c, c);
             Assert.AreEqual(expectedPosition.X, trace.Position.X, 1e-6);
             Assert.AreEqual(expectedPosition.Y, trace.Position.Y, 1e-6);
@@ -91,7 +91,7 @@ namespace GameTests
         public void CircleRayCasting_ShouldReturnHitPosition_2()
         {
             // arrange
-            MapCircle circle = new MapCircle(10, 10, 2);
+            MapCircle circle = new MapCircle(10, 10, 1);
             Ray ray = new Ray(20, 10, -1, 0);
 
             // act
@@ -106,7 +106,7 @@ namespace GameTests
         public void CircleRayCasting_ShouldReturnHitPosition_3()
         {
             // arrange
-            MapCircle circle = new MapCircle(1, 0, 2);
+            MapCircle circle = new MapCircle(1, 0, 1);
             Ray ray = new Ray(5, 0, -1, 0);
 
             // act
@@ -121,7 +121,7 @@ namespace GameTests
         public void CircleRayCasting_ShouldReturnNull_WhenInOppositeDirection()
         {
             // arrange
-            MapCircle circle = new MapCircle(1, 0, 2);
+            MapCircle circle = new MapCircle(1, 0, 1);
             Ray ray = new Ray(-3, 0, -1, 0);
 
             // act

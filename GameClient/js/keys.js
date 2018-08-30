@@ -1,14 +1,15 @@
 ﻿let keys = {
 
+    // KeyCode from js to backend enum (KeyEnum.cs)
     configuration: {
-        80: "p",
-        87: "w",
-        83: "s",
-        68: "d",
-        65: "a",
-        32: "sp" // Space
+        80: 99,
+        87: 1, // W
+        83: 2, // S
+        65: 3, // A
+        68: 4, // D
+        32: 5 // Space
     },
-
+    
     keysPressed: Array(),
 
     // Action on player key pressed

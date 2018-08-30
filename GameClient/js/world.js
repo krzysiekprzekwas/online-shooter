@@ -54,7 +54,7 @@ let world = {
                 id: player.Id,
                 x: player.Position.X,
                 y: player.Position.Y,
-                diameter: player.WorldObject.Diameter
+                radius: player.Radius
             };
 
             if (playerObject.id === world.playerId)
@@ -116,14 +116,14 @@ let world = {
             else
                 stroke(0);
 
-            ellipse(player.x - center.x, player.y - center.y, player.diameter, player.diameter);
+            ellipse(player.x - center.x, player.y - center.y, player.radius * 2, player.radius * 2);
 
             if (world.printCoordinates) {
 
                 strokeWeight(0);
                 textSize(12);
                 fill(236, 240, 241)
-                text(`(${Math.round(player.x)}, ${Math.round(player.y)} [${player.diameter}])`, player.x - center.x, player.y - center.y);
+                text(`(${Math.round(player.x)}, ${Math.round(player.y)} [${player.radius}])`, player.x - center.x, player.y - center.y);
             }
         });
     },

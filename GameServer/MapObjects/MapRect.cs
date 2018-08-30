@@ -12,6 +12,16 @@ namespace GameServer.MapObjects
             Width = w;
             Height = h;
         }
+
+        public MapRect(Vector2 pos, double w, double h, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
+            : this(pos.X, pos.Y, w, h, texture, parent)
+        {
+        }
+
+        public MapRect(MapRect r)
+            : this(r.Position.X, r.Position.Y, r.Width, r.Height, r.Texture, r.Parent)
+        {
+        }
         
         public double Width { get; set; }
         public double Height { get; set; }
@@ -30,6 +40,26 @@ namespace GameServer.MapObjects
                 new Vector2(Position.X + hw, Position.Y + hh), // Right
                 new Vector2(Position.X - hw, Position.Y + hh), // Left
             };
+        }
+
+        public override string ToString()
+        {
+            return $"Rect<x:{Position.X} y:{Position.Y}, w:{Width} h:{Height}>";
+        }
+
+        public override object Clone()
+        {
+            return new MapRect(this);
+        }
+
+        public override bool Equals(MapObject other)
+        {
+            var r = other as MapRect;
+
+            if (r == null)
+                return false;
+
+            return Position.Equals(r.Position) && Width == r.Width && Height == r.Height;
         }
     }
 }
