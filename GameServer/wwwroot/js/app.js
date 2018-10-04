@@ -17,7 +17,7 @@ function setup() {
     world.initialize();
 
     // Connection last - we may receive response faster than other class initalization
-    connection.initialize();
+    connector.initialize();
 }
 
 function draw() {

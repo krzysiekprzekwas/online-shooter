@@ -12,7 +12,7 @@
   <ItemGroup>
     <EmbeddedResource Include="nlog.config">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

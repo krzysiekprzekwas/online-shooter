@@ -9,7 +9,7 @@ namespace GameServer.Hubs
         public void Send(string name, string message)
         {
             // Call the broadcastMessage method to update clients.
-            Clients.All.SendAsync("broadcastMessage", name, message);
+            Clients.All.SendAsync("message", name, message);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
