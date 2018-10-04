@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GameServer.Game;
+using GameServer.Hubs;
 using GameServer.Models;
 using GameServer.States;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ namespace GameServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
         }
 
         public static IServiceProvider BuildDi()
@@ -51,42 +53,16 @@ namespace GameServer
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var servicesProvider = BuildDi();
-            _gameEngine = servicesProvider.GetRequiredService<GameEngine>();
-            
-
-            var webSocketOptions = new WebSocketOptions()
+            if (env.IsDevelopment())
             {
-                KeepAliveInterval = TimeSpan.FromSeconds(120),
-                ReceiveBufferSize = Config.BUFFER_SIZE
-            };
-            app.UseWebSockets(webSocketOptions);
+                app.UseDeveloperExceptionPage();
+            }
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            app.UseFileServer();
+
+            app.UseSignalR(routes =>
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor |
-                                   ForwardedHeaders.XForwardedProto
-            });
-
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/ws")
-                {
-                    if (context.WebSockets.IsWebSocketRequest)
-                    {
-                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await Echo(context, webSocket);
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 400;
-                    }
-                }
-                else
-                {
-                    await next();
-                }
-
+                routes.MapHub<ChatHub>("/game");
             });
         }
 
