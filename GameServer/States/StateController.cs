@@ -18,7 +18,7 @@ namespace GameServer.States
             string json = JsonConvert.SerializeObject(state);
             ArraySegment<byte> bytes = new ArraySegment<byte>(Encoding.ASCII.GetBytes(json));
 
-            webSocket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
+            //webSocket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
         public static void SendGameState(WebSocket webSocket)
@@ -72,17 +72,6 @@ namespace GameServer.States
             player.Angle = playerState.Angle.Value;
         }
 
-        public static void SendConnectedConfirmation(WebSocket webSocket, Player player)
-        {
-            var connectionConfirmationResponse = new
-            {
-                Type = "connected",
-                PlayerId = player.Id,
-                Config = Config.Instance
-            };
-
-            SendState(connectionConfirmationResponse, webSocket);
-        }
 
         internal static void SendReceivedState(WebSocket webSocket, long pingStart)
         {

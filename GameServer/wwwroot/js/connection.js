@@ -14,7 +14,21 @@ const connector = {
             var encodedName = name;
             var encodedMsg = message;
             // ALog message
-            console.log(encodedName + " " + encodedMsg);
+            //console.log(encodedName + " " + encodedMsg);
+        });
+
+        this.connection.on('connectConfirmation', function (response) {
+            logger.info(`Player connected #${response.playerId}`);
+
+            for (setting in response.config) {
+
+                const value = response.config[setting.toUpperCase()];
+                config[setting] = value;
+            }
+
+            console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
+
+            world.playerId = response.playerId;
         });
 
         // Transport fallback functionality is now built into start.
@@ -37,6 +51,8 @@ const connector = {
             Type: "connect",
             Name: "Player"
         });
+
+        connector.connection.invoke('onopen', connectionString);
         
         logger.info('Connection established');
     },

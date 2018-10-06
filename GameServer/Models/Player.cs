@@ -19,7 +19,7 @@ namespace GameServer.Models
         public WebSocket WebSocket;
 
         [JsonIgnore]
-        public IPAddress IpAddress;
+        public string ConnectionId;
         public double Angle { get; set; }
         [JsonIgnore]
         public List<KeyEnum> Keys;

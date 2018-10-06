@@ -15,18 +15,15 @@ namespace GameServer.Game
 {
     public class GameEngine
     {
-        private readonly ILogger<GameEngine> _logger;
-
         public Timer Ticker;
         public List<Player> Players = new List<Player>();
         public GameState GameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
         private Random random;
-
-        public GameEngine(ILogger<GameEngine> logger)
+        
+        public GameEngine()
         {
-            _logger = logger;
             GameEvents = new GameEvents(this);
             PhysicsEngine = new PhysicsEngine(this);
             random = new Random();
@@ -57,7 +54,6 @@ namespace GameServer.Game
 
         public bool ConnectPlayer(Player player)
         {
-            _logger.LogInformation($"Player #{player.Id} ({player.Name}) IP={player.IpAddress} connected.");
 
             GameState.Instance.Players.Add(player);
 
@@ -68,8 +64,6 @@ namespace GameServer.Game
 
         public void DisconnectPlayer(Player player)
         {
-            _logger.LogInformation($"Player #{player.Id} ({player.Name}) IP={player.IpAddress} disconnected.");
-
             GameEvents.OnPlayerDisconnected(player);
 
             GameState.Instance.Players.Remove(player);

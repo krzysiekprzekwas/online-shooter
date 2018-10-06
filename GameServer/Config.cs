@@ -9,7 +9,7 @@ namespace GameServer
     public class Config
     {
         // TODO: change static to const
-        [JsonProperty]
+        [JsonProperty("BUFFER_SIZE")]
         public static int BUFFER_SIZE = 4 * 1024;
         [JsonProperty]
         public static int SERVER_TICK = 64;
