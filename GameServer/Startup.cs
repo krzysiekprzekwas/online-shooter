@@ -38,7 +38,7 @@ namespace GameServer
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<ChatHub>("/game");
+                routes.MapHub<GameHub>("/game");
             });
         }
 

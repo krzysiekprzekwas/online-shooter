@@ -35,7 +35,7 @@ const connector = {
         this.connection.start()
             .then(function () {
                 console.log('connection started');
-                connector.onOpen();
+                setTimeout(connector.onOpen(), 1000);
             });
 
         this.messagesReceivedCount = 0;
@@ -82,7 +82,7 @@ const connector = {
 
         if (config.DEBUG_STOP)
             return;
-
+        
         const playerStateString = JSON.stringify({
             Type: "playerstate",
             Keys: keys.getKeysState(),

@@ -9,7 +9,7 @@ using GameServer.States;
 
 namespace GameServer.Hubs
 {
-    public class ChatHub : Hub
+    public class GameHub : Hub
     {
 
         private GameEngine _gameEngine = new GameEngine();
