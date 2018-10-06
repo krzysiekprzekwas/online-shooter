@@ -86,11 +86,11 @@ const connector = {
         const playerStateString = JSON.stringify({
             Type: "playerstate",
             Keys: keys.getKeysState(),
-            Angles: mouse.getCurrentAngles(),
+            Angle: mouse.getCurrentAngles().X,
             PingStart: new Date().getTime()
         });
 
         connector.messagesSentCount += 1;
-        connector.connection.invoke('send', "tester", connector.messagesSentCount);
+        connector.connection.invoke('clientStateUpdate', playerStateString);
     }
 };

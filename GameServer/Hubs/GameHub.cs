@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using GameServer.Models;
 
 using GameServer.States;
+using System.Collections.Generic;
+using System.Text;
 
 namespace GameServer.Hubs
 {
@@ -42,6 +44,30 @@ namespace GameServer.Hubs
             };
 
             Clients.Caller.SendAsync("connectConfirmation", connectionConfirmationResponse);
+        }
+
+        public void ClientStateUpdate(string clientState)
+        {
+            // Recive state
+
+            string request = clientState.Trim((char)0);
+            dynamic playerState = JsonConvert.DeserializeObject(request);
+
+            var player = _gameEngine.GameState.Players.Find(x => x.ConnectionId == Context.ConnectionId);
+
+            if (player==null)
+            {
+                // Invalid Player - wrong connection ID
+                return;
+            }
+
+            // Process state
+
+            player.Keys = new List<KeyEnum>();
+            foreach (var key in playerState.Keys)
+                player.Keys.Add((KeyEnum)int.Parse(key.Value));
+
+            player.Angle = playerState.Angle.Value;
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
