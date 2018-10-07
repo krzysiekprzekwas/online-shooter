@@ -7,6 +7,9 @@ const connector = {
             .withUrl('/game')
             .build();
 
+        this.connection.onclose = function () {
+            console.log('connecition closed');
+        };
 
         // Create a function that the hub can call to broadcast messages.
         this.connection.on('message', function (name, message) {
@@ -36,13 +39,13 @@ const connector = {
             .then(function () {
                 console.log('connection started');
                 setTimeout(connector.onOpen(), 1000);
+
+                this.messagesReceivedCount = 0;
+                this.messagesSentCount = 0;
+
+                // Set up interval (sending player state to server)
+                setInterval(this.connectionInterval, 50);
             });
-
-        this.messagesReceivedCount = 0;
-        this.messagesSentCount = 0;
-
-        // Set up interval (sending player state to server)
-        setInterval(this.connectionInterval, 50);
     },
 
     onOpen: function (event) {
