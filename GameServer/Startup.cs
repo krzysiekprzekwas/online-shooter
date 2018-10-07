@@ -25,6 +25,7 @@ namespace GameServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+            services.AddSingleton<IGameEngine, GameEngine>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -44,10 +45,6 @@ namespace GameServer
 
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
-            
-
-            //// Send back initial status
-            //StateController.SendConnectedConfirmation(webSocket, player);
             //StateController.SendMapState(webSocket);
 
             //// Wait for other player messages

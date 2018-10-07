@@ -4,23 +4,23 @@ using System.Threading.Tasks;
 using GameServer.Game;
 using Newtonsoft.Json;
 using GameServer.Models;
-
-using GameServer.States;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GameServer.Hubs
 {
     public class GameHub : Hub
     {
+        IGameEngine _gameEngine;
 
-        private GameEngine _gameEngine = new GameEngine();
+        public GameHub(IGameEngine gameEngine)
+        {
+            _gameEngine = gameEngine;
+        }
 
         public void Send(string name, string message)
         {
             Clients.All.SendAsync("message", name, message);
         }
-
 
         public void OnOpen(string name)
         {
@@ -68,6 +68,12 @@ namespace GameServer.Hubs
                 player.Keys.Add((KeyEnum)int.Parse(key.Value));
 
             player.Angle = playerState.Angle.Value;
+        }
+
+
+        public void SendMapState(string clientState)
+        {
+            Clients.All.SendAsync("updateMapState");
         }
 
         public override Task OnDisconnectedAsync(Exception exception)

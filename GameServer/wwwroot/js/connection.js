@@ -12,12 +12,8 @@ const connector = {
         };
 
         // Create a function that the hub can call to broadcast messages.
-        this.connection.on('message', function (name, message) {
-            // Html encode display name and message.
-            var encodedName = name;
-            var encodedMsg = message;
-            // ALog message
-            //console.log(encodedName + " " + encodedMsg);
+        this.connection.on('updateMapState', function () {
+            console.log("UpdatedState");
         });
 
         this.connection.on('connectConfirmation', function (response) {
