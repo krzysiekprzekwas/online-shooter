@@ -5,6 +5,7 @@ using GameServer.Game;
 using Newtonsoft.Json;
 using GameServer.Models;
 using System.Collections.Generic;
+using GameServer.States;
 
 namespace GameServer.Hubs
 {
@@ -40,7 +41,8 @@ namespace GameServer.Hubs
             {
                 Type = "connected",
                 PlayerId = player.Id,
-                Config = Config.Instance
+                Config = Config.Instance,
+                MapState = MapState.Instance
             };
 
             Clients.Caller.SendAsync("connectConfirmation", connectionConfirmationResponse);
@@ -92,5 +94,8 @@ namespace GameServer.Hubs
 
         [JsonProperty("config")]
         public Config Config;
+
+        [JsonProperty("mapState")]
+        public MapState MapState;
     }
 }

@@ -25,6 +25,9 @@ const connector = {
                 config[setting] = value;
             }
 
+
+            world.onMapStateReceived(response.mapState);
+
             console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
             world.playerId = response.playerId;

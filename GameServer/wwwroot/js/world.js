@@ -20,23 +20,23 @@ let world = {
 
     onMapStateReceived: function (mapstate) {
 
-        for (obj of mapstate.MapObjects) {
+        for (obj of mapstate.mapObjects) {
 
             const mapObject = {
 
-                width: obj.Width,
-                height: obj.Height,
-                x: obj.Position.X,
-                y: obj.Position.Y,
-                textureId: obj.Texture,
-                type: obj.Type
+                width: obj.width,
+                height: obj.height,
+                x: obj.position.x,
+                y: obj.position.y,
+                textureId: obj.texture,
+                type: obj.type
             };
 
             // Add mesh to objects array
             world.mapObjects[obj.Id] = mapObject;
         }
 
-        logger.info("Loaded map objects " + mapstate.MapObjects.length);
+        logger.info("Loaded map objects " + mapstate.mapObjects.length);
     },
 
     // Update function is called when gamestate was received from server
