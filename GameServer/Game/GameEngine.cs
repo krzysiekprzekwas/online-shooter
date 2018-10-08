@@ -49,20 +49,8 @@ namespace GameServer.Game
             var currentPlayers = new Player[GameState.Instance.Players.Count];
             GameState.Instance.Players.CopyTo(currentPlayers);
 
-            // Send game state for each client
-            foreach (var player in currentPlayers)
-            {
-                _hubContext.Clients.All.SendAsync("updateMapState");
-
-                //if (player.WebSocket.State != WebSocketState.Open)
-                //{
-                //    DisconnectPlayer(player);
-                //    Console.WriteLine($"Connection closed by client {player}");
-                //}
-                //else
-                StateController.SendGameState(player.WebSocket);
-
-            }
+            // Send game state for every connected client
+             _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
         public bool ConnectPlayer(Player player)

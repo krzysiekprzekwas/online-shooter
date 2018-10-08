@@ -48,13 +48,13 @@ let world = {
 
         // Load players
         world.players = Array();
-        for (player of gamestate.Players) {
+        for (player of gamestate.players) {
 
             const playerObject = {
-                id: player.Id,
-                x: player.Position.X,
-                y: player.Position.Y,
-                radius: player.Radius
+                id: player.id,
+                x: player.position.X,
+                y: player.position.Y,
+                radius: player.radius
             };
 
             if (playerObject.id === world.playerId)

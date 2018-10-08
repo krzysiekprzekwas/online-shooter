@@ -12,8 +12,10 @@ const connector = {
         };
 
         // Create a function that the hub can call to broadcast messages.
-        this.connection.on('updateMapState', function () {
+        this.connection.on('updateGameState', function (gameState) {
             console.log("UpdatedState");
+
+            world.onGameStateReceived(gameState);
         });
 
         this.connection.on('connectConfirmation', function (response) {
