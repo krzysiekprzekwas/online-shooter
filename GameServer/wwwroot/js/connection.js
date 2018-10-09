@@ -17,7 +17,6 @@ const connector = {
         });
 
         this.connection.on('connectConfirmation', function (response) {
-            logger.info(`Player connected #${response.playerId}`);
 
             for (setting in response.config) {
 
@@ -33,14 +32,9 @@ const connector = {
             world.playerId = response.playerId;
         });
 
-        // Transport fallback functionality is now built into start.
         this.connection.start()
             .then(function () {
                 console.log('connection started');
-                setTimeout(connector.onOpen(), 1000);
-
-                this.messagesReceivedCount = 0;
-                this.messagesSentCount = 0;
 
                 // Set up interval (sending player state to server)
                 setInterval(this.connectionInterval, 50);
@@ -55,16 +49,9 @@ const connector = {
         });
 
         connector.connection.invoke('onopen', connectionString);
-        
-        logger.info('Connection established');
     },
 
     onMessage: function (event) {
-
-        connection.messagesReceivedCount += 1;
-        
-        //logger.info(`Received message #${connection.messagesReceivedCount}`);
-        //logger.info(event);
 
         let response = JSON.parse(event.data);
         responseController.processResponse(response);
@@ -72,19 +59,8 @@ const connector = {
         return false;
     },
 
-    logConnectionDetails() {
-
-        const passed = (new Date() - connection.connectionOpenDate);
-        logger.info(`Connection open time: ${passed}ms`);
-        logger.info(`Received messages: ${connection.messagesReceivedCount}`);
-        logger.info(`Sent messages: ${connection.messagesSentCount}`);
-    },
-
     connectionInterval: function () {
 
-        if (config.DEBUG_STOP)
-            return;
-        
         const playerStateString = JSON.stringify({
             Type: "playerstate",
             Keys: keys.getKeysState(),
@@ -92,7 +68,6 @@ const connector = {
             PingStart: new Date().getTime()
         });
 
-        connector.messagesSentCount += 1;
         connector.connection.invoke('clientStateUpdate', playerStateString);
     }
 };
