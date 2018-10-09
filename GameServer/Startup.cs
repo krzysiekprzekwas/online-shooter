@@ -42,27 +42,6 @@ namespace GameServer
                 routes.MapHub<GameHub>("/game");
             });
         }
-
-        private async Task Echo(HttpContext context, WebSocket webSocket)
-        {
-            //StateController.SendMapState(webSocket);
-
-            //// Wait for other player messages
-            //while (!result.CloseStatus.HasValue)
-            //{
-            //    //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-
-            //    StateController.ReceiveState(buffer, player, webSocket);
-            //    Array.Clear(buffer, 0, result.Count);
-
-            //    result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            //}
-
-            //// Player disconnected
-            //await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-
-            //_gameEngine.DisconnectPlayer(player);
-        }
     }
 }
 
