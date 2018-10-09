@@ -25,11 +25,9 @@ namespace GameServer.Hubs
 
         public void OnOpen(string name)
         {
-            dynamic json = JsonConvert.DeserializeObject(name);
-
             Player player = new Player
             {
-                Name = json.Name,
+                Name = name,
                 ConnectionId = Context.ConnectionId
             };
 

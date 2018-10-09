@@ -35,20 +35,15 @@ const connector = {
         this.connection.start()
             .then(function () {
                 console.log('connection started');
-
+                connector.onOpen();
                 // Set up interval (sending player state to server)
                 setInterval(this.connectionInterval, 50);
             });
     },
 
-    onOpen: function (event) {
+    onOpen: function () {
 
-        const connectionString = JSON.stringify({
-            Type: "connect",
-            Name: "Player"
-        });
-
-        connector.connection.invoke('onopen', connectionString);
+        connector.connection.invoke('onOpen', "Player");
     },
 
     onMessage: function (event) {
