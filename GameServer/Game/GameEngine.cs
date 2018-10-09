@@ -15,7 +15,7 @@ namespace GameServer.Game
 {
     public interface IGameEngine
     {
-        bool ConnectPlayer(Player player);
+        bool AddPlayer(Player player);
 
         GameState GameState { get; }
     }
@@ -53,19 +53,18 @@ namespace GameServer.Game
              _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
-        public bool ConnectPlayer(Player player)
+        public bool AddPlayer(Player player)
         {
-
             GameState.Instance.Players.Add(player);
 
-            GameEvents.OnPlayerConnected(player);
+            GameEvents.OnPlayerAdded(player);
 
             return true;
         }
 
-        public void DisconnectPlayer(Player player)
+        public void RemovePlayer(Player player)
         {
-            GameEvents.OnPlayerDisconnected(player);
+            GameEvents.OnPlayerRemoved(player);
 
             GameState.Instance.Players.Remove(player);
         }

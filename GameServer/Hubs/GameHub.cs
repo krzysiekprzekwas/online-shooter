@@ -31,7 +31,7 @@ namespace GameServer.Hubs
                 ConnectionId = Context.ConnectionId
             };
 
-            _gameEngine.ConnectPlayer(player);
+            _gameEngine.AddPlayer(player);
 
             // Confirmation status
 
