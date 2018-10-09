@@ -136,8 +136,8 @@ namespace GameTests
         // Helper methods
         private static GameEngine CreateGameEngineAndAddPlayer(out Player player)
         {
-            var servicesProvider = Startup.BuildDi();
-            GameEngine GE = servicesProvider.GetRequiredService<GameEngine>();
+            // Will fail, needs mock
+            GameEngine GE = new GameEngine(null);
             GE.Ticker.Dispose();
 
             player = new Player()

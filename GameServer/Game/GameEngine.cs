@@ -4,29 +4,37 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
+using GameServer.Hubs;
 using GameServer.Models;
 using GameServer.Physics;
 using GameServer.States;
 using GameServer.World;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.SignalR;
 
 namespace GameServer.Game
 {
-    public class GameEngine
+    public interface IGameEngine
     {
-        private readonly ILogger<GameEngine> _logger;
+        bool AddPlayer(Player player);
 
+        GameState GameState { get; }
+    }
+
+    public class GameEngine : IGameEngine
+    {
         public Timer Ticker;
         public List<Player> Players = new List<Player>();
-        public GameState GameState = GameState.Instance;
+        private GameState _gameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
         private Random random;
+        private readonly IHubContext<GameHub> _hubContext;
 
-        public GameEngine(ILogger<GameEngine> logger)
+        GameState IGameEngine.GameState { get => _gameState; }
+
+        public GameEngine(IHubContext<GameHub> hubContext)
         {
-            _logger = logger;
+            _hubContext = hubContext;
             GameEvents = new GameEvents(this);
             PhysicsEngine = new PhysicsEngine(this);
             random = new Random();
@@ -41,36 +49,22 @@ namespace GameServer.Game
             var currentPlayers = new Player[GameState.Instance.Players.Count];
             GameState.Instance.Players.CopyTo(currentPlayers);
 
-            // Send game state for each client
-            foreach (var player in currentPlayers)
-            {
-                //if (player.WebSocket.State != WebSocketState.Open)
-                //{
-                //    DisconnectPlayer(player);
-                //    Console.WriteLine($"Connection closed by client {player}");
-                //}
-                //else
-                    StateController.SendGameState(player.WebSocket);
-
-            }
+            // Send game state for every connected client
+             _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
-        public bool ConnectPlayer(Player player)
+        public bool AddPlayer(Player player)
         {
-            _logger.LogInformation($"Player #{player.Id} ({player.Name}) IP={player.IpAddress} connected.");
-
             GameState.Instance.Players.Add(player);
 
-            GameEvents.OnPlayerConnected(player);
+            GameEvents.OnPlayerAdded(player);
 
             return true;
         }
 
-        public void DisconnectPlayer(Player player)
+        public void RemovePlayer(Player player)
         {
-            _logger.LogInformation($"Player #{player.Id} ({player.Name}) IP={player.IpAddress} disconnected.");
-
-            GameEvents.OnPlayerDisconnected(player);
+            GameEvents.OnPlayerRemoved(player);
 
             GameState.Instance.Players.Remove(player);
         }
