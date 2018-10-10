@@ -16,6 +16,7 @@ namespace GameServer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .ConfigureLogging(x => x.SetMinimumLevel(LogLevel.Error))
                 .UseStartup<Startup>();
     }
 }
