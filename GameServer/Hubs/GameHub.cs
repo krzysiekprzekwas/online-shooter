@@ -32,7 +32,7 @@ namespace GameServer.Hubs
             };
 
             _gameEngine.AddPlayer(player);
-
+            Console.WriteLine($"Registered player: {player.Name} ({player.Id})");
             // Confirmation status
 
             var connectionConfirmationResponse = new ConfirmConnectionResponse
@@ -78,6 +78,9 @@ namespace GameServer.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            var player = _gameEngine.GameState.Players.Find(x => x.ConnectionId == Context.ConnectionId);
+            _gameEngine.RemovePlayer(player);
+            Console.WriteLine($"Removed player: {player.Name} ({player.Id})");
             return base.OnDisconnectedAsync(exception);
         }
     }

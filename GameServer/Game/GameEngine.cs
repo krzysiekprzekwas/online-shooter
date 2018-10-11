@@ -17,6 +17,8 @@ namespace GameServer.Game
     {
         bool AddPlayer(Player player);
 
+        bool RemovePlayer(Player player);
+
         GameState GameState { get; }
     }
 
@@ -62,11 +64,13 @@ namespace GameServer.Game
             return true;
         }
 
-        public void RemovePlayer(Player player)
+        public bool RemovePlayer(Player player)
         {
             GameEvents.OnPlayerRemoved(player);
 
             GameState.Instance.Players.Remove(player);
+
+            return true;
         }
     }
 }
