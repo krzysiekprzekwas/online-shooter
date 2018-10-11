@@ -33,7 +33,7 @@ let world = {
             };
 
             // Add mesh to objects array
-            world.mapObjects[obj.Id] = mapObject;
+            world.mapObjects[obj.id] = mapObject;
         }
 
         logger.info("Loaded map objects " + mapstate.mapObjects.length);
@@ -52,8 +52,8 @@ let world = {
 
             const playerObject = {
                 id: player.id,
-                x: player.position.X,
-                y: player.position.Y,
+                x: player.position.x,
+                y: player.position.y,
                 radius: player.radius
             };
 
@@ -74,6 +74,10 @@ let world = {
             x: (this.myPlayer !== null) ? this.myPlayer.x : 0,
             y: (this.myPlayer !== null) ? this.myPlayer.y : 0
         };
+
+        if (typeof center.x === "undefined" || typeof center.y === "undefined") {
+            console.error("Unknown center of map (probably player position is undefined)");
+        }
 
         // Draw map components
         this.drawMapObjects(center);
