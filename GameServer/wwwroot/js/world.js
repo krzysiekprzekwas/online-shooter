@@ -33,7 +33,7 @@ let world = {
             };
 
             // Add mesh to objects array
-            world.mapObjects[obj.Id] = mapObject;
+            world.mapObjects[obj.id] = mapObject;
         }
 
         logger.info("Loaded map objects " + mapstate.mapObjects.length);
