@@ -4,11 +4,7 @@
   "libraries": [
     {
       "library": "vex-js@4.1.0",
-      "destination": "wwwroot/vex-js/"
-    },
-    {
-      "library": "require.js@2.3.6",
-      "destination": "wwwroot/packages/require.js/"
+      "destination": "wwwroot/packages/vex-js/"
     }
   ]
 }
