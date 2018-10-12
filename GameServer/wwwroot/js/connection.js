@@ -1,6 +1,6 @@
 const connector = {
 
-    initialize: function () {
+    initialize: function (name) {
 
         // Start the connection.
         this.connection = new signalR.HubConnectionBuilder()
@@ -35,15 +35,15 @@ const connector = {
         this.connection.start()
             .then(function () {
                 console.log('connection started');
-                connector.onOpen();
+                connector.onOpen(name);
                 // Set up interval (sending player state to server)
                 setInterval(this.connectionInterval, 50);
             });
     },
 
-    onOpen: function () {
+    onOpen: function (name) {
 
-        connector.connection.invoke('onOpen', "Player");
+        connector.connection.invoke('onOpen', name);
     },
 
     onMessage: function (event) {
