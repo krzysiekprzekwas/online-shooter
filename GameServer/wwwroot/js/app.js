@@ -15,9 +15,26 @@ function setup() {
 
     mouse.initialize();
     world.initialize();
+    
+    vex.defaultOptions.className = 'vex-theme-top';
 
-    // Connection last - we may receive response faster than other class initalization
-    connector.initialize();
+    vex.dialog.prompt({
+        message: 'What is Your name little soldier?',
+        placeholder: 'Player',
+        callback: function (value) {
+
+            if (value !== false) {
+                // Connection last - we may receive response faster than other class initalization
+                connector.initialize(value);
+            }
+            else {
+
+                console.log("No scenario for missing name");
+            }
+        }
+    });
+
+    
 }
 
 function draw() {
