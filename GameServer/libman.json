@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "vex-js@4.1.0",
+      "destination": "wwwroot/packages/vex-js/"
+    }
+  ,
+{
+  "provider": "cdnjs",
+  "library": "jquery@3.3.1",
+  "destination": "wwwroot/packages/jquery/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "p5.js@0.7.2",
+  "destination": "wwwroot/packages/p5.js/"
+}
+]
+}

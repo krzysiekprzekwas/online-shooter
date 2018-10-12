@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\packages\p5js\" />
+    <Folder Include="wwwroot\packages\" />
   </ItemGroup>
 
 </Project>
