@@ -1,5 +1,5 @@
-window.onkeyup = function (e) { keys.keyUp(e.keyCode); };
-window.onkeydown = function (e) { keys.keyDown(e.keyCode); };
+window.onkeyup = function (e) { keyboardController.OnKeyUp(e.keyCode); };
+window.onkeydown = function (e) { keyboardController.OnKeyDown(e.keyCode); };
 
 function preload() {
 
