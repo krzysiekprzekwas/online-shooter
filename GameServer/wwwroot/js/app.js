@@ -23,13 +23,18 @@ function setup() {
         placeholder: 'Player',
         callback: function (value) {
 
-            if (value !== false) {
+            if (value != false) {
                 // Connection last - we may receive response faster than other class initalization
                 connector.initialize(value);
             }
             else {
-
-                console.log("No scenario for missing name");
+                $.get(
+                    "https://uinames.com/api/",
+                    null,
+                    function (data) {
+                        connector.initialize(data.name);
+                    }
+                );
             }
         }
     });
