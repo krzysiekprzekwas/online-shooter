@@ -28,7 +28,7 @@ function setup() {
                 placeholder: data.name,
                 callback: function (value) {
 
-                    if (value != false) {
+                    if (value) {
                         // Connection last - we may receive response faster than other class initalization
                         connector.initialize(value);
                     }
