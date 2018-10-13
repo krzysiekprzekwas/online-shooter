@@ -30,6 +30,16 @@ const connector = {
             console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
             world.playerId = response.playerId;
+
+            new PNotify({
+                title: 'Connected',
+                text: 'Your\'re connected!',
+                addclass: "stack-bottomleft",
+                stack: { "dir1": "down", "dir2": "right", "push": "top" },
+                nonblock: {
+                    nonblock: true
+                }
+            });
         });
 
         this.connection.start()
@@ -37,7 +47,7 @@ const connector = {
                 console.log('connection started');
                 connector.onOpen(name);
                 // Set up interval (sending player state to server)
-                setInterval(this.connectionInterval, 50);
+                setInterval(connector.connectionInterval, 50);
             });
     },
 

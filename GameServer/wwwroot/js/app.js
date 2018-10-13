@@ -13,6 +13,8 @@ function setup() {
     ellipseMode(CENTER);
     rectMode(CENTER);
 
+    PNotify.prototype.options.delay = 3000;
+
     mouse.initialize();
     world.initialize();
     
