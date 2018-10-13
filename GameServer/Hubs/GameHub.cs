@@ -67,7 +67,7 @@ namespace GameServer.Hubs
 
             player.Keys = new List<KeyEnum>();
             foreach (var key in playerState.Keys)
-                player.Keys.Add(Enum.Parse(typeof(KeyEnum), key.ToString()));
+                player.Keys.Add((KeyEnum)key.Value);
 
             player.Angle = playerState.Angle.Value;
         }

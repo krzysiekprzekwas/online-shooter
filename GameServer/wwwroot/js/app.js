@@ -1,5 +1,5 @@
-window.onkeyup = function (e) { keys.keyUp(e.keyCode); };
-window.onkeydown = function (e) { keys.keyDown(e.keyCode); };
+window.onkeyup = function (e) { keyboardController.OnKeyUp(e.keyCode); };
+window.onkeydown = function (e) { keyboardController.OnKeyDown(e.keyCode); };
 
 var myStack = {
     dir1: 'up',
@@ -30,23 +30,28 @@ function setup() {
     
     vex.defaultOptions.className = 'vex-theme-top';
 
-    vex.dialog.prompt({
-        message: 'What is Your name little soldier?',
-        placeholder: 'Player',
-        callback: function (value) {
+    $.get(
+        "https://uinames.com/api/",
+        null,
+        function (data) {
 
-            if (value !== false) {
-                // Connection last - we may receive response faster than other class initalization
-                connector.initialize(value);
-            }
-            else {
+            vex.dialog.prompt({
+                message: 'What is Your name little soldier?',
+                placeholder: data.name,
+                callback: function (value) {
 
-                console.log("No scenario for missing name");
-            }
+                    if (value) {
+                        // Connection last - we may receive response faster than other class initalization
+                        connector.initialize(value);
+                    }
+                    else {
+                        connector.initialize(data.name);
+                    }
+                }
+            });
+
         }
-    });
-
-    
+    );
 }
 
 function draw() {

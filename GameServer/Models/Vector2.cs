@@ -101,7 +101,7 @@ namespace GameServer.Models
 
         public bool IsDegenerated()
         {
-            return this == ZERO_VECTOR;
+            return LengthSquared() == 0;
         }
 
         /*
