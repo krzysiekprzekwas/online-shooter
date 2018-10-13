@@ -1,5 +1,7 @@
 const connector = {
 
+    notificationStack: { "dir1": "down", "dir2": "right", "push": "top" },
+
     initialize: function (name) {
 
         // Start the connection.
@@ -10,6 +12,30 @@ const connector = {
         this.connection.onclose = function () {
             console.log('connecition closed');
         };
+
+        this.connection.on('newPlayerConnected', function (name) {
+            new PNotify({
+                title: 'Player joined',
+                text: 'Player ' + name + ' connected',
+                addclass: "stack-bottomleft",
+                stack: connector.notificationStack,
+                nonblock: {
+                    nonblock: true
+                }
+            });
+        });
+
+        this.connection.on('playerDisconnected', function (name) {
+            new PNotify({
+                title: 'Player left',
+                text: 'Player ' + name + ' disconnected',
+                addclass: "stack-bottomleft",
+                stack: connector.notificationStack,
+                nonblock: {
+                    nonblock: true
+                }
+            });
+        });
 
         // Create a function that the hub can call to broadcast messages.
         this.connection.on('updateGameState', function (gameState) {
@@ -30,16 +56,6 @@ const connector = {
             console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
             world.playerId = response.playerId;
-
-            new PNotify({
-                title: 'Connected',
-                text: 'Your\'re connected!',
-                addclass: "stack-bottomleft",
-                stack: { "dir1": "down", "dir2": "right", "push": "top" },
-                nonblock: {
-                    nonblock: true
-                }
-            });
         });
 
         this.connection.start()
