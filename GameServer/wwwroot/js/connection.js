@@ -12,21 +12,15 @@ const connector = {
         };
 
         this.connection.on('newPlayerConnected', function (name) {
-            new PNotify({
-                title: 'Player joined',
-                text: 'Player ' + name + ' connected',
-                addclass: "stack-bottomleft",
-                stack: myStack
-            });
+
+            notificationController.PlayerJoinedNotification(name);
+
         });
 
         this.connection.on('playerDisconnected', function (name) {
-            new PNotify({
-                title: 'Player left',
-                text: 'Player ' + name + ' disconnected',
-                addclass: "stack-bottomleft",
-                stack: myStack
-            });
+
+            notificationController.PlayerLeftNotification(name);
+
         });
 
         // Create a function that the hub can call to broadcast messages.

@@ -1,16 +1,6 @@
 window.onkeyup = function (e) { keyboardController.OnKeyUp(e.keyCode); };
 window.onkeydown = function (e) { keyboardController.OnKeyDown(e.keyCode); };
 
-var myStack = {
-    dir1: 'up',
-    dir2: 'left',
-    firstpos1: 25,
-    firstpos2: 25,
-    spacing1: 36,
-    spacing2: 36,
-    push: 'top'
-};
-
 function preload() {
 
     texturesService.initialize();
@@ -23,7 +13,6 @@ function setup() {
     ellipseMode(CENTER);
     rectMode(CENTER);
 
-    PNotify.prototype.options.delay = 3000;
 
     mouse.initialize();
     world.initialize();
