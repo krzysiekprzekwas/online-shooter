@@ -7,9 +7,14 @@ const connector = {
             .withUrl('/game')
             .build();
 
-        this.connection.onclose = function () {
-            console.log('connecition closed');
-        };
+        this.connection.onclose(function (e) {
+            vex.dialog.alert({
+                message: 'Connection with server lost!',
+                callback: function () {
+                    location.reload();
+                }
+            });
+        });
 
         // Create a function that the hub can call to broadcast messages.
         this.connection.on('updateGameState', function (gameState) {
@@ -19,11 +24,9 @@ const connector = {
         this.connection.on('connectConfirmation', function (response) {
 
             for (setting in response.config) {
-
                 const value = response.config[setting.toUpperCase()];
                 config[setting] = value;
             }
-
 
             world.onMapStateReceived(response.mapState);
 
