@@ -37,7 +37,7 @@ const connector = {
                 console.log('connection started');
                 connector.onOpen(name);
                 // Set up interval (sending player state to server)
-                setInterval(this.connectionInterval, 50);
+                setInterval(connector.connectionInterval, 50);
             });
     },
 
@@ -58,7 +58,7 @@ const connector = {
 
         const playerStateString = JSON.stringify({
             Type: "playerstate",
-            Keys: keys.getKeysState(),
+            Keys: keyboardController.GetKeysState(),
             Angle: mouse.getCurrentAngles().X,
             PingStart: new Date().getTime()
         });
