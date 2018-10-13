@@ -1,7 +1,5 @@
 const connector = {
 
-    notificationStack: { "dir1": "down", "dir2": "right", "push": "top" },
-
     initialize: function (name) {
 
         // Start the connection.
@@ -17,11 +15,7 @@ const connector = {
             new PNotify({
                 title: 'Player joined',
                 text: 'Player ' + name + ' connected',
-                addclass: "stack-bottomleft",
-                stack: connector.notificationStack,
-                nonblock: {
-                    nonblock: true
-                }
+                addclass: "stack-bottomleft"
             });
         });
 
@@ -29,11 +23,7 @@ const connector = {
             new PNotify({
                 title: 'Player left',
                 text: 'Player ' + name + ' disconnected',
-                addclass: "stack-bottomleft",
-                stack: connector.notificationStack,
-                nonblock: {
-                    nonblock: true
-                }
+                addclass: "stack-bottomleft"
             });
         });
 
