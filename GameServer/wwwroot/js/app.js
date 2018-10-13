@@ -1,6 +1,16 @@
 window.onkeyup = function (e) { keys.keyUp(e.keyCode); };
 window.onkeydown = function (e) { keys.keyDown(e.keyCode); };
 
+var myStack = {
+    dir1: 'up',
+    dir2: 'left',
+    firstpos1: 25,
+    firstpos2: 25,
+    spacing1: 36,
+    spacing2: 36,
+    push: 'top'
+};
+
 function preload() {
 
     texturesService.initialize();
@@ -14,16 +24,6 @@ function setup() {
     rectMode(CENTER);
 
     PNotify.prototype.options.delay = 3000;
-    PNotify.defaultStack = {
-        dir1: 'down',
-        dir2: 'left',
-        firstpos1: 25,
-        firstpos2: 25,
-        spacing1: 36,
-        spacing2: 36,
-        push: 'bottom',
-        context: document.body
-    };
 
     mouse.initialize();
     world.initialize();

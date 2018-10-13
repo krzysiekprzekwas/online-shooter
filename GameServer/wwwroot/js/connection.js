@@ -15,7 +15,8 @@ const connector = {
             new PNotify({
                 title: 'Player joined',
                 text: 'Player ' + name + ' connected',
-                addclass: "stack-bottomleft"
+                addclass: "stack-bottomleft",
+                stack: myStack
             });
         });
 
@@ -23,7 +24,8 @@ const connector = {
             new PNotify({
                 title: 'Player left',
                 text: 'Player ' + name + ' disconnected',
-                addclass: "stack-bottomleft"
+                addclass: "stack-bottomleft",
+                stack: myStack
             });
         });
 
