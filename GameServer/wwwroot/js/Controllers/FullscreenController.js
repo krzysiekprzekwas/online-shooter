@@ -1,22 +1,9 @@
-﻿class FullscreenController {
+﻿function FullscreenController() {
 
-    static set IsToggled(val) {
-        FullscreenController._isToggled = val;
-    }
-    static get IsToggled() {
-        return FullscreenController._isToggled || false;
-    }
+    const that = this;
 
-    constructor(element) {
+    that.requestFullscreen = function () {
 
-        element.addEventListener('click', this.ToggleFullscreen);
-        this.Element = element;
-    }
-    
-    RequestFullscreen() {
-
-        this.UpdateImageTo("style/exitFullscreen.png");
-        
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
         }
@@ -30,12 +17,11 @@
             document.documentElement.msRequestFullscreen();
         }
 
-        FullscreenController.IsToggled = true;
-    }
+        FullscreenController.SetIsToggled(true);
+        that.updateToggleFullscreenToggleImage();
+    };
 
-    ExitFullscreen() {
-
-        this.UpdateImageTo("style/enterFullscreen.png");
+    that.exitFullscreen = function () {
 
         if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -50,21 +36,48 @@
             document.msExitFullscreen();
         }
 
-        FullscreenController.IsToggled = false;
-    }
+        FullscreenController.SetIsToggled(false);
+        that.updateToggleFullscreenToggleImage();
+    };
 
-    UpdateImageTo(source) {
+    that.updateToggleFullscreenToggleImage = function () {
 
-        this.Element.querySelector("img").get().src = source;
-    }
+        let image = "style/enterFullscreen.png";
+        if (FullscreenController.IsToggled())
+            image = "style/exitFullscreen.png";
 
-    ToggleFullscreen() {
+        that.Element.querySelector("img").src = image;
+    };
 
-        if (FullscreenController.IsToggled)
-            this.ExitFullscreen();
+    that.toggleFullscreen = function () {
+
+        if (FullscreenController.IsToggled())
+            that.exitFullscreen();
         else
-            this.RequestFullscreen();
-    }
+            that.requestFullscreen();
+    };
+
+    return {
+
+        AttachToElement: function (element) {
+
+            element.addEventListener('click', that.toggleFullscreen);
+            that.Element = element;
+            that.updateToggleFullscreenToggleImage();
+        }
+    };
 }
 
-const fullscreenButtonController = new FullscreenController(document.getElementById("fullscreenToggle"));
+// Prototypes
+FullscreenController.SetIsToggled = function (val) {
+
+    FullscreenController._isToggled = val;
+};
+FullscreenController.IsToggled = function () {
+
+    return FullscreenController._isToggled || false;
+};
+
+// Attach controller to button
+let fullscrenController = new FullscreenController();
+fullscrenController.AttachToElement(document.getElementById("fullscreenToggle"));
