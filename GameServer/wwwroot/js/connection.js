@@ -16,6 +16,18 @@ const connector = {
             });
         });
 
+        this.connection.on('newPlayerConnected', function (name) {
+
+            notificationController.PlayerJoinedNotification(name);
+
+        });
+
+        this.connection.on('playerDisconnected', function (name) {
+
+            notificationController.PlayerLeftNotification(name);
+
+        });
+
         // Create a function that the hub can call to broadcast messages.
         this.connection.on('updateGameState', function (gameState) {
             world.onGameStateReceived(gameState);

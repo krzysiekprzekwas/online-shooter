@@ -44,6 +44,8 @@ namespace GameServer.Hubs
             };
 
             Clients.Caller.SendAsync("connectConfirmation", connectionConfirmationResponse);
+
+            Clients.All.SendAsync("newPlayerConnected", player.Name);
         }
 
         public void ClientStateUpdate(string clientState)
@@ -81,6 +83,7 @@ namespace GameServer.Hubs
             var player = _gameEngine.GameState.Players.Find(x => x.ConnectionId == Context.ConnectionId);
             _gameEngine.RemovePlayer(player);
             Console.WriteLine($"Removed player: {player.Name} ({player.Id})");
+            Clients.All.SendAsync("playerDisconnected", player.Name);
             return base.OnDisconnectedAsync(exception);
         }
     }
