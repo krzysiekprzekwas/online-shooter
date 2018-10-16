@@ -184,37 +184,154 @@ describe('Vectors', function () {
 
     it('can normalize', () => {
 
+        // Arrage
+        const vector = new Vector2(-1, 1);
+
+        // Act
+        const normalized = Vector2.Normalize(vector);
+
+        // Assert
+        const root = Math.sqrt(2) / 2;
+        const expectedVector = new Vector2(-root, root);
+
+        expect(normalized.GetX()).toBeCloseTo(expectedVector.GetX(), 6);
+        expect(normalized.GetY()).toBeCloseTo(expectedVector.GetY(), 6);
     });
 
     it('normalize throws error when length is 0', () => {
 
+        // Arrange
+        const vector = new Vector2();
+
+        // Assert
+        expect(() => Vector2.Normalize(vector)).toThrow("Degenerated vector given. Cannot normalzie zero vector.");
     });
 
     it('can be safely normalized', () => {
 
+        // Arrange
+        const vector = new Vector2();
+
+        // Act
+        const normalized = Vector2.SafeNormalize(vector);
+        
+        // Assert
+        expect(normalized.Equals(Vector2.ZERO_VECTOR())).toBeTruthy();
     });
 
     it('length can be caluclated', () => {
 
+        // Arrange
+        const vector = new Vector2(3, 4);
+
+        // Act
+        const length = vector.Length();
+
+        // Assert
+        expect(length).toEqual(5);
     });
 
     it('square length can be calculated', () => {
 
+        // Arrange
+        const vector = new Vector2(10, 2);
+
+        // Act
+        const squaredLength = vector.LengthSquared();
+
+        // Assert
+        expect(squaredLength).toEqual(104);
     });
 
     it('can caluculate distance', () => {
 
+        // Arrange
+        const vectorA = new Vector2(-2, 1);
+        const vectorB = new Vector2(3, 13);
+
+        // Act
+        const distance = Vector2.Distance(vectorA, vectorB);
+
+        // Assert
+        expect(distance).toEqual(13);
     });
 
     it('can calculate distance squared', () => {
 
+        // Arrange
+        const vectorA = new Vector2(-1, 3);
+        const vectorB = new Vector2(-5, 9);
+
+        // Act
+        const squaredDistance = Vector2.DistanceSquared(vectorA, vectorB);
+
+        // Assert
+        expect(squaredDistance).toEqual(52);
     });
 
     it('can calculate angle between vectors', () => {
 
+        // Arrage
+        const vectorA = new Vector2(1, 1);
+        const vectorB = new Vector2(1, -1);
+
+        // Act
+        const angle = Vector2.AngleBetweenVectors(vectorA, vectorB);
+
+        // Assert
+        const expectedAngle = Math.PI / 2;
+        expect(angle).toBeCloseTo(expectedAngle, 4);
+    });
+
+    it('can calculate angle between vectors 2', () => {
+
+        // Arrage
+        const vectorA = new Vector2(0, 3);
+        const vectorB = new Vector2(-1, 0);
+
+        // Act
+        const angle = Vector2.AngleBetweenVectors(vectorA, vectorB);
+
+        // Assert
+        const expectedAngle = Math.PI / -2;
+        expect(angle).toBeCloseTo(expectedAngle, 4);
+    });
+
+    it('should throw exception when trying to find angle between ZERO_VECTOR', () => {
+
+        // Arrange
+        const vectorA = new Vector2(1, 1);
+
+        // Assert
+        expect(() => Vector2.AngleBetweenVectors(vectorA, Vector2.ZERO_VECTOR())).toThrow("One of given vectors is degenerated. Cannot calculate angle between them");
+    });
+
+    it('can calculate distance to moved vector', () => {
+
+        // Arrange
+        const vectorA = new Vector2(10, -5);
+        const expectedDistance = 10;
+        const vectorB = new Vector2(-1, 6);
+
+        // Act
+        const addVector = Vector2.Multiply(Vector2.Normalize(vectorB), expectedDistance);
+        const vectorC = Vector2.Add(vectorA, addVector);
+        const distance = Vector2.Distance(vectorA, vectorC);
+
+        // Assert
+        expect(distance).toEqual(expectedDistance);
     });
 
     it('can calculate dot product', () => {
 
+        // Arrange
+        const vectorA = new Vector2(-2, 1);
+        const vectorB = new Vector2(-1, -1.5);
+
+        // Act
+        const dot = Vector2.Dot(vectorA, vectorB);
+
+        // Assert
+        expect(dot).toEqual(0.5);
     });
 });
