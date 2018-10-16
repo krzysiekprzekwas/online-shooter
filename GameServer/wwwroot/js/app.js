@@ -46,10 +46,7 @@ function setup() {
 function draw() {
     background(61);
 
-    if (blackScreen.ShouldBeDisplayed())
-        blackScreen.Display();
-    else
-        world.draw();
+    world.draw();
 }
 
 function windowResized() {
