@@ -53,13 +53,6 @@ const connector = {
                 connector.onOpen(name);
                 // Set up interval (sending player state to server)
                 setInterval(connector.connectionInterval, 50);
-                
-                const monitor = new LatencyMonitor();
-                console.log('Event Loop Latency Monitor Loaded: %O', {
-                    latencyCheckIntervalMs: monitor.latencyCheckIntervalMs,
-                    dataEmitIntervalMs: monitor.dataEmitIntervalMs
-                });
-                monitor.on('data', (summary) => ('#ping').text("Lat: " + summary.avgMs));
             });
     },
 
