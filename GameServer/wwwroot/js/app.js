@@ -1,5 +1,6 @@
 window.onkeyup = function (e) { keyboardController.OnKeyUp(e.keyCode); };
 window.onkeydown = function (e) { keyboardController.OnKeyDown(e.keyCode); };
+p5.disableFriendlyErrors = true;
 
 function preload() {
 
@@ -47,6 +48,13 @@ function draw() {
     background(61);
 
     world.draw();
+
+    // Draw FPS (rounded to 2 decimal places) at the bottom left of the screen
+    var fps = frameRate();
+    fill(255);
+    stroke(0);
+
+    $('#fpsLabel').text("FPS: " + fps.toFixed(2));
 }
 
 function windowResized() {
