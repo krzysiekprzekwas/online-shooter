@@ -43,8 +43,8 @@ body {
     position: absolute;
     right: 8px;
     top: 8px;
-    font: 2rem Consolas;
-    color: #f1c40f;
+    font: 1rem Consolas;
+    color: #DCDCDC;
 }
 
 #pingLabel {
