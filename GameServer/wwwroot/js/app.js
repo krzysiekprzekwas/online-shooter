@@ -21,26 +21,28 @@ function setup() {
 
     $.get(
         "https://uinames.com/api/",
-        null,
-        function (data) {
+        null).done(
+            function (data) {
 
-            vex.dialog.prompt({
-                message: 'What is Your name little soldier?',
-                placeholder: data.name,
-                callback: function (value) {
+                vex.dialog.prompt({
+                    message: 'What is Your name little soldier?',
+                    placeholder: data.name,
+                    callback: function (value) {
 
-                    if (value) {
-                        // Connection last - we may receive response faster than other class initalization
-                        connector.initialize(value);
+                        if (value) {
+                            // Connection last - we may receive response faster than other class initalization
+                            connector.initialize(value);
+                        }
+                        else {
+                            connector.initialize(data.name);
+                        }
                     }
-                    else {
-                        connector.initialize(data.name);
-                    }
-                }
-            });
-
-        }
-    );
+                });
+            }
+        )
+        .fail(function () {
+            connector.initialize("Player" + Math.floor((Math.random() * 10000) + 1));
+        });
 }
 
 function draw() {
