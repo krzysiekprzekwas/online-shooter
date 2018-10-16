@@ -36,7 +36,7 @@ let world = {
             world.mapObjects[obj.id] = mapObject;
         }
 
-        logger.info("Loaded map objects " + mapstate.mapObjects.length);
+        console.log("Loaded map objects " + mapstate.mapObjects.length);
     },
 
     // Update function is called when gamestate was received from server
