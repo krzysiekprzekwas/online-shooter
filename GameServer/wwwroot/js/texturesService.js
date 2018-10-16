@@ -12,14 +12,14 @@
         this.registerTexture(2, "textures/wall.jpg");
         this.registerTexture(3, "textures/ground.jpg");
 
-        logger.info(`Loaded ${this.loadedTexturesCount} textures.`);
+        console.log(`Loaded ${this.loadedTexturesCount} textures.`);
     },
 
     registerTexture(textureId, textureUrl) {
 
         // Textutre already loaded
         if (this.loadedTextures[textureId] !== undefined) {
-            logger.error(`Texture #${textureId} was already loaded.`);
+            console.error(`Texture #${textureId} was already loaded.`);
             return;
         }
 
@@ -36,7 +36,7 @@
 
         // Textutre already loaded
         if (this.loadedTextures[textureId] === undefined) {
-            logger.error(`Trying to display not loaded texture #${textureId}.`);
+            console.error(`Trying to display not loaded texture #${textureId}.`);
             return null;
         }
 
