@@ -162,8 +162,8 @@ Vector2.Divide = function (vector, divider) {
 
 Vector2.LEFT_VECTOR = () => new Vector2(-1, 0);
 Vector2.RIGHT_VECTOR = () => new Vector2(1, 0);
-Vector2.UP_VECTOR = () => new Vector2(0, 1);
-Vector2.DOWN_VECTOR = () => new Vector2(0, -1);
+Vector2.UP_VECTOR = () => new Vector2(0, -1);
+Vector2.DOWN_VECTOR = () => new Vector2(0, 1);
 Vector2.ZERO_VECTOR = () => new Vector2(0, 0);
 
 // Export module
