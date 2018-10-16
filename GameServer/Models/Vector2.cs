@@ -230,8 +230,8 @@ namespace GameServer.Models
         /*
          * Predefined direction vectors
          */
-        public static readonly Vector2 UP_VECTOR = new Vector2(0, 1);
-        public static readonly Vector2 DOWN_VECTOR = new Vector2(0, -1);
+        public static readonly Vector2 UP_VECTOR = new Vector2(0, -1);
+        public static readonly Vector2 DOWN_VECTOR = new Vector2(0, 1);
         public static readonly Vector2 LEFT_VECTOR = new Vector2(-1, 0);
         public static readonly Vector2 RIGHT_VECTOR = new Vector2(1, 0);
         public static readonly Vector2 ZERO_VECTOR = new Vector2(0, 0);
