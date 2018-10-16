@@ -55,26 +55,6 @@ function Vector2(x = 0, y = 0) {
         return that._length;
     };
 
-    that.Normalize = function () {
-
-        if (that.IsDegenerated)
-            throw "Degenerated vector given. Cannot normalzie zero vector.";
-
-        const vector = Vector2.Copy(that);
-        vector.Divide(that.Length());
-        return vector;
-    };
-
-    that.SafeNormalize = function () {
-
-        try {
-            that.Normalize();
-        }
-        catch (err) {
-            return new Vector2();
-        }
-    };
-
     that.IsDegenerated = function () {
 
         return that.LengthSquared() === 0;
@@ -122,7 +102,22 @@ Vector2.Distance = function (vectorA, vectorB) {
 
 Vector2.Normalize = function (vector) {
 
-    return vector.Normalize();
+    if (vector.IsDegenerated())
+        throw "Degenerated vector given. Cannot normalzie zero vector.";
+
+    let copiedVector = Vector2.Clone(vector);
+    copiedVector = Vector2.Divide(copiedVector, vector.Length());
+    return copiedVector;
+};
+
+Vector2.SafeNormalize = function (vector) {
+
+    try {
+        return Vector2.Normalize(vector);
+    }
+    catch (err) {
+        return new Vector2();
+    }
 };
 
 Vector2.AngleBetweenVectors = function (vectorA, vectorB) {
