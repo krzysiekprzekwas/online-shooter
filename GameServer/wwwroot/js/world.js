@@ -54,7 +54,8 @@ let world = {
                 id: player.id,
                 x: player.position.x,
                 y: player.position.y,
-                radius: player.radius
+                radius: player.radius,
+                angle: player.angle
             };
 
             if (playerObject.id === world.playerId)
@@ -103,7 +104,7 @@ let world = {
 
                 strokeWeight(0);
                 textSize(12);
-                fill(236, 240, 241)
+                fill(236, 240, 241);
                 text(`(${obj.x}, ${obj.y} [${obj.width}x${obj.height}])`, obj.x - center.x, obj.y - center.y);
             }
         });
@@ -113,20 +114,30 @@ let world = {
         
         this.players.forEach((player, i) => {
 
-            strokeWeight(4);
             fill(255, 190, 118);
             if (this.myPlayer !== null && player.id === this.myPlayer.id)
                 stroke(52, 152, 219);
             else
                 stroke(0);
 
-            ellipse(player.x - center.x, player.y - center.y, player.radius * 2, player.radius * 2);
+            push();
+
+            translate(player.x - center.x, player.y - center.y);
+            rotate(player.angle);
+
+            strokeWeight(2);
+            rect(0, 20, 20, 50);
+
+            strokeWeight(4);
+            ellipse(0, 0, player.radius * 2, player.radius * 2);
+
+            pop();
 
             if (world.printCoordinates) {
 
                 strokeWeight(0);
                 textSize(12);
-                fill(236, 240, 241)
+                fill(236, 240, 241);
                 text(`(${Math.round(player.x)}, ${Math.round(player.y)} [${player.radius}])`, player.x - center.x, player.y - center.y);
             }
         });
