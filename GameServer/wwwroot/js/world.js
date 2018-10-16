@@ -125,8 +125,8 @@ let world = {
             translate(player.x - center.x, player.y - center.y);
             rotate(player.angle);
 
-            strokeWeight(2);
-            rect(0, 20, 20, 50);
+            strokeWeight(0);
+            rect(0, 20, 16, 30);
 
             strokeWeight(4);
             ellipse(0, 0, player.radius * 2, player.radius * 2);
