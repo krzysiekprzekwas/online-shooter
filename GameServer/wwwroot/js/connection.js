@@ -61,14 +61,6 @@ const connector = {
         connector.connection.invoke('onOpen', name);
     },
 
-    onMessage: function (event) {
-
-        let response = JSON.parse(event.data);
-        responseController.processResponse(response);
-
-        return false;
-    },
-
     connectionInterval: function () {
 
         const playerStateString = JSON.stringify({
