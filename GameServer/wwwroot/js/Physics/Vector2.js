@@ -57,8 +57,8 @@ function Vector2(x = 0, y = 0) {
 
     that.Normalize = function () {
 
-        if (that.IsDegenerated)
-            throw "Degenerated vector given. Cannot normalzie zero vector.";
+        if (that.IsDegenerated())
+            throw "Degenerated vector given. Cannot normalize zero vector.";
 
         const vector = Vector2.Copy(that);
         vector.Divide(that.Length());
