@@ -21,7 +21,14 @@ namespace GameServer.Game
 
         public static SpawnPoint GetRandomSpawnPoint()
         {
+            if(SpawnPoints == null || SpawnPoints.Count == 0)
+            {
+                throw new NullReferenceException("No spawnpoints loaded");
+            }
+
             var spawnPoints = SpawnPoints.Where(s => !IsOccupied(s)).ToList();
+            if (spawnPoints.Count == 0)
+                spawnPoints = SpawnPoints;
 
             var randomIndex = random.Next(spawnPoints.Count);
             return spawnPoints[randomIndex];
