@@ -66,7 +66,7 @@ const connector = {
         const playerStateString = JSON.stringify({
             Type: "playerstate",
             Keys: keyboardController.GetKeysState(),
-            Angle: mouse.getCurrentAngles().X,
+            Angle: mouseController.getCurrentAngle(),
             PingStart: new Date().getTime()
         });
 
