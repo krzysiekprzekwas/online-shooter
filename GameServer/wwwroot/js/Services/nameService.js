@@ -2,7 +2,7 @@
 
     const that = this;
 
-    getRandomName() {
+    that.getRandomName = function () {
 
         var name;
 
