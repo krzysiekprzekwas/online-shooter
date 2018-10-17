@@ -14,8 +14,6 @@ function setup() {
     ellipseMode(CENTER);
     rectMode(CENTER);
 
-
-    mouse.initialize();
     world.initialize();
     
     vex.defaultOptions.className = 'vex-theme-top';
