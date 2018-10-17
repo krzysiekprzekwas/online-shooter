@@ -72,6 +72,10 @@ namespace GameServer.Hubs
             player.Angle = playerState.Angle.Value;
         }
 
+        public void MeasureLatency(string clientTime)
+        {
+            Clients.Caller.SendAsync("updateLatency", clientTime);
+        }
 
         public void SendMapState(string clientState)
         {

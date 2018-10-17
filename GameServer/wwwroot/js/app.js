@@ -46,13 +46,9 @@ function draw() {
     background(61);
 
     world.draw();
-
-    // Draw FPS (rounded to 2 decimal places) at the bottom left of the screen
+    
     var fps = frameRate();
-    fill(255);
-    stroke(0);
-
-    $('#fpsLabel').text("FPS: " + fps.toFixed(2));
+    measurementController.UpdateFps(fps);
 }
 
 function windowResized() {

@@ -28,6 +28,13 @@ const connector = {
 
         });
 
+        this.connection.on('updateLatency', function (sendTime) {
+
+            var d = new Date();
+            var n = d.getTime();
+            measurementController.UpdatePing(n - sendTime);
+        });
+
         // Create a function that the hub can call to broadcast messages.
         this.connection.on('updateGameState', function (gameState) {
             world.onGameStateReceived(gameState);
@@ -71,5 +78,9 @@ const connector = {
         });
 
         connector.connection.invoke('clientStateUpdate', playerStateString);
+
+
+        var d = new Date();
+        connector.connection.invoke('measureLatency', d.getTime());
     }
 };
