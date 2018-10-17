@@ -15,130 +15,130 @@ namespace GameTests
         public void ShouldAddCorrectly()
         {
             // Arrage
-            var a = new Vector2(1, 0);
-            var b = new Vector2(2, -10);
+            var vectorA = new Vector2(1, 0);
+            var vectorB = new Vector2(2, -10);
 
-            var aCopy = new Vector2(a);
-            var bCopy = new Vector2(b);
+            var vectorACopy = new Vector2(vectorA);
+            var vectorBCopy = new Vector2(vectorB);
 
             // Act
-            var c = a + b;
+            var addedVector = vectorA + vectorB;
 
             // Assert
             var expectedVector = new Vector2(3, -10);
-            Assert.AreEqual(c, expectedVector);
+            Assert.AreEqual(addedVector, expectedVector);
 
-            Assert.AreEqual(aCopy, a); // Not changed
-            Assert.AreEqual(bCopy, b); // Not changed
+            Assert.AreEqual(vectorACopy, vectorA); // Not changed
+            Assert.AreEqual(vectorBCopy, vectorB); // Not changed
         }
 
         [TestMethod]
         public void ShouldSubtractCorrectly()
         {
             // Arrage
-            var a = new Vector2(1, 1);
-            var b = new Vector2(3, -10);
+            var vectorA = new Vector2(1, 1);
+            var vectorB = new Vector2(3, -10);
 
-            var aCopy = new Vector2(a);
-            var bCopy = new Vector2(b);
+            var vectorACopy = new Vector2(vectorA);
+            var vectorBCopy = new Vector2(vectorB);
 
             // Act
-            var c = a - b;
+            var subtractedVector = vectorA - vectorB;
 
             // Assert
             var expectedVector = new Vector2(-2, 11);
-            Assert.AreEqual(c, expectedVector);
+            Assert.AreEqual(subtractedVector, expectedVector);
 
-            Assert.AreEqual(aCopy, a); // Not changed
-            Assert.AreEqual(bCopy, b); // Not changed
+            Assert.AreEqual(vectorACopy, vectorA); // Not changed
+            Assert.AreEqual(vectorBCopy, vectorB); // Not changed
         }
 
         [TestMethod]
         public void ShouldMultiplyCorrectly()
         {
             // Arrage
-            var a = new Vector2(1, 3);
-            var aCopy = new Vector2(a);
-            var b = 3.0;
+            var vector = new Vector2(1, 3);
+            var vectorCopy = new Vector2(vector);
+            var multiplier = 3.0;
 
             // Act
-            var c = a * b;
+            var multipliedVector = vector * multiplier;
 
             // Assert
             var expectedVector = new Vector2(3, 9);
-            Assert.AreEqual(c, expectedVector);
+            Assert.AreEqual(multipliedVector, expectedVector);
 
-            Assert.AreEqual(aCopy, a); // Not changed
+            Assert.AreEqual(vectorCopy, vector); // Not changed
         }
 
         [TestMethod]
         public void ShouldDivideCorrectly()
         {
             // Arrage
-            var a = new Vector2(-1, 3);
-            var aCopy = new Vector2(a);
-            var b = 3.0;
+            var vector = new Vector2(-1, 3);
+            var vectorCopy = new Vector2(vector);
+            var divider = 3.0;
 
             // Act
-            var c = a / b;
+            var dividedVector = vector / divider;
 
             // Assert
-            Assert.AreEqual(-1/3.0, c.X, 1e-6);
-            Assert.AreEqual(1, c.Y);
+            Assert.AreEqual(-1/3.0, dividedVector.X, 1e-6);
+            Assert.AreEqual(1, dividedVector.Y);
 
-            Assert.AreEqual(aCopy, a); // Not changed
+            Assert.AreEqual(vectorCopy, vector); // Not changed
         }
 
         [TestMethod]
         public void ShouldCalculateLength()
         {
             // Arrage
-            var a = new Vector2(3, 4);
+            var vector = new Vector2(3, 4);
 
             // Act
-            var c = a.Length();
+            var length = vector.Length();
 
             // Assert
-            Assert.AreEqual(5, c);
+            Assert.AreEqual(5, length);
         }
 
         [TestMethod]
         public void ShouldCalculateSquaredLength()
         {
             // Arrage
-            var a = new Vector2(3, 4);
+            var vector = new Vector2(3, 4);
 
             // Act
-            var c = a.LengthSquared();
+            var lengthSquared = vector.LengthSquared();
 
             // Assert
-            Assert.AreEqual(Math.Pow(5, 2), c);
+            Assert.AreEqual(Math.Pow(5, 2), lengthSquared);
         }
 
         [TestMethod]
         public void ShouldBeCopyable()
         {
             // Arrage
-            var a = new Vector2(11, 13);
+            var vectorA = new Vector2(11, 13);
 
             // Act
-            var b = new Vector2(a);
+            var vectorB = new Vector2(vectorA);
 
             // Assert
-            Assert.AreEqual(a, b);
+            Assert.AreEqual(vectorA, vectorB);
         }
 
         [TestMethod]
         public void ShouldAllowToCalculateDistanceFromPoints()
         {
             // Arrage
-            var a = new Vector2(11, 13);
-            var b = new Vector2(a);
+            var vectorA = new Vector2(11, 13);
+            var vectorB = new Vector2(vectorA);
             var distance = 3;
-            b += new Vector2(1, 1).Normalize() * distance;
+            vectorB += new Vector2(1, 1).Normalize() * distance;
 
             // Act
-            var c = Vector2.Distance(a, b);
+            var c = Vector2.Distance(vectorA, vectorB);
 
             // Assert
             Assert.AreEqual(distance, c, 1e-6);
@@ -148,13 +148,13 @@ namespace GameTests
         public void ShouldAllowToCalculateSquaredDistanceFrom()
         {
             // Arrage
-            var a = new Vector2(11, 13);
-            var b = new Vector2(a);
+            var vectorA = new Vector2(11, 13);
+            var vectorB = new Vector2(vectorA);
             var distance = 5;
-            b += new Vector2(-3, 1.5).Normalize() * distance;
+            vectorB += new Vector2(-3, 1.5).Normalize() * distance;
 
             // Act
-            var c = Vector2.DistanceSquared(a, b);
+            var c = Vector2.DistanceSquared(vectorA, vectorB);
 
             // Assert
             Assert.AreEqual(Math.Pow(distance, 2), c, 1e-6);
@@ -164,45 +164,45 @@ namespace GameTests
         public void ShouldCalculateNormalizedVectors()
         {
             // Arrage
-            var a = new Vector2(-1, 1);
-            var copy = new Vector2(a);
+            var vector = new Vector2(-1, 1);
+            var copy = new Vector2(vector);
 
             // Act
-            var b = a.Normalize();
-            var c = Vector2.Normalize(a);
+            var normalized = vector.Normalize();
+            var staticalyNormalized = Vector2.Normalize(vector);
 
             // Assert
             var t = Math.Sqrt(2) / 2;
             var expectedVector = new Vector2(-t, t);
 
-            Assert.AreEqual(expectedVector.X, b.X, 1e-6);
-            Assert.AreEqual(expectedVector.Y, b.Y, 1e-6);
-            Assert.AreEqual(expectedVector.X, c.X, 1e-6);
-            Assert.AreEqual(expectedVector.Y, c.Y, 1e-6);
-            Assert.AreEqual(a, copy);
+            Assert.AreEqual(expectedVector.X, normalized.X, 1e-6);
+            Assert.AreEqual(expectedVector.Y, normalized.Y, 1e-6);
+            Assert.AreEqual(expectedVector.X, staticalyNormalized.X, 1e-6);
+            Assert.AreEqual(expectedVector.Y, staticalyNormalized.Y, 1e-6);
+            Assert.AreEqual(vector, copy);
         }
 
         [TestMethod]
         public void ShouldBeInitializableWithNoArguments()
         {
             // Arrage
-            var a = new Vector2();
+            var vector = new Vector2();
 
             // Act
 
             // Assert
-            Assert.AreEqual(new Vector2(0, 0), a);
+            Assert.AreEqual(new Vector2(0, 0), vector);
         }
 
         [TestMethod]
         public void ShouldCorrectlyCalculateAngleBetweenVectors1()
         {
             // Arrage
-            var a = new Vector2(1, 1);
-            var b = new Vector2(1, -1);
+            var vectorA = new Vector2(1, 1);
+            var vectorB = new Vector2(1, -1);
 
             // Act
-            var angle = Vector2.AngleBetweenVectors(a, b);
+            var angle = Vector2.AngleBetweenVectors(vectorA, vectorB);
 
             // Assert
             var expectedAngle = Math.PI / 2;
@@ -213,11 +213,11 @@ namespace GameTests
         public void ShouldCorrectlyCalculateAngleBetweenVectors2()
         {
             // Arrage
-            var a = new Vector2(0, 3);
-            var b = new Vector2(-1, 0);
+            var vectorA = new Vector2(0, 3);
+            var vectorB = new Vector2(-1, 0);
 
             // Act
-            var angle = Vector2.AngleBetweenVectors(a, b);
+            var angle = Vector2.AngleBetweenVectors(vectorA, vectorB);
 
             // Assert
             var expectedAngle = Math.PI / -2;
@@ -228,20 +228,20 @@ namespace GameTests
         public void ShouldCorrectlyCalculateLengthAfterPropertiesChanged()
         {
             // Arrage
-            var a = new Vector2();
+            var vector = new Vector2();
 
             // Act
-            var l0 = a.Length();
+            var l0 = vector.Length();
 
-            a.X = 3;
-            a.Y = 4;
+            vector.X = 3;
+            vector.Y = 4;
 
-            var l1 = a.Length();
+            var l1 = vector.Length();
 
-            a.X = 12;
-            a.Y = 5;
+            vector.X = 12;
+            vector.Y = 5;
 
-            var l2 = a.Length();
+            var l2 = vector.Length();
 
             // Assert
             var expectedL0 = 0;
@@ -258,10 +258,10 @@ namespace GameTests
         public void ShouldThrowExceptionWhenTryingToNormalizeZeroVector()
         {
             // Arrage
-            var a = new Vector2();
+            var vector = new Vector2();
 
             // Act
-            var v = a.Normalize();
+            vector.Normalize();
 
             // Assert
         }
@@ -270,14 +270,14 @@ namespace GameTests
         public void ShouldNotThrowExceptionWhenTryingToSafeNormalizeZeroVector()
         {
             // Arrage
-            var a = new Vector2();
+            var vector = new Vector2();
 
             // Act
-            var v = a.SafeNormalize();
+            var normalized = vector.SafeNormalize();
 
             // Assert
             var expected = Vector2.ZERO_VECTOR;
-            Assert.AreEqual(expected, v);
+            Assert.AreEqual(expected, normalized);
         }
 
         [TestMethod]
@@ -285,10 +285,10 @@ namespace GameTests
         public void ShouldThrowExceptionWhenTryingToDivideBy0()
         {
             // Arrage
-            var a = new Vector2();
+            var vector = new Vector2();
 
             // Act
-            var v = a / 0;
+            var divided = vector / 0;
 
             // Assert
         }
@@ -298,11 +298,11 @@ namespace GameTests
         public void ShouldThrowExceptionWhenTryingToCalculateAngleBetweenZeroVector()
         {
             // Arrage
-            var a = new Vector2();
-            var b = new Vector2(1, 0);
+            var vectorA = new Vector2();
+            var vectorB = new Vector2(1, 0);
 
             // Act
-            var v = Vector2.AngleBetweenVectors(a, b);
+            Vector2.AngleBetweenVectors(vectorA, vectorB);
 
             // Assert
         }
