@@ -30,6 +30,7 @@ namespace GameServer.Hubs
                 Name = name,
                 ConnectionId = Context.ConnectionId
             };
+            SpawnService.SpawnPlayer(player);
 
             _gameEngine.AddPlayer(player);
             Console.WriteLine($"Registered player: {player.Name} ({player.Id})");
