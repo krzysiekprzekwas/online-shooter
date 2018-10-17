@@ -1,4 +1,6 @@
-﻿const nameService = {
+﻿function NameService() {
+
+    const that = this;
 
     getRandomName() {
 
@@ -16,6 +18,8 @@
         });
 
         return name;
-    },
-
+    };
 };
+
+
+const nameService = new NameService();
