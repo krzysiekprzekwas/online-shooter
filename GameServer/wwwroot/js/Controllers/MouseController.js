@@ -7,35 +7,37 @@
         const x = e.clientX;
         const y = e.clientY;
 
-        const canvas = document.querySelector('canvas');
-        if (canvas === null)
+        if (typeof width === "undefined")
             return;
 
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-
-        that._angle = that.convertPointToAngle(x, y, centerX, centerY);
+        let angle = that.getAngleFromMousePosition(x, y);
+        angle = that.convertAngle(angle);
+        that._angle = angle;
     };
 
-    that.convertPointToAngle = function (x, y, centerX, centerY) {
+    that.getAngleFromMousePosition = function (x, y) {
+    
+        const deltaX = x - (width / 2);
+        const deltaY = y - (height / 2);
+        
+        return Math.atan2(deltaX, deltaY);
+    };
 
-        const deltaX = x - centerX;
-        const deltaY = y - centerY;
+    that.convertAngle = function (angle) {
 
-        let rad = Math.atan2(deltaX, deltaY);
-        if (rad < 0)
-            rad = Math.abs(rad);
+        if (angle < 0)
+            angle = Math.abs(angle);
         else
-            rad = 2 * Math.PI - rad;
+            angle = 2 * Math.PI - angle;
 
-        return rad / Math.PI * 180;
+        return angle;
     };
 
     that.getCurrentAngle = function () {
 
         return that._angle;
     };
-
+    
     document.addEventListener("mousemove", that.updateCurrentAngle);
 }
 
