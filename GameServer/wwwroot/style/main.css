@@ -39,18 +39,17 @@ body {
     touch-action: none;
 }
 
-#fpsLabel {
+.measurementLabel {
     position: absolute;
     right: 8px;
-    top: 8px;
     font: 1rem Consolas;
     color: #DCDCDC;
 }
 
+#fpsLabel {
+    top: calc(8px);
+}
+
 #pingLabel {
-    position: absolute;
-    right: 8px;
-    top: calc(8px + 2rem);
-    font: 2rem Consolas;
-    color: #f1c40f;
+    top: calc(8px + 1rem);
 }
