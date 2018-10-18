@@ -41,7 +41,8 @@ namespace GameServer.Hubs
                 Type = "connected",
                 PlayerId = player.Id,
                 Config = Config.Instance,
-                MapState = MapState.Instance
+                MapState = MapState.Instance,
+                Weapons = WeaponService.Weapons
             };
 
             Clients.Caller.SendAsync("connectConfirmation", connectionConfirmationResponse);
@@ -106,5 +107,8 @@ namespace GameServer.Hubs
 
         [JsonProperty("mapState")]
         public MapState MapState;
+        
+        [JsonProperty("weapons")]
+        public Dictionary<WeaponEnum, Weapon> Weapons;
     }
 }

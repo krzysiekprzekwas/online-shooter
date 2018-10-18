@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.WebSockets;
+using GameServer.Game;
 using GameServer.MapObjects;
 using GameServer.States;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace GameServer.Models
         public Vector2 Speed { get; set; }
         public string Name { get; set; }
         public int Id { get; set; }
+        public PlayerWeapon PlayerWeapon { get; set; }
 
         [JsonIgnore]
         public string ConnectionId;
