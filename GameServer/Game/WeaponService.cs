@@ -6,9 +6,9 @@ namespace GameServer.Game
 {
     public static class WeaponService
     {
-        public static Dictionary<WeaponEnum, Weapon> Weapons = new Dictionary<WeaponEnum, Weapon>
+        public static Dictionary<int, Weapon> Weapons = new Dictionary<int, Weapon>
         {
-            { WeaponEnum.SingleShotTheGreatBarrel, new Weapon(
+            { (int)WeaponEnum.SingleShotTheGreatBarrel, new Weapon(
                 name: "Single shot the great barrel",
                 maxClipAmmo: 5,
                 maxAmmo: 100,
@@ -24,12 +24,12 @@ namespace GameServer.Game
 
         public static WeaponEnum GetDefaultWeaponEnum()
         {
-            return Weapons.Keys.First();
+            return (WeaponEnum)Weapons.Keys.First();
         }
 
         public static Weapon GetWeaponFromWeaponEnumOrNull(WeaponEnum weaponEnum)
         {
-            return Weapons.GetValueOrDefault(weaponEnum);
+            return Weapons.GetValueOrDefault((int)weaponEnum);
         }
 
     }

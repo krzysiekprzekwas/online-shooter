@@ -109,6 +109,6 @@ namespace GameServer.Hubs
         public MapState MapState;
         
         [JsonProperty("weapons")]
-        public Dictionary<WeaponEnum, Weapon> Weapons;
+        public Dictionary<int, Weapon> Weapons;
     }
 }
