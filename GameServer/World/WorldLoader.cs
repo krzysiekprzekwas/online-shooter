@@ -89,12 +89,10 @@ namespace GameServer.World
 
             var spawnPoints = new List<SpawnPoint>
             {
-                new SpawnPoint(-130, -30),
-                new SpawnPoint(-210, -30),
-                new SpawnPoint(110, -30),
-                new SpawnPoint(230, -30),
-                new SpawnPoint(110, 110),
-                new SpawnPoint(310, 310),
+                new SpawnPoint(-3 * g, 0),
+                new SpawnPoint(-3 * g, 7 * g),
+                new SpawnPoint(9 * g, -1 * g),
+                new SpawnPoint(1 * g, -4 * g),
             };
 
             SpawnService.SpawnPoints = spawnPoints;
