@@ -2,6 +2,10 @@ window.onkeyup = function (e) { keyboardController.OnKeyUp(e.keyCode); };
 window.onkeydown = function (e) { keyboardController.OnKeyDown(e.keyCode); };
 p5.disableFriendlyErrors = true;
 
+Array.prototype.except = function (val) {
+    return this.filter(function (x) { return x !== val; });
+}; 
+
 function preload() {
 
     texturesService.initialize();
@@ -37,7 +41,7 @@ function setup() {
 }
 
 function draw() {
-    background(61);
+    drawingController.SetBackground(61);
 
     world.draw();
     
