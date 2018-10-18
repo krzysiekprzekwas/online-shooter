@@ -2,6 +2,8 @@
 
     const that = this;
 
+    that.mouseClicked = false;
+
     that.updateCurrentAngle = function (e) {
 
         const x = e.clientX;
@@ -37,8 +39,22 @@
 
         return that._angle;
     };
+
+    that.OnMouseClick = function () {
+        that.mouseClicked = true;
+    };
+
+    that.GetMouseClicked = function () {
+        return that.mouseClicked;
+    };
+
+    that.ResetMouseClicked = function () {
+        that.mouseClicked = false;
+    };
     
     document.addEventListener("mousemove", that.updateCurrentAngle);
+
+    document.addEventListener("click", that.OnMouseClick);
 }
 
 let mouseController = new MouseController();
