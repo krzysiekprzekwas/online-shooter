@@ -2,7 +2,7 @@
 
     const that = this;
 
-    that.myPlayer;
+    that.myPlayer = {id:-1};
 
     that.SetBackground = function (value) {
         background(value);
@@ -34,7 +34,7 @@
 
         stroke(0);
 
-        players.except(function (x) { return that.myPlayer !== null && x.id === that.myPlayer.id; }).forEach((player, i) => {
+        players.except(x => { return x.id === that.myPlayer.id; }).forEach((player, i) => {
             
             push();
 
