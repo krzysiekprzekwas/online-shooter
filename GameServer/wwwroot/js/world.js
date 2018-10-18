@@ -67,7 +67,9 @@ let world = {
         push();
 
         // myPlayer should be in the center
-        drawingController.SetMyPlayer(this.myPlayer !== null ? this.myPlayer : { x: 0, y: 0 });
+        if (this.myPlayer !== null)
+            drawingController.SetMyPlayer(this.myPlayer);
+        
         
         // Draw map components
         drawingController.drawMapObjects(this.mapObjects);

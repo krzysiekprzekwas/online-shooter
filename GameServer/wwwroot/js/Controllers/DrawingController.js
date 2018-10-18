@@ -2,7 +2,10 @@
 
     const that = this;
 
-    that.myPlayer = {id:-1};
+    that.myPlayer = {
+        id: -1,
+        radius: 16
+    };
 
     that.SetBackground = function (value) {
         background(value);
@@ -34,37 +37,30 @@
 
         stroke(0);
 
-        players.except(x => { return x.id === that.myPlayer.id; }).forEach((player, i) => {
+        players.filter(x => x.id !== that.myPlayer.id).forEach((player, i) => {
             
-            push();
-
-            translate(player.x - that.myPlayer.x, player.y - that.myPlayer.y);
-            rotate(player.angle);
-
-            strokeWeight(0);
-            rect(0, 20, 16, 30);
-
-            strokeWeight(4);
-            ellipse(0, 0, player.radius * 2, player.radius * 2);
-
-            pop();
+            that.DrawPlayer(player.x, player.y, player.angle, player.radius);
         });
 
         // Draw myPlayer
 
-        fill(255, 190, 118);
-
         stroke(52, 152, 219);
 
+        that.DrawPlayer(that.myPlayer.x, that.myPlayer.y, mouseController.getCurrentAngle(), that.myPlayer.radius);
+    };
+
+    that.DrawPlayer = function (x, y, angle, radius) {
         push();
-        
-        rotate(that.myPlayer.angle);
+
+        translate(x - that.myPlayer.x, y - that.myPlayer.y);
+
+        rotate(angle);
 
         strokeWeight(0);
         rect(0, 20, 16, 30);
 
         strokeWeight(4);
-        ellipse(0, 0, that.myPlayer.radius * 2, that.myPlayer.radius * 2);
+        ellipse(0, 0, radius * 2, radius * 2);
 
         pop();
     };
