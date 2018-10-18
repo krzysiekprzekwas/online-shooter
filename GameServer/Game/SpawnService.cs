@@ -17,6 +17,9 @@ namespace GameServer.Game
 
             var position = spawnPoint.Position.Clone() as Vector2;
             player.Position = position;
+
+            var weaponEnum = WeaponService.GetDefaultWeaponEnum();
+            player.PlayerWeapon = new PlayerWeapon(weaponEnum);
         }
 
         public static SpawnPoint GetRandomSpawnPoint()
