@@ -1,4 +1,6 @@
 const Intersection = require('../js/Physics/Intersection.js');
+const MapCircle = require('../js/MapObjects/MapCircle.js');
+const MapRect = require('../js/MapObjects/MapRect.js');
 
 describe('Intersection', function () {
 
