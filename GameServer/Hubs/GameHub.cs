@@ -71,6 +71,8 @@ namespace GameServer.Hubs
             foreach (var key in playerState.Keys)
                 player.Keys.Add((KeyEnum)key.Value);
 
+            player.MouseClicked = playerState.MouseClicked.Value;
+
             player.Angle = playerState.Angle.Value;
         }
 
