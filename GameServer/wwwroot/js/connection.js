@@ -48,6 +48,7 @@ const connector = {
             }
 
             world.onMapStateReceived(response.mapState);
+            weaponService.onWeaponsReceived(response.weapons);
 
             console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameServer.Game;
 using GameServer.MapObjects;
+using GameServer.Models;
 using GameServer.States;
 
 namespace GameServer.World
@@ -37,6 +39,16 @@ namespace GameServer.World
             };
 
             MapState.Instance.MapObjects = objs;
+
+            var spawnPoints = new List<SpawnPoint>
+            {
+                new SpawnPoint(-30, -30),
+                new SpawnPoint(-10, -30),
+                new SpawnPoint(10, -30),
+                new SpawnPoint(30, -30),
+            };
+
+            SpawnService.SpawnPoints = spawnPoints;
         }
 
         public static void MapFirstArena()
@@ -74,6 +86,16 @@ namespace GameServer.World
             };
 
             MapState.Instance.MapObjects = objs;
+
+            var spawnPoints = new List<SpawnPoint>
+            {
+                new SpawnPoint(-3 * g, 0),
+                new SpawnPoint(-3 * g, 7 * g),
+                new SpawnPoint(9 * g, -1 * g),
+                new SpawnPoint(1 * g, -4 * g),
+            };
+
+            SpawnService.SpawnPoints = spawnPoints;
         }
 
     }

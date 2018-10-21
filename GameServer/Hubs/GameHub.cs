@@ -30,6 +30,7 @@ namespace GameServer.Hubs
                 Name = name,
                 ConnectionId = Context.ConnectionId
             };
+            SpawnService.SpawnPlayer(player);
 
             _gameEngine.AddPlayer(player);
             Console.WriteLine($"Registered player: {player.Name} ({player.Id})");
@@ -40,7 +41,8 @@ namespace GameServer.Hubs
                 Type = "connected",
                 PlayerId = player.Id,
                 Config = Config.Instance,
-                MapState = MapState.Instance
+                MapState = MapState.Instance,
+                Weapons = WeaponService.Weapons
             };
 
             Clients.Caller.SendAsync("connectConfirmation", connectionConfirmationResponse);
@@ -105,5 +107,8 @@ namespace GameServer.Hubs
 
         [JsonProperty("mapState")]
         public MapState MapState;
+        
+        [JsonProperty("weapons")]
+        public Dictionary<int, Weapon> Weapons;
     }
 }
