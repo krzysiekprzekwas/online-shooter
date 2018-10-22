@@ -13,11 +13,13 @@ namespace GameServer.States
 
         // Gamestate properties
         public List<Player> Players { get; set; }
+        public List<Bullet> Bullets { get; set; }
         public int PlayerId { get; set; }
 
         private GameState()
         {
             Players = new List<Player>();
+            Bullets = new List<Bullet>();
             PlayerId = 1;
         }
 

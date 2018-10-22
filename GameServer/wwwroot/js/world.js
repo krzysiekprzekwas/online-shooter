@@ -4,6 +4,7 @@ let world = {
 
         this.mapObjects = Array();
         this.players = Array();
+        this.bullets = Array();
         this.myPlayer = null;
         
         this.playerId = -1;
@@ -58,7 +59,21 @@ let world = {
                 world.myPlayer = playerObject;
 
             world.players.push(playerObject);
-        }
+        };
+
+        world.bullets = Array();
+        for (bullet of gamestate.bullets) {
+
+            const bulletObject = {
+                playerId: bullet.playerId,
+                x: bullet.position.x,
+                y: bullet.position.y,
+                radius: bullet.radius,
+                angle: bullet.angle
+            };
+
+            world.bullets.push(bulletObject);
+        };
     },
 
     draw: function () {

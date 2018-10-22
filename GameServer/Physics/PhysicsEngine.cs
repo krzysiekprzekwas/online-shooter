@@ -28,6 +28,14 @@ namespace GameServer.Physics
                 player.Speed = speedVector;
                 player.Position += speedVector;
             }
+
+
+            foreach (Bullet bullet in GameState.Instance.Bullets)
+            {
+                bullet.Speed *= 1 - Config.PLAYER_DECCELERATION;
+                
+                bullet.Position += bullet.Speed;
+            }
         }
 
         public static Vector2 GetSpeedFromPlayerInput(Player player)

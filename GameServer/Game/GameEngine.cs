@@ -44,8 +44,36 @@ namespace GameServer.Game
             Ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
         }
 
+        private void ApplyShooting()
+        {
+            foreach (Player player in GameState.Instance.Players)
+            {
+
+                var weapon = WeaponService.GetWeaponFromWeaponEnumOrNull(player.PlayerWeapon.WeaponEnum);
+
+                if (player.MouseClicked && (DateTime.Now - player.PlayerWeapon.LastShotDate).TotalMilliseconds > weapon.ReloadTime)
+                {
+                    //Shoot
+                    player.PlayerWeapon.LastShotDate = DateTime.Now;
+
+                    var bullet = new Bullet()
+                    {
+                        Angle = player.Angle,
+                        PlayerId = player.Id,
+                        Position = player.Position,
+                        Radius = 3,
+                        Speed = new Vector2(1)
+                    };
+
+                    GameState.Instance.Bullets.Add(bullet);
+                }
+            }
+        }
+
         private void Tick(object state)
         {
+            ApplyShooting();
+
             PhysicsEngine.ApplyPhysics();
 
             var currentPlayers = new Player[GameState.Instance.Players.Count];
