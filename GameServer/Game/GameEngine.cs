@@ -51,7 +51,7 @@ namespace GameServer.Game
 
                 var weapon = WeaponService.GetWeaponFromWeaponEnumOrNull(player.PlayerWeapon.WeaponEnum);
 
-                if (player.MouseClicked && (DateTime.Now - player.PlayerWeapon.LastShotDate).TotalMilliseconds > weapon.ReloadTime)
+                if (player.MouseClicked && (DateTime.Now - player.PlayerWeapon.LastShotDate).TotalMilliseconds > weapon.ShootTime)
                 {
                     //Shoot
                     player.PlayerWeapon.LastShotDate = DateTime.Now;
@@ -61,8 +61,8 @@ namespace GameServer.Game
                         Angle = player.Angle,
                         PlayerId = player.Id,
                         Position = player.Position,
-                        Radius = 3,
-                        Speed = new Vector2(1)
+                        Radius = weapon.BulletSize,
+                        Speed = player.Speed + Vector2.DOWN_VECTOR 
                     };
 
                     GameState.Instance.Bullets.Add(bullet);

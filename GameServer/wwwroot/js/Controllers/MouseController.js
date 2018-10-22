@@ -44,17 +44,22 @@
         that.mouseClicked = true;
     };
 
+    that.OnMouseRelease = function () {
+        that.mouseClicked = false;
+    };
+
     that.GetMouseClicked = function () {
         return that.mouseClicked;
     };
 
     that.ResetMouseClicked = function () {
-        that.mouseClicked = false;
     };
     
     document.addEventListener("mousemove", that.updateCurrentAngle);
 
-    document.addEventListener("click", that.OnMouseClick);
+    document.addEventListener("mouseup", that.OnMouseRelease);
+
+    document.addEventListener("mousedown", that.OnMouseClick);
 }
 
 let mouseController = new MouseController();

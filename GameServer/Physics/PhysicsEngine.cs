@@ -29,10 +29,11 @@ namespace GameServer.Physics
                 player.Position += speedVector;
             }
 
+            GameState.Instance.Bullets.RemoveAll(b => b.Speed.Length() < Config.MIN_BULLET_SPEED);
 
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
-                bullet.Speed *= 1 - Config.PLAYER_DECCELERATION;
+                bullet.Speed *= 0.99;
                 
                 bullet.Position += bullet.Speed;
             }
