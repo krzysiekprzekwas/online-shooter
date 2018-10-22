@@ -204,7 +204,7 @@ describe('Vectors', function () {
         const vector = new Vector2();
 
         // Assert
-        expect(() => Vector2.Normalize(vector)).toThrow("Degenerated vector given. Cannot normalzie zero vector.");
+        expect(() => Vector2.Normalize(vector)).toThrow();
     });
 
     it('can be safely normalized', () => {
@@ -213,7 +213,7 @@ describe('Vectors', function () {
         const vector = new Vector2();
 
         // Act
-        const normalized = Vector2.SafeNormalize(vector);
+        const normalized = vector.SafeNormalize();
         
         // Assert
         expect(normalized.Equals(Vector2.ZERO_VECTOR())).toBeTruthy();

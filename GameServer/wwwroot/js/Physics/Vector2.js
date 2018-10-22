@@ -60,8 +60,8 @@ function Vector2(x = 0, y = 0) {
         if (that.IsDegenerated())
             throw "Degenerated vector given. Cannot normalize zero vector.";
 
-        const vector = Vector2.Copy(that);
-        vector.Divide(that.Length());
+        let vector = Vector2.Clone(that);
+        vector = Vector2.Divide(vector, that.Length());
         return vector;
     };
 
