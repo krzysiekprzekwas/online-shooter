@@ -62,7 +62,7 @@ namespace GameServer.Game
                         PlayerId = player.Id,
                         Position = player.Position,
                         Radius = weapon.BulletSize,
-                        Speed = player.Speed + Vector2.DOWN_VECTOR 
+                        Speed = player.Speed * weapon.BulletSpeed + Vector2.RadianToVector2(player.Angle + Math.PI/2)
                     };
 
                     GameState.Instance.Bullets.Add(bullet);

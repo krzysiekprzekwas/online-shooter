@@ -34,9 +34,12 @@ namespace GameServer.Physics
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
                 bullet.Speed *= 0.99;
-                
+
                 bullet.Position += bullet.Speed;
             }
+
+            GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);
+            
         }
 
         public static Vector2 GetSpeedFromPlayerInput(Player player)
