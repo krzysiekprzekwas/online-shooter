@@ -43,6 +43,7 @@ body {
     position: absolute;
     right: 8px;
     font: 1rem Consolas;
+    user-select: none;
     color: #DCDCDC;
 }
 

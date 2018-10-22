@@ -89,6 +89,7 @@ let world = {
         // Draw map components
         drawingController.drawMapObjects(this.mapObjects);
         drawingController.drawPlayers(this.players, this.myPlayer);
+        drawingController.DrawBullets(this.bullets);
 
         // Restore original state
         pop();
