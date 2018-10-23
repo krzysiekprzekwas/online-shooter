@@ -79,8 +79,6 @@ const connector = {
             PingStart: new Date().getTime()
         });
 
-        mouseController.ResetMouseClicked();
-
         connector.connection.invoke('clientStateUpdate', playerStateString);
 
 

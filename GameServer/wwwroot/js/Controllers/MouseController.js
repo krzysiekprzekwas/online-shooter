@@ -44,15 +44,12 @@
         that.mouseClicked = true;
     };
 
-    that.OnMouseRelease = function () {
+    that.OnMouseRelease = function (event) {
         that.mouseClicked = false;
     };
 
     that.GetMouseClicked = function () {
         return that.mouseClicked;
-    };
-
-    that.ResetMouseClicked = function () {
     };
     
     document.addEventListener("mousemove", that.updateCurrentAngle);
