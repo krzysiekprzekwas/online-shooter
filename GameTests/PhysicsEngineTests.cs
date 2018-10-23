@@ -151,6 +151,24 @@ namespace GameTests
             Assert.IsTrue(player.Position.X > 0);
         }
 
+        [TestMethod]
+        public void ShouldAllowParallelMovement2()
+        {
+            // Arrange
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+            var r = player.Radius;
+            var mapRect1 = new MapRect(4 * r, 0, 2 * r, 1000 * r);
+            MapState.Instance.MapObjects = new List<MapObject> { mapRect1 };
+
+            // Act
+            player.Keys = new List<KeyEnum> { KeyEnum.Down, KeyEnum.Right };
+            for (var i = 1; i <= 200; i++)
+                gameEngine.PhysicsEngine.ApplyPhysics();
+
+            // Assert
+            Assert.IsTrue(player.Position.X < player.Position.Y);
+        }
+
         // Helper methods
         private static GameEngine CreateGameEngineAndAddPlayer(out Player player)
         {

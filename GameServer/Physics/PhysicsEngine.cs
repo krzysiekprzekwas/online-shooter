@@ -22,11 +22,8 @@ namespace GameServer.Physics
                 player.Speed *= 1 - Config.PLAYER_DECCELERATION;
 
                 var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
-                    
-                speedVector = CalculatePossibleMovementVector(player, speedVector);
 
-                player.Speed = speedVector;
-                player.Position += speedVector;
+                UpdatePlayerPosition(player, speedVector);
             }
         }
 
@@ -55,8 +52,34 @@ namespace GameServer.Physics
             return calculatedSpeedVector;
         }
 
-        public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector)
+        public void UpdatePlayerPosition(Player player, Vector2 speedVector)
         {
+            var movementVector = CalculatePossibleMovementVector(player, speedVector, out double spareLength);
+            player.Position += movementVector;
+            player.Speed = movementVector;
+
+            if (spareLength > 0)
+            {
+                var spareSpeedVector = speedVector.Normalize() * spareLength;
+
+                var horizontalVector = Physic.ProjectVector(spareSpeedVector, Vector2.LEFT_VECTOR);
+                var verticalVector = Physic.ProjectVector(spareSpeedVector, Vector2.UP_VECTOR);
+                
+                var parallelHorizontalMovementVector = CalculatePossibleMovementVector(player, horizontalVector, out double horizontalSpareLength);
+                var parallelVerticalMovementVector = CalculatePossibleMovementVector(player, verticalVector, out double verticalSpareLength);
+
+                var parallelMovementVector = parallelVerticalMovementVector;
+                if (horizontalSpareLength < verticalSpareLength)
+                    parallelMovementVector = parallelHorizontalMovementVector;
+
+                player.Position += parallelMovementVector;
+                player.Speed = parallelMovementVector;
+            }
+        }
+
+        public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector, out double spareLength)
+        {
+            spareLength = 0;
             if (speedvector.IsDegenerated())
                 return Vector2.ZERO_VECTOR;
 
@@ -85,6 +108,7 @@ namespace GameServer.Physics
             } // Do this as long as we reach desired precision
             while (currentPrecision >= Config.INTERSECTION_INTERVAL);
 
+            spareLength = speedVectorLength - offset;
             return speedVectorNormalized * offset;
         }
         
