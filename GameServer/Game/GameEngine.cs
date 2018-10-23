@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
 using System.Threading;
-using System.Threading.Tasks;
 using GameServer.Hubs;
 using GameServer.Models;
 using GameServer.Physics;
@@ -29,7 +26,6 @@ namespace GameServer.Game
         private GameState _gameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
-        private Random random;
         private readonly IHubContext<GameHub> _hubContext;
 
         GameState IGameEngine.GameState { get => _gameState; }
@@ -38,8 +34,7 @@ namespace GameServer.Game
         {
             _hubContext = hubContext;
             GameEvents = new GameEvents(this);
-            PhysicsEngine = new PhysicsEngine(this);
-            random = new Random();
+            PhysicsEngine = new PhysicsEngine();
             WorldLoader.LoadMap();
             Ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
         }

@@ -9,12 +9,6 @@ namespace GameServer.Physics
 {
     public class PhysicsEngine
     {
-        private GameEngine _gameEngine;
-        public PhysicsEngine(GameEngine gameEngine)
-        {
-            _gameEngine = gameEngine;
-        }
-
         public void ApplyPhysics()
         {
             foreach (Player player in GameState.Instance.Players)

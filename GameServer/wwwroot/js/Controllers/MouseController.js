@@ -44,7 +44,7 @@
         that.mouseClicked = true;
     };
 
-    that.OnMouseRelease = function (event) {
+    that.OnMouseRelease = function () {
         that.mouseClicked = false;
     };
 
