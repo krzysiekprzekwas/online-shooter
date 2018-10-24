@@ -175,10 +175,10 @@ namespace GameTests
         public void ShouldCalculateVectorFromAngle()
         {
             // Arrange
-            var angle = Math.PI * 3 / 2;
+            var angle = -Math.PI;
 
             // Act
-            var vector = new Vector2(angle);
+            var vector = new Vector2(angle).Normalize();
 
             // Assert
             var expectedVector = new Vector2(-1, 0);

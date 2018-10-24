@@ -75,7 +75,7 @@ const connector = {
             Type: "playerstate",
             Keys: keyboardController.GetKeysState(),
             Angle: mouseController.getCurrentAngle(),
-            MouseClicked: mouseController.GetMouseClicked(),
+            MouseClicked: mouseController.IsMouseClicked(),
             PingStart: new Date().getTime()
         });
 

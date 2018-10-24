@@ -2,7 +2,7 @@
 
     const that = this;
 
-    that.mouseClicked = false;
+    that.isMouseClicked = false;
 
     that.updateCurrentAngle = function (e) {
 
@@ -41,15 +41,15 @@
     };
 
     that.OnMouseClick = function () {
-        that.mouseClicked = true;
+        that.isMouseClicked = true;
     };
 
     that.OnMouseRelease = function () {
-        that.mouseClicked = false;
+        that.isMouseClicked = false;
     };
 
-    that.GetMouseClicked = function () {
-        return that.mouseClicked;
+    that.IsMouseClicked  = function () {
+        return that.isMouseClicked ;
     };
     
     document.addEventListener("mousemove", that.updateCurrentAngle);
