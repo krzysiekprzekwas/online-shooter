@@ -83,7 +83,9 @@ namespace GameServer.Models
                 throw new Exception("Degenerated vector given. Cannot normalzie zero vector.");
 
             var v = new Vector2(this);
-            v /= Length();
+            if (LengthSquared() != 1)
+                v /= Length();
+
             return v;
         }
 
@@ -130,6 +132,11 @@ namespace GameServer.Models
         public static Vector2 RadianToVector2(double radian)
         {
             return new Vector2(Math.Cos(radian), Math.Sin(radian));
+        }
+        
+        public static double Vector2ToRadian(Vector2 vector)
+        {
+            return Math.Asin(vector.Normalize().X);
         }
 
         public static double AngleBetweenVectors(Vector2 a, Vector2 b)
