@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using GameServer.Game;
 using GameServer.MapObjects;
 using GameServer.Models;
@@ -9,14 +7,26 @@ using GameServer.States;
 
 namespace GameServer.World
 {
-    public static class WorldLoader
+    public interface IWorldLoader
     {
-        public static void LoadMap()
+        void LoadMap();
+    }
+
+    public class WorldLoader : IWorldLoader
+    {
+        private static IMapState _mapState;
+
+        public WorldLoader(IMapState mapState)
+        {
+            _mapState = mapState;
+        }
+
+        public void LoadMap()
         {
             MapFirstArena();
         }
 
-        public static void MapFirstRing()
+        public void MapFirstRing()
         {
             var objs = new List<MapObject>
             {
@@ -38,8 +48,8 @@ namespace GameServer.World
                 new MapRect(-7, -14, 1, 1),
             };
 
-            MapState.Instance.MapObjects = objs;
-
+            objs.ForEach(x => _mapState.AddMapObject(x));
+            
             var spawnPoints = new List<SpawnPoint>
             {
                 new SpawnPoint(-30, -30),
@@ -51,13 +61,9 @@ namespace GameServer.World
             SpawnService.SpawnPoints = spawnPoints;
         }
 
-        public static void MapFirstArena()
+        public void MapFirstArena()
         {
             const int g = 32;
-            
-            Color orange = new Color(0.9f, 0.5f, 0.2f);
-            Color green = new Color(0.1f, 0.87f, 0.34f);
-            Color red = new Color(0.9f, 0.1f, 0.2f);
 
             var objs = new List<MapObject>
             {
@@ -85,7 +91,7 @@ namespace GameServer.World
                 new MapRect(-4.5f * g, -0.5f * g, 1 * g, 3 * g), // 23
             };
 
-            MapState.Instance.MapObjects = objs;
+            objs.ForEach(x => _mapState.AddMapObject(x));
 
             var spawnPoints = new List<SpawnPoint>
             {

@@ -12,10 +12,14 @@ namespace GameServer.Hubs
     public class GameHub : Hub
     {
         IGameEngine _gameEngine;
+        static IConfig _config;
+        static IMapState _mapState;
 
-        public GameHub(IGameEngine gameEngine)
+        public GameHub(IGameEngine gameEngine, IConfig config, IMapState mapState)
         {
             _gameEngine = gameEngine;
+            _config = config;
+            _mapState = mapState;
         }
 
         public void Send(string name, string message)
@@ -25,7 +29,7 @@ namespace GameServer.Hubs
 
         public void OnOpen(string name)
         {
-            Player player = new Player
+            Player player = new Player(_config)
             {
                 Name = name,
                 ConnectionId = Context.ConnectionId
@@ -40,8 +44,8 @@ namespace GameServer.Hubs
             {
                 Type = "connected",
                 PlayerId = player.Id,
-                Config = Config.Instance,
-                MapState = MapState.Instance,
+                Config = _config,
+                MapState = _mapState,
                 Weapons = WeaponService.Weapons
             };
 
@@ -105,10 +109,10 @@ namespace GameServer.Hubs
         public int PlayerId;
 
         [JsonProperty("config")]
-        public Config Config;
+        public IConfig Config;
 
         [JsonProperty("mapState")]
-        public MapState MapState;
+        public IMapState MapState;
         
         [JsonProperty("weapons")]
         public Dictionary<int, Weapon> Weapons;

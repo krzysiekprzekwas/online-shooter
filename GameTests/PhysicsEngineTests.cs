@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using GameServer;
 using GameServer.Game;
 using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.Physics;
 using GameServer.States;
-using Microsoft.Extensions.DependencyInjection;
+using GameServer.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GameTests
@@ -19,7 +18,7 @@ namespace GameTests
         public void ShouldCalculateSpeedVectorFromPlayerInput()
         {
             // Arrange
-            var player = new Player();
+            var player = new Player(new Config());
             player.Keys.Add(KeyEnum.Up);
             player.Keys.Add(KeyEnum.Left);
 
@@ -36,7 +35,7 @@ namespace GameTests
         public void ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
         {
             // Arrange
-            var player = new Player();
+            var player = new Player(new Config());
             player.Keys.Add(KeyEnum.Down);
             player.Keys.Add(KeyEnum.Up);
 
@@ -88,7 +87,9 @@ namespace GameTests
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
             var r = player.Radius;
             var mapRect = new MapRect(0, r * 2, 2, 2);
-            MapState.Instance.MapObjects = new List<MapObject> { mapRect };
+            var mapState = new MapState();
+            mapState.AddMapObject(mapRect);
+            var config = new Config();
 
             // Act  
             player.Keys.Add(KeyEnum.Down);
@@ -102,18 +103,22 @@ namespace GameTests
 
             // Assert
             Assert.AreNotEqual(player.Position.Y, 0);
-            Assert.AreEqual(player.Position.Y, mapRect.Position.Y - (mapRect.Height / 2) - player.Radius, Config.INTERSECTION_INTERVAL * 2);
+            Assert.AreEqual(player.Position.Y, mapRect.Position.Y - (mapRect.Height / 2) - player.Radius, config.IntersectionInterval * 2);
         }
         
         [TestMethod]
         public void ShouldStuckPlayerBetweenTwoWalls()
         {
             // Arrange
+            var config = new Config();
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
             var r = player.Radius;
             var mapRect1 = new MapRect(r, 3 * r, 4 * r, 2 * r);
             var mapRect2 = new MapRect(4 * r, r, 2 * r, 6 * r);
-            MapState.Instance.MapObjects = new List<MapObject> { mapRect1, mapRect2 };
+
+            var mapState = new MapState();
+            mapState.AddMapObject(mapRect1);
+            mapState.AddMapObject(mapRect2);
 
             // Act  
             player.Keys = new List<KeyEnum> { KeyEnum.Down };
@@ -128,19 +133,20 @@ namespace GameTests
             var expectedY = mapRect1.Position.Y - (mapRect1.Height / 2) - player.Radius;
             var expectedX = mapRect2.Position.X - (mapRect2.Width / 2) - player.Radius;
 
-            Assert.AreEqual(player.Position.Y, expectedY, Config.INTERSECTION_INTERVAL * 2);
-            Assert.AreEqual(player.Position.X, expectedX, Config.INTERSECTION_INTERVAL * 2);
+            Assert.AreEqual(player.Position.Y, expectedY, config.IntersectionInterval * 2);
+            Assert.AreEqual(player.Position.X, expectedX, config.IntersectionInterval * 2);
         }
 
         [TestMethod]
         public void ShouldAllowParallelMovement()
         {
             // Arrange
+            var mapState = new MapState();
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
             player.Position.Y += 0.0001;
             var r = player.Radius;
             var mapRect1 = new MapRect(0, -2 * r, 100 * r, 2 * r);
-            MapState.Instance.MapObjects = new List<MapObject> { mapRect1 };
+            mapState.AddMapObject(mapRect1);
 
             // Act
             player.Keys = new List<KeyEnum> { KeyEnum.Up, KeyEnum.Right };
@@ -155,10 +161,11 @@ namespace GameTests
         public void ShouldAllowParallelMovement2()
         {
             // Arrange
+            var mapState = new MapState();
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
             var r = player.Radius;
             var mapRect1 = new MapRect(4 * r, 0, 2 * r, 1000 * r);
-            MapState.Instance.MapObjects = new List<MapObject> { mapRect1 };
+            mapState.AddMapObject(mapRect1);
 
             // Act
             player.Keys = new List<KeyEnum> { KeyEnum.Down, KeyEnum.Right };
@@ -173,10 +180,11 @@ namespace GameTests
         private static GameEngine CreateGameEngineAndAddPlayer(out Player player)
         {
             // Will fail, needs mock
-            GameEngine GE = new GameEngine(null);
+            var mapState = new MapState();
+            GameEngine GE = new GameEngine(null,new Config(),new WorldLoader(mapState),mapState);
             GE.Ticker.Dispose();
 
-            player = new Player()
+            player = new Player(new Config())
             {
                 Position = new Vector2(0, 0),
                 Angle = 0.0

@@ -1,24 +1,24 @@
 ﻿using GameServer.Models;
-using GameServer.States;
 using System;
-using System.Collections;
+using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
 
 namespace GameServer.MapObjects
 {
     public abstract class MapObject : ICloneable, IEquatable<MapObject>
     {
+        private static int _id = 1;
+
         public MapObject(double x, double y, TextureEnum texture, MapObject parent)
         {
-            Id = MapState.Instance.AssingMapObjectId();
-
             Position = new Vector2(x, y);
             Parent = parent;
-
             Texture = texture;
+            Id = _id++;
         }
 
-        public Vector2 Position { get; set; }
         public int Id { get; set; }
+
+        public Vector2 Position { get; set; }
 
         public TextureEnum Texture { get; set; }
 

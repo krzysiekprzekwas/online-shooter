@@ -1,5 +1,6 @@
 ﻿using GameServer.Models;
 using System;
+using GameServer.States;
 
 namespace GameServer.MapObjects
 {

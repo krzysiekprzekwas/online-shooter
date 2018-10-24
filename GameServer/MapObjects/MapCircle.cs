@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GameServer.States;
 
 namespace GameServer.MapObjects
 {
@@ -27,13 +28,7 @@ namespace GameServer.MapObjects
         public double Radius { get; set; }
 
         [JsonIgnore]
-        public double RadiusSquared
-        {
-            get
-            {
-                return Math.Pow(Radius, 2);
-            }
-        }
+        public double RadiusSquared => Math.Pow(Radius, 2);
 
         public override string ToString()
         {

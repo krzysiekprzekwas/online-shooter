@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using GameServer.MapObjects;
 using Newtonsoft.Json;
 
 namespace GameServer.States
 {
-    public class MapState
+    public interface IMapState
     {
-        private static MapState instance;
+        int AssingMapObjectId();
+        void AddMapObject(MapObject mapObject);
+        List<MapObject> MapObjects { get; set; }
+        int MapObjectId { get; set; }
+    }
+    public class MapState : IMapState
+    {
         public MapState()
         {
             MapObjects = new List<MapObject>();
             MapObjectId = 1;
         }
-
-        public static MapState Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new MapState();
-
-                return instance;
-            }
-        }
-
 
         public int AssingMapObjectId()
         {
@@ -34,6 +26,10 @@ namespace GameServer.States
             return id;
         }
 
+        public void AddMapObject(MapObject mapObject)
+        {
+            MapObjects.Add(mapObject);
+        }
 
         public List<MapObject> MapObjects { get; set; }
 

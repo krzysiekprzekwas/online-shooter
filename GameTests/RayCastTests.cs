@@ -3,6 +3,7 @@ using GameServer.MapObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GameServer.Models;
+using GameServer.States;
 
 namespace GameTests
 {
