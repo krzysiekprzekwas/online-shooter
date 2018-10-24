@@ -24,7 +24,9 @@ namespace GameServer
         [JsonProperty]
         public static double PLAYER_RADIUS = 16;
         [JsonProperty]
-        public static double INTERSECTION_INTERVAL = 0.01; 
+        public static double INTERSECTION_INTERVAL = 0.01;
+        [JsonProperty]
+        public static double MIN_BULLET_SPEED = 0.01;
 
         private static Config instance;
         public static Config Instance

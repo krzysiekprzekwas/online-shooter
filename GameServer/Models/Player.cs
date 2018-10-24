@@ -18,9 +18,11 @@ namespace GameServer.Models
         public int Id { get; set; }
         public PlayerWeapon PlayerWeapon { get; set; }
 
+        public double Angle { get; set; }
+        [JsonIgnore]
+        public bool MouseClicked;
         [JsonIgnore]
         public string ConnectionId;
-        public double Angle { get; set; }
         [JsonIgnore]
         public List<KeyEnum> Keys;
 
@@ -32,7 +34,7 @@ namespace GameServer.Models
             Angle = 0;
             Position = new Vector2();
             Speed = new Vector2();
-            
+            MouseClicked = false;
             Radius = Config.PLAYER_RADIUS;
         }
 

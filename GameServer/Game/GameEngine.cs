@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
 using System.Threading;
-using System.Threading.Tasks;
 using GameServer.Hubs;
 using GameServer.Models;
 using GameServer.Physics;
@@ -29,7 +26,6 @@ namespace GameServer.Game
         private GameState _gameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
-        private Random random;
         private readonly IHubContext<GameHub> _hubContext;
 
         GameState IGameEngine.GameState { get => _gameState; }
@@ -38,14 +34,46 @@ namespace GameServer.Game
         {
             _hubContext = hubContext;
             GameEvents = new GameEvents(this);
-            PhysicsEngine = new PhysicsEngine(this);
-            random = new Random();
+            PhysicsEngine = new PhysicsEngine();
             WorldLoader.LoadMap();
             Ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
         }
 
+        private void ApplyShooting()
+        {
+            foreach (Player player in GameState.Instance.Players)
+            {
+
+                var weapon = WeaponService.GetWeaponFromWeaponEnumOrNull(player.PlayerWeapon.WeaponEnum);
+
+                if (player.MouseClicked && MilisecondsSince(player.PlayerWeapon.LastShotDate) > weapon.ShootTime)
+                {
+                    //Shoot
+                    player.PlayerWeapon.LastShotDate = DateTime.Now;
+
+                    var bullet = new Bullet()
+                    {
+                        Angle = player.Angle,
+                        PlayerId = player.Id,
+                        Position = player.Position,
+                        Radius = weapon.BulletSize,
+                        Speed = (player.Speed  + Vector2.RadianToVector2(player.Angle + Math.PI/2)) * weapon.BulletSpeed
+                    };
+
+                    GameState.Instance.Bullets.Add(bullet);
+                }
+            }
+        }
+
+        private static double MilisecondsSince(DateTime time)
+        {
+            return (DateTime.Now - time).TotalMilliseconds;
+        }
+
         private void Tick(object state)
         {
+            ApplyShooting();
+
             PhysicsEngine.ApplyPhysics();
 
             var currentPlayers = new Player[GameState.Instance.Players.Count];

@@ -127,6 +127,11 @@ namespace GameServer.Models
             return v.Normalize();
         }
 
+        public static Vector2 RadianToVector2(double radian)
+        {
+            return new Vector2(Math.Cos(radian), Math.Sin(radian));
+        }
+
         public static double AngleBetweenVectors(Vector2 a, Vector2 b)
         {
             if (a.IsDegenerated() || b.IsDegenerated())

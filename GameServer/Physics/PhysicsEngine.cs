@@ -9,12 +9,6 @@ namespace GameServer.Physics
 {
     public class PhysicsEngine
     {
-        private GameEngine _gameEngine;
-        public PhysicsEngine(GameEngine gameEngine)
-        {
-            _gameEngine = gameEngine;
-        }
-
         public void ApplyPhysics()
         {
             foreach (Player player in GameState.Instance.Players)
@@ -25,6 +19,18 @@ namespace GameServer.Physics
 
                 UpdatePlayerPosition(player, speedVector);
             }
+
+            GameState.Instance.Bullets.RemoveAll(b => b.Speed.Length() < Config.MIN_BULLET_SPEED);
+
+            foreach (Bullet bullet in GameState.Instance.Bullets)
+            {
+                bullet.Speed *= 0.99;
+
+                bullet.Position += bullet.Speed;
+            }
+
+            GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);
+            
         }
 
         public static Vector2 GetSpeedFromPlayerInput(Player player)

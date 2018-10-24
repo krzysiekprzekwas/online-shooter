@@ -29,6 +29,14 @@
         });
     };
 
+    that.DrawBullets = function (bullets) {
+
+        fill(204, 102, 0);
+        bullets.forEach((bullet, i) => {
+            that.DrawBullet(bullet.x, bullet.y, bullet.angle, bullet.radius);
+        });
+    };
+
     that.drawPlayers = function (players) {
 
         // Draw enemies
@@ -59,6 +67,18 @@
         strokeWeight(0);
         rect(0, 20, 16, 30);
 
+        strokeWeight(4);
+        ellipse(0, 0, radius * 2, radius * 2);
+
+        pop();
+    };
+
+    that.DrawBullet = function (x, y, angle, radius) {
+
+        push();
+
+        translate(x - that.myPlayer.x, y - that.myPlayer.y);
+        
         strokeWeight(4);
         ellipse(0, 0, radius * 2, radius * 2);
 

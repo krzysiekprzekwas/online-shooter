@@ -14,7 +14,7 @@ namespace GameServer.Game
                 maxAmmo: 100,
                 reloadTime: 5000,
                 shootTime: 500,
-                bulletSpeed: 20,
+                bulletSpeed: 5,
                 bulletDamage: 20,
                 bulletSize: 8,
                 barrelWidth: 16,

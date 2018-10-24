@@ -31,11 +31,6 @@ namespace GameServer.Physics
             return new Vector2(ca * v.X - sa * v.Y, sa * v.X + ca * v.Y);
         }
 
-        public static Vector2 AngleToVector(double angle)
-        {
-            return new Vector2(Math.Sin(angle), Math.Cos(angle));
-        }
-
         public static float VectorToAngle(Vector2 vector)
         {
             if (vector.LengthSquared() != 1)
