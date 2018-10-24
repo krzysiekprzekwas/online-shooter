@@ -46,7 +46,7 @@ namespace GameServer.Game
 
                 var weapon = WeaponService.GetWeaponFromWeaponEnumOrNull(player.PlayerWeapon.WeaponEnum);
 
-                if (player.MouseClicked && (DateTime.Now - player.PlayerWeapon.LastShotDate).TotalMilliseconds > weapon.ShootTime)
+                if (player.MouseClicked && MilisecondsSince(player.PlayerWeapon.LastShotDate) > weapon.ShootTime)
                 {
                     //Shoot
                     player.PlayerWeapon.LastShotDate = DateTime.Now;
@@ -63,6 +63,11 @@ namespace GameServer.Game
                     GameState.Instance.Bullets.Add(bullet);
                 }
             }
+        }
+
+        private static double MilisecondsSince(DateTime time)
+        {
+            return (DateTime.Now - time).TotalMilliseconds;
         }
 
         private void Tick(object state)
