@@ -306,5 +306,48 @@ namespace GameTests
 
             // Assert
         }
+
+        [TestMethod]
+        public void ShouldCalculateAngleFromVector()
+        {
+            // Arrange
+            var vector = new Vector2(-1, 1);
+
+            // Act
+            var angle = Vector2.Vector2ToRadian(vector);
+
+            // Assert
+            var expectedAngle = Math.PI * 3 / 4;
+            Assert.AreEqual(expectedAngle, angle, 0.0001);
+        }
+
+        [TestMethod]
+        public void ShouldCalculateAngleFromVector2()
+        {
+            // Arrange
+            var vector = new Vector2(1, 0);
+
+            // Act
+            var angle = Vector2.Vector2ToRadian(vector);
+
+            // Assert
+            var expectedAngle = Math.PI * 3 / 2;
+            Assert.AreEqual(expectedAngle, angle, 0.0001);
+        }
+
+        [TestMethod]
+        public void ShouldCalculateVector2FromAngle()
+        {
+            // Arange
+            var angle = Math.PI / 2;
+
+            // Act
+            var vector = Vector2.RadianToVector2(angle);
+
+            // Assert
+            var expectedVector = new Vector2(-1, 0);
+            Assert.AreEqual(expectedVector.X, vector.X, 0.0001);
+            Assert.AreEqual(expectedVector.Y, vector.Y, 0.0001);
+        }
     }
 }

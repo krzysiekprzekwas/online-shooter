@@ -334,4 +334,45 @@ describe('Vectors', function () {
         // Assert
         expect(dot).toEqual(0.5);
     });
+
+    it('can calculate angle from vector', () => {
+
+        // Arrange
+        const vector = new Vector2(-1, 1);
+
+        // Act
+        const angle = Vector2.Vector2ToRadian(vector);
+
+        // Assert
+        const expectedAngle = Math.PI * 3 / 4;
+        expect(angle).toBeCloseTo(expectedAngle, 4);
+    });
+
+    it('can calculate angle from vector2', () => {
+
+        // Arrange
+        const vector = new Vector2(1, 0);
+
+        // Act
+        const angle = Vector2.Vector2ToRadian(vector);
+
+        // Assert
+        const expectedAngle = Math.PI * 3 / 2;
+        expect(angle).toBeCloseTo(expectedAngle, 4);
+    });
+
+    it('can calculate vector from angle', () => {
+
+        // Arange
+        const angle = Math.PI / 2;
+
+        // Act
+        const vector = Vector2.RadianToVector2(angle);
+
+        // Assert
+        const expectedVector = new Vector2(-1, 0);
+        expect(vector.GetX()).toBeCloseTo(expectedVector.GetX(), 4);
+        expect(vector.GetY()).toBeCloseTo(expectedVector.GetY(), 4);
+    });
+
 });
