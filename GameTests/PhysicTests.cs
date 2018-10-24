@@ -130,7 +130,7 @@ namespace GameTests
             var parallelVector = Physic.GetParallelVectorToNormal(vector, normalvector);
 
             // Assert
-            var expectedVector = new Vector2(-0.5f, 0.5f);
+            var expectedVector = new Vector2(-0.5, 0.5);
             Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
         }
@@ -172,7 +172,7 @@ namespace GameTests
         {
             // Arrage
             var movementVector = new Vector2(0, 2);
-            var intersectionDistance = 1f;
+            var intersectionDistance = 1;
             var intersectionNormal = new Vector2(-1, -1);
 
             // Act
