@@ -178,7 +178,7 @@ namespace GameTests
             var angle = Math.PI * 3 / 2;
 
             // Act
-            var vector = Physic.AngleToVector(angle);
+            var vector = new Vector2(angle);
 
             // Assert
             var expectedVector = new Vector2(-1, 0);
