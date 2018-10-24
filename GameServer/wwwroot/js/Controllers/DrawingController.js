@@ -33,7 +33,7 @@
 
         fill(204, 102, 0);
         bullets.forEach((bullet, i) => {
-            that.DrawBullet(bullet.x, bullet.y, bullet.angle, bullet.radius);
+            that.DrawBullet(bullet.x, bullet.y, bullet.radius);
         });
     };
 
@@ -73,7 +73,7 @@
         pop();
     };
 
-    that.DrawBullet = function (x, y, angle, radius) {
+    that.DrawBullet = function (x, y, radius) {
 
         push();
 
