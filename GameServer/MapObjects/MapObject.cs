@@ -1,6 +1,5 @@
 ﻿using GameServer.Models;
 using System;
-using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
 
 namespace GameServer.MapObjects
 {

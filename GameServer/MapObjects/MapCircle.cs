@@ -1,9 +1,6 @@
 ﻿using GameServer.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using GameServer.States;
 
 namespace GameServer.MapObjects
 {
