@@ -39,7 +39,7 @@ namespace GameServer.Physics
             
         }
 
-        public static Vector2 GetSpeedFromPlayerInput(Player player)
+        public Vector2 GetSpeedFromPlayerInput(Player player)
         {
             Vector2 calculatedSpeedVector = new Vector2();
 

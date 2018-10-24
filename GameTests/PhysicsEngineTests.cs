@@ -18,12 +18,16 @@ namespace GameTests
         public void ShouldCalculateSpeedVectorFromPlayerInput()
         {
             // Arrange
-            var player = new Player(new Config());
+            var config = new Config();
+            var player = new Player(config);
+            var physicsEngine = new PhysicsEngine(config,null);
             player.Keys.Add(KeyEnum.Up);
             player.Keys.Add(KeyEnum.Left);
 
             // Act
-            var nromalizedSpeedVector = PhysicsEngine.GetSpeedFromPlayerInput(player).Normalize();
+            
+
+            var nromalizedSpeedVector = physicsEngine.GetSpeedFromPlayerInput(player).Normalize();
 
             // Assert
             var expectedSpeedVectorDirection = Vector2.Normalize(new Vector2(-1, -1));
@@ -35,12 +39,14 @@ namespace GameTests
         public void ShouldCalcualteSpeedVectorAsEmpty_WhenPlayerInputsOppositeDirections()
         {
             // Arrange
-            var player = new Player(new Config());
+            var config = new Config();
+            var player = new Player(config);
+            var physicsEngine = new PhysicsEngine(config, null);
             player.Keys.Add(KeyEnum.Down);
             player.Keys.Add(KeyEnum.Up);
 
             // Act
-            var speedVector = PhysicsEngine.GetSpeedFromPlayerInput(player);
+            var speedVector = physicsEngine.GetSpeedFromPlayerInput(player);
 
             // Assert
             var expectedSpeedVectorDirection = new Vector2(0, 0);
@@ -84,10 +90,10 @@ namespace GameTests
         public void ShouldNotAllowPassingThroughWalls()
         {
             // Arrange
-            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+            var mapState = new MapState();
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player,mapState);
             var r = player.Radius;
             var mapRect = new MapRect(0, r * 2, 2, 2);
-            var mapState = new MapState();
             mapState.AddMapObject(mapRect);
             var config = new Config();
 
@@ -110,13 +116,13 @@ namespace GameTests
         public void ShouldStuckPlayerBetweenTwoWalls()
         {
             // Arrange
+            var mapState = new MapState();
             var config = new Config();
-            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player,mapState);
             var r = player.Radius;
             var mapRect1 = new MapRect(r, 3 * r, 4 * r, 2 * r);
             var mapRect2 = new MapRect(4 * r, r, 2 * r, 6 * r);
 
-            var mapState = new MapState();
             mapState.AddMapObject(mapRect1);
             mapState.AddMapObject(mapRect2);
 
@@ -162,7 +168,7 @@ namespace GameTests
         {
             // Arrange
             var mapState = new MapState();
-            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player, mapState);
             var r = player.Radius;
             var mapRect1 = new MapRect(4 * r, 0, 2 * r, 1000 * r);
             mapState.AddMapObject(mapRect1);
@@ -177,10 +183,11 @@ namespace GameTests
         }
 
         // Helper methods
-        private static GameEngine CreateGameEngineAndAddPlayer(out Player player)
+        private static GameEngine CreateGameEngineAndAddPlayer(out Player player, MapState mapState = null)
         {
-            // Will fail, needs mock
-            var mapState = new MapState();
+            if(mapState==null)
+                mapState=new MapState();
+
             GameEngine GE = new GameEngine(null,new Config(),new WorldLoader(mapState),mapState);
             GE.Ticker.Dispose();
 
