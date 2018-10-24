@@ -68,7 +68,38 @@ namespace GameTests
             var projectedVector = Physic.ProjectVector(vector, projectionVector);
 
             // Assert
-            var expectedVector = new Vector2(-0.5f, 0.5f);
+            var expectedVector = new Vector2(-0.5, 0.5);
+            Assert.AreEqual(projectedVector.X, expectedVector.X, 0.0001);
+            Assert.AreEqual(projectedVector.Y, expectedVector.Y, 0.0001);
+        }
+
+        [TestMethod]
+        public void ShouldCorrectlyProjectVectorOntoAnother3()
+        {
+            // Arrage
+            var vector = new Vector2(2, 1);
+            var projectionVector = new Vector2(-1, 0);
+
+            // Act
+            var projectedVector = Physic.ProjectVector(vector, projectionVector);
+
+            // Assert
+            var expectedVector = new Vector2(2, 0);
+            Assert.AreEqual(projectedVector, expectedVector);
+        }
+
+        [TestMethod]
+        public void ShouldCorrectlyProjectVectorOntoAnother4()
+        {
+            // Arrage
+            var vector = new Vector2(0.55242717280199, 0.55242717280199);
+            var projectionVector = Vector2.UP_VECTOR;
+
+            // Act
+            var projectedVector = Physic.ProjectVector(vector, projectionVector);
+
+            // Assert
+            var expectedVector = new Vector2(0, 0.55242717280199);
             Assert.AreEqual(projectedVector, expectedVector);
         }
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GameServer.Models;
 
 namespace GameServer.Physics
@@ -24,14 +21,9 @@ namespace GameServer.Physics
 
         public static Vector2 ProjectVector(Vector2 vector, Vector2 projectionVector)
         {
-            var m = (projectionVector.Y) / (projectionVector.X);
-
-            var x = (m * vector.Y + vector.X) / (m * m + 1);
-            var y = (m * m * vector.Y + m * vector.X) / (m * m + 1);
-
-            return new Vector2(x, y);
+            return projectionVector.Normalize() * Vector2.Dot(vector, projectionVector) / projectionVector.Length();
         }
-
+        
         public static Vector2 RotateVector(Vector2 v, double angle)
         {
             var ca = Math.Cos(angle);

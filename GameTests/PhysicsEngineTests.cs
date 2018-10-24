@@ -27,7 +27,7 @@ namespace GameTests
             var nromalizedSpeedVector = PhysicsEngine.GetSpeedFromPlayerInput(player).Normalize();
 
             // Assert
-            var expectedSpeedVectorDirection = Vector2.Normalize(new Vector2(-1, 1));
+            var expectedSpeedVectorDirection = Vector2.Normalize(new Vector2(-1, -1));
             Assert.AreEqual(expectedSpeedVectorDirection.X, nromalizedSpeedVector.X, 1e-6);
             Assert.AreEqual(expectedSpeedVectorDirection.Y, nromalizedSpeedVector.Y, 1e-6);
         }
@@ -91,7 +91,7 @@ namespace GameTests
             MapState.Instance.MapObjects = new List<MapObject> { mapRect };
 
             // Act  
-            player.Keys.Add(KeyEnum.Up);
+            player.Keys.Add(KeyEnum.Down);
             for (int i = 1; i <= 200; i++)
             {
                 gameEngine.PhysicsEngine.ApplyPhysics();
@@ -116,7 +116,7 @@ namespace GameTests
             MapState.Instance.MapObjects = new List<MapObject> { mapRect1, mapRect2 };
 
             // Act  
-            player.Keys = new List<KeyEnum> { KeyEnum.Up };
+            player.Keys = new List<KeyEnum> { KeyEnum.Down };
             for (var i = 1; i <= 200; i++)
                 gameEngine.PhysicsEngine.ApplyPhysics();
 
@@ -132,6 +132,42 @@ namespace GameTests
             Assert.AreEqual(player.Position.X, expectedX, Config.INTERSECTION_INTERVAL * 2);
         }
 
+        [TestMethod]
+        public void ShouldAllowParallelMovement()
+        {
+            // Arrange
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+            player.Position.Y += 0.0001;
+            var r = player.Radius;
+            var mapRect1 = new MapRect(0, -2 * r, 100 * r, 2 * r);
+            MapState.Instance.MapObjects = new List<MapObject> { mapRect1 };
+
+            // Act
+            player.Keys = new List<KeyEnum> { KeyEnum.Up, KeyEnum.Right };
+            for (var i = 1; i <= 200; i++)
+                gameEngine.PhysicsEngine.ApplyPhysics();
+
+            // Assert
+            Assert.IsTrue(player.Position.X > 0);
+        }
+
+        [TestMethod]
+        public void ShouldAllowParallelMovement2()
+        {
+            // Arrange
+            var gameEngine = CreateGameEngineAndAddPlayer(out Player player);
+            var r = player.Radius;
+            var mapRect1 = new MapRect(4 * r, 0, 2 * r, 1000 * r);
+            MapState.Instance.MapObjects = new List<MapObject> { mapRect1 };
+
+            // Act
+            player.Keys = new List<KeyEnum> { KeyEnum.Down, KeyEnum.Right };
+            for (var i = 1; i <= 200; i++)
+                gameEngine.PhysicsEngine.ApplyPhysics();
+
+            // Assert
+            Assert.IsTrue(player.Position.X < player.Position.Y);
+        }
 
         // Helper methods
         private static GameEngine CreateGameEngineAndAddPlayer(out Player player)
