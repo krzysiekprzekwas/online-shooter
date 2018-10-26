@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameServer.Models
 {
@@ -136,7 +133,7 @@ namespace GameServer.Models
         
         public static double Vector2ToRadian(Vector2 vector)
         {
-            return Math.Asin(vector.Normalize().X);
+            return Math.Atan2(vector.Y, vector.X);
         }
 
         public static double AngleBetweenVectors(Vector2 a, Vector2 b)
