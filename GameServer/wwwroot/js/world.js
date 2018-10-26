@@ -52,11 +52,15 @@ let world = {
                 x: player.position.x,
                 y: player.position.y,
                 radius: player.radius,
-                angle: player.angle
+                angle: player.angle,
+                health: player.health
             };
 
-            if (playerObject.id === world.playerId)
+            if (playerObject.id === world.playerId) {
                 world.myPlayer = playerObject;
+                $('#healthLabel').text(world.myPlayer.health+"/100");
+                
+            }
 
             world.players.push(playerObject);
         };

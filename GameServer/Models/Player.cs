@@ -17,6 +17,7 @@ namespace GameServer.Models
         public string Name { get; set; }
         public int Id { get; set; }
         public PlayerWeapon PlayerWeapon { get; set; }
+        public int Health { get; set; }
 
         public double Angle { get; set; }
         [JsonIgnore]
@@ -30,7 +31,7 @@ namespace GameServer.Models
         {
             Id = GameState.Instance.GeneratePlayerUniqueId();
             Keys = new List<KeyEnum>();
-
+            Health = 100;
             Angle = 0;
             Position = new Vector2();
             Speed = new Vector2();
