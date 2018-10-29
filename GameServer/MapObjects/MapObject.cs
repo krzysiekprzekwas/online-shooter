@@ -7,10 +7,9 @@ namespace GameServer.MapObjects
     {
         private static int _id = 1;
 
-        public MapObject(double x, double y, TextureEnum texture, MapObject parent)
+        public MapObject(double x, double y, TextureEnum texture)
         {
             Position = new Vector2(x, y);
-            Parent = parent;
             Texture = texture;
             Id = _id++;
         }
@@ -20,8 +19,6 @@ namespace GameServer.MapObjects
         public Vector2 Position { get; set; }
 
         public TextureEnum Texture { get; set; }
-
-        public MapObject Parent { get; set; }
 
         public abstract object Clone();
         public abstract bool Equals(MapObject other);

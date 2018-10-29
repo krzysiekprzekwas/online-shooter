@@ -6,19 +6,19 @@ namespace GameServer.MapObjects
 {
     public class MapCircle : MapObject
     {
-        public MapCircle(double x, double y, double radius, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
-            : base(x, y, texture, parent)
+        public MapCircle(double x, double y, double radius, TextureEnum texture = TextureEnum.Default)
+            : base(x, y, texture)
         {
             Radius = radius;
         }
 
-        public MapCircle(Vector2 pos, double radius, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
-            : this(pos.X, pos.Y, radius, texture, parent)
+        public MapCircle(Vector2 pos, double radius, TextureEnum texture = TextureEnum.Default)
+            : this(pos.X, pos.Y, radius, texture)
         {
         }
 
         public MapCircle(MapCircle c)
-            : this(c.Position.X, c.Position.Y, c.Radius, c.Texture, c.Parent)
+            : this(c.Position.X, c.Position.Y, c.Radius, c.Texture)
         {
         }
 
