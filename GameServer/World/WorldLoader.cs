@@ -48,7 +48,7 @@ namespace GameServer.World
                 new MapRect(-7, -14, 1, 1),
             };
 
-            objs.ForEach(x => _mapState.AddMapObject(x));
+            _mapState.MapObjects = objs;
             
             var spawnPoints = new List<SpawnPoint>
             {
@@ -91,7 +91,7 @@ namespace GameServer.World
                 new MapRect(-4.5f * g, -0.5f * g, 1 * g, 3 * g), // 23
             };
 
-            objs.ForEach(x => _mapState.AddMapObject(x));
+            _mapState.MapObjects = objs;
 
             var spawnPoints = new List<SpawnPoint>
             {

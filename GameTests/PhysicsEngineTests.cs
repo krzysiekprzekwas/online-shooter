@@ -94,7 +94,7 @@ namespace GameTests
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player,mapState);
             var r = player.Radius;
             var mapRect = new MapRect(0, r * 2, 2, 2);
-            mapState.AddMapObject(mapRect);
+            mapState.MapObjects.Add(mapRect);
             var config = new Config();
 
             // Act  
@@ -123,8 +123,8 @@ namespace GameTests
             var mapRect1 = new MapRect(r, 3 * r, 4 * r, 2 * r);
             var mapRect2 = new MapRect(4 * r, r, 2 * r, 6 * r);
 
-            mapState.AddMapObject(mapRect1);
-            mapState.AddMapObject(mapRect2);
+            mapState.MapObjects.Add(mapRect1);
+            mapState.MapObjects.Add(mapRect2);
 
             // Act  
             player.Keys = new List<KeyEnum> { KeyEnum.Down };
@@ -152,7 +152,7 @@ namespace GameTests
             player.Position.Y += 0.0001;
             var r = player.Radius;
             var mapRect1 = new MapRect(0, -2 * r, 100 * r, 2 * r);
-            mapState.AddMapObject(mapRect1);
+            mapState.MapObjects.Add(mapRect1);
 
             // Act
             player.Keys = new List<KeyEnum> { KeyEnum.Up, KeyEnum.Right };
@@ -171,7 +171,7 @@ namespace GameTests
             var gameEngine = CreateGameEngineAndAddPlayer(out Player player, mapState);
             var r = player.Radius;
             var mapRect1 = new MapRect(4 * r, 0, 2 * r, 1000 * r);
-            mapState.AddMapObject(mapRect1);
+            mapState.MapObjects.Add(mapRect1);
 
             // Act
             player.Keys = new List<KeyEnum> { KeyEnum.Down, KeyEnum.Right };
