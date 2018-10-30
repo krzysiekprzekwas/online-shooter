@@ -13,6 +13,7 @@ namespace GameServer.Models
         public int Id { get; set; }
         public PlayerWeapon PlayerWeapon { get; set; }
         public int Health { get; set; }
+        public int MaxHealth { get; set; }
 
         public double Angle { get; set; }
         [JsonIgnore]
@@ -32,6 +33,7 @@ namespace GameServer.Models
             Speed = new Vector2();
             MouseClicked = false;
             Radius = config.PlayerRadius;
+            MaxHealth = config.MaxPlayerHealth;
         }
 
         public override string ToString()
