@@ -201,5 +201,20 @@ namespace GameTests
             Assert.AreEqual(parallelVector.X, expectedVector.X, 0.0001);
             Assert.AreEqual(parallelVector.Y, expectedVector.Y, 0.0001);
         }
+
+        [TestMethod]
+        public void ShouldCalculateVectorFromAngle()
+        {
+            // Arrange
+            var angle = -Math.PI;
+
+            // Act
+            var vector = new Vector2(angle).Normalize();
+
+            // Assert
+            var expectedVector = new Vector2(-1, 0);
+            Assert.AreEqual(expectedVector.X, vector.X, 0.0001);
+            Assert.AreEqual(expectedVector.Y, vector.Y, 0.0001);
+        }
     }
 }

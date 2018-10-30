@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using GameServer.Game;
+﻿using GameServer.Game;
 using GameServer.Hubs;
-using GameServer.Models;
 using GameServer.States;
+using GameServer.World;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using NLog.Extensions.Logging;
 
 namespace GameServer
 {
@@ -26,6 +14,9 @@ namespace GameServer
         {
             services.AddSignalR();
             services.AddSingleton<IGameEngine, GameEngine>();
+            services.AddSingleton<IConfig, Config>();
+            services.AddSingleton<IMapState, MapState>();
+            services.AddSingleton<IWorldLoader, WorldLoader>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

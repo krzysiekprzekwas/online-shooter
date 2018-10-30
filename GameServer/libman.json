@@ -15,12 +15,16 @@
       "provider": "cdnjs",
       "library": "p5.js@0.7.2",
       "destination": "wwwroot/packages/p5.js/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "pnotify@3.2.1",
+      "destination": "wwwroot/packages/pnotify/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.0.4",
+      "destination": "wwwroot/packages/@aspnet/signalr/"
     }
-  ,
-{
-  "provider": "cdnjs",
-  "library": "pnotify@3.2.1",
-  "destination": "wwwroot/packages/pnotify/"
-}
-]
+  ]
 }

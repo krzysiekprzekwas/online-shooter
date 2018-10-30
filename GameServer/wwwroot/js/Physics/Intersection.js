@@ -1,6 +1,3 @@
-const MapCircle = require('../MapObjects/MapCircle.js');
-const MapRect = require('../MapObjects/MapRect.js');
-const Vector2 = require('./Vector2.js');
 
 function Intersection() {
 

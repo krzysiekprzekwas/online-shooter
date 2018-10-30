@@ -1,43 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using GameServer.Models;
 
 namespace GameServer
 {
-    public class Config
+    public interface IConfig
     {
-        // TODO: change static to const
-        [JsonProperty]
-        public static int BUFFER_SIZE = 4 * 1024;
-        [JsonProperty]
-        public static int SERVER_TICK = 64;
-        [JsonProperty]
-        public static double PLAYER_SPEED = 50; // PER SECOND
-        [JsonProperty]
-        public static double GRAVITY = 10; // PER SECOND
-        [JsonProperty]
-        public static double JUMP_POWER = 2;
-        [JsonProperty]
-        public static double PLAYER_DECCELERATION = 0.8;
-        [JsonProperty]
-        public static double PLAYER_RADIUS = 16;
-        [JsonProperty]
-        public static double INTERSECTION_INTERVAL = 0.01;
-        [JsonProperty]
-        public static double MIN_BULLET_SPEED = 0.01;
+        int BufferSize { get; set; }
+        int ServerTick { get; set; }
+        double PlayerSpeed { get; set; }
+        double Gravity { get; set; }
+        double JumpPower { get; set; }
+        double PlayerDecceleration { get; set; }
+        double PlayerRadius { get; set; }
+        double IntersectionInterval { get; set; }
+        double MinBulletSpeed { get; set; }
+        double BulletDecceleraion { get; set; }
+    }
 
-        private static Config instance;
-        public static Config Instance
+    public class Config : IConfig
+    {
+        public Config()
         {
-            get
-            {
-                if (instance == null)
-                    instance = new Config();
-
-                return instance;
-            }
+            BufferSize = 4 * 1024;
+            ServerTick = 64;
+            PlayerSpeed = 50;
+            Gravity = 10;
+            JumpPower = 2;
+            PlayerDecceleration = 0.5;
+            PlayerRadius = 16;
+            IntersectionInterval = 0.01;
+            MinBulletSpeed = 0.01;
+            BulletDecceleraion = 0.99;
         }
+
+        public int BufferSize { get; set; }
+        public int ServerTick { get; set; }
+        public double PlayerSpeed { get; set; }
+        public double Gravity { get; set; }
+        public double JumpPower { get; set; }
+        public double PlayerDecceleration { get; set; }
+        public double PlayerRadius { get; set; }
+        public double IntersectionInterval { get; set; }
+        public double MinBulletSpeed { get; set; }
+        public double BulletDecceleraion { get; set; }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.WebSockets;
-using GameServer.Game;
-using GameServer.MapObjects;
+﻿using System.Collections.Generic;
 using GameServer.States;
 using Newtonsoft.Json;
 
@@ -26,7 +21,7 @@ namespace GameServer.Models
         [JsonIgnore]
         public List<KeyEnum> Keys;
 
-        public Player()
+        public Player(IConfig config)
         {
             Id = GameState.Instance.GeneratePlayerUniqueId();
             Keys = new List<KeyEnum>();
@@ -35,7 +30,7 @@ namespace GameServer.Models
             Position = new Vector2();
             Speed = new Vector2();
             MouseClicked = false;
-            Radius = Config.PLAYER_RADIUS;
+            Radius = config.PlayerRadius;
         }
 
         public override string ToString()
