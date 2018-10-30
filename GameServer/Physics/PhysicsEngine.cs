@@ -26,7 +26,7 @@ namespace GameServer.Physics
                 UpdatePlayerPosition(player, speedVector);
             }
 
-            GameState.Instance.Bullets.RemoveAll(b => b.Speed.Length() < _config.MinBulletSpeed);
+            GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
 
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
@@ -37,6 +37,11 @@ namespace GameServer.Physics
 
             GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);
             
+        }
+
+        private static bool ShouldBulletBeRemoved(Bullet b)
+        {
+            return b.Speed.Length() < _config.MinBulletSpeed;
         }
 
         public Vector2 GetSpeedFromPlayerInput(Player player)
