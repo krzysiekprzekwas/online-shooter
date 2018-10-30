@@ -23,7 +23,7 @@ namespace GameServer.Physics
             return projectionVector.Normalize() * Vector2.Dot(vector, projectionVector) / projectionVector.Length();
         }
         
-        public static Vector2 RotateVector(Vector2 vector, double angle)
+        public static Vector2 RotateVector(Vector2 v, double angle)
         {
             var ca = Math.Cos(angle);
             var sa = Math.Sin(angle);
