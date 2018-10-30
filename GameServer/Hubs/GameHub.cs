@@ -65,7 +65,7 @@ namespace GameServer.Hubs
 
             if (player==null)
             {
-                // Invalid Player - wrong connection ID
+                // Invalid Player - wrong connection Id
                 return;
             }
 

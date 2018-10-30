@@ -40,10 +40,13 @@
             playerObject.SetSpeed(new Vector2(player.speed.x, player.speed.y));
             playerObject.SetRadius(player.radius);
             playerObject.SetAngle(player.angle);
+            playerObject.SetHealth(player.health);
+            playerObject.SetMaxHealth(player.maxHealth);
             
             if (playerObject.GetId() === that.PlayerId) {
 
                 drawingController.SetMyPlayer(playerObject);
+                $('#healthLabel').html(`${player.health}/${player.maxHealth}`);
             }
 
             that.players.push(playerObject);

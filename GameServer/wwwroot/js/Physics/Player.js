@@ -32,5 +32,13 @@
     that.GetRadius = () => that._radius;
     that.SetRadius = (value) => that._radius = value;
 
+    that._health = 0;
+    that.GetHealth = () => that._health;
+    that.SetHealth = (value) => that._health = value;
+    
+    that._MaxHealth = 0;
+    that.GetMaxHealth = () => that._MaxHealth;
+    that.SetMaxHealth = (value) => that._MaxHealth = value;
+
     that.ToString = () => `Player<Id:${that.GetId()} Name:${that.GetName()}, Pos:${that.GetPosition().ToString()} R:${that.GetRadius()}>`;
 }

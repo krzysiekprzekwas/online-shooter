@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using GameServer.Hubs;
+using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.Physics;
 using GameServer.States;
@@ -28,6 +30,7 @@ namespace GameServer.Game
         public PhysicsEngine PhysicsEngine;
         private readonly IHubContext<GameHub> _hubContext;
         private IConfig _config;
+        private static int bulletId = 1;
 
         GameState IGameEngine.GameState { get => _gameState; }
 
@@ -55,6 +58,7 @@ namespace GameServer.Game
 
                     var bullet = new Bullet()
                     {
+                        Id = bulletId++,
                         Angle = player.Angle,
                         PlayerId = player.Id,
                         Position = player.Position,
@@ -81,8 +85,39 @@ namespace GameServer.Game
             var currentPlayers = new Player[GameState.Instance.Players.Count];
             GameState.Instance.Players.CopyTo(currentPlayers);
 
+            ApplyDamage();
+
             // Send game state for every connected client
              _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
+        }
+
+        private void ApplyDamage()
+        {
+            var bulletHitIds = new List<int>();
+            foreach (var bullet in _gameState.Bullets)
+            {
+                var colidedPlayer = CheckAnyIntersectionWithPlayers(bullet);
+                if (colidedPlayer!=null)
+                {
+                    colidedPlayer.Health -= _gameState.Players.First(x => x.Id == bullet.PlayerId).PlayerWeapon.GetWeapon().BulletDamage;
+                    bulletHitIds.Add(bullet.Id);
+                }
+            }
+
+            GameState.Instance.Bullets.RemoveAll(b => bulletHitIds.Contains(b.Id));
+        }
+
+        private Player CheckAnyIntersectionWithPlayers(Bullet bullet)
+        {
+            foreach (var player in _gameState.Players)
+            {
+                if (bullet.PlayerId != player.Id && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
+                        new MapCircle(player.Position, player.Radius)))
+                {
+                    return player;
+                }
+            }
+            return null;
         }
 
         public bool AddPlayer(Player player)

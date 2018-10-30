@@ -1,6 +1,7 @@
 ﻿using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GameServer.Physics
 {
@@ -33,6 +34,7 @@ namespace GameServer.Physics
                 bullet.Speed *=  _config.BulletDecceleraion;
 
                 bullet.Position += bullet.Speed;
+                
             }
 
             GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);

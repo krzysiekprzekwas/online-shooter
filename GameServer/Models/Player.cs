@@ -12,6 +12,8 @@ namespace GameServer.Models
         public string Name { get; set; }
         public int Id { get; set; }
         public PlayerWeapon PlayerWeapon { get; set; }
+        public int Health { get; set; }
+        public int MaxHealth { get; set; }
 
         public double Angle { get; set; }
         [JsonIgnore]
@@ -25,12 +27,13 @@ namespace GameServer.Models
         {
             Id = GameState.Instance.GeneratePlayerUniqueId();
             Keys = new List<KeyEnum>();
-
+            Health = config.MaxPlayerHealth;
             Angle = 0;
             Position = new Vector2();
             Speed = new Vector2();
             MouseClicked = false;
             Radius = config.PlayerRadius;
+            MaxHealth = config.MaxPlayerHealth;
         }
 
         public override string ToString()

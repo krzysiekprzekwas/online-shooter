@@ -14,6 +14,7 @@ namespace GameServer
         double IntersectionInterval { get; set; }
         double MinBulletSpeed { get; set; }
         double BulletDecceleraion { get; set; }
+        int MaxPlayerHealth { get; set; }
     }
 
     public class Config : IConfig
@@ -30,6 +31,7 @@ namespace GameServer
             IntersectionInterval = 0.01;
             MinBulletSpeed = 0.01;
             BulletDecceleraion = 0.99;
+            MaxPlayerHealth = 100;
         }
 
         public int BufferSize { get; set; }
@@ -42,5 +44,6 @@ namespace GameServer
         public double IntersectionInterval { get; set; }
         public double MinBulletSpeed { get; set; }
         public double BulletDecceleraion { get; set; }
+        public int MaxPlayerHealth { get; set; }
     }
 }

@@ -58,3 +58,7 @@ body {
 #pingLabel {
     top: calc(8px + 1rem);
 }
+
+#healthLabel {
+    top: calc(8px + 2rem);
+}
