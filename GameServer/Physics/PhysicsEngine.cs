@@ -21,7 +21,7 @@ namespace GameServer.Physics
             {
                 player.Speed *= _config.PlayerDecceleration;
 
-                var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
+                var speedVector = player.Speed + GetSpeedFromPlayerInput(player, _config.ServerTick);
 
                 UpdatePlayerPosition(player, speedVector);
             }
@@ -44,7 +44,7 @@ namespace GameServer.Physics
             return b.Speed.Length() < _config.MinBulletSpeed;
         }
 
-        public Vector2 GetSpeedFromPlayerInput(Player player)
+        public Vector2 GetSpeedFromPlayerInput(Player player, int inputDuractionMiliseconds)
         {
             Vector2 calculatedSpeedVector = new Vector2();
 
@@ -62,7 +62,7 @@ namespace GameServer.Physics
             if (!calculatedSpeedVector.IsDegenerated())
             {
                 var normalizedSpeed = calculatedSpeedVector.Normalize();
-                var vectorLength = _config.PlayerSpeed / _config.ServerTick;
+                var vectorLength = _config.PlayerSpeed / inputDuractionMiliseconds;
                 calculatedSpeedVector = normalizedSpeed * vectorLength;
             }
 
