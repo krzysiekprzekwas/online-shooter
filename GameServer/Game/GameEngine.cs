@@ -96,18 +96,28 @@ namespace GameServer.Game
             var bulletHitIds = new List<int>();
             foreach (var bullet in _gameState.Bullets)
             {
-                foreach (var player in _gameState.Players)
+                var colidedPlayer = CheckAnyIntersectionWithPlayers(bullet);
+                if (colidedPlayer!=null)
                 {
-                    if (bullet.PlayerId != player.Id && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
-                        new MapCircle(player.Position, player.Radius)))
-                    {
-                        player.Health -=_gameState.Players.First(x => x.Id == bullet.PlayerId).PlayerWeapon.GetWeapon().BulletDamage;
-                        bulletHitIds.Add(bullet.Id);
-                    }
+                    colidedPlayer.Health -= _gameState.Players.First(x => x.Id == bullet.PlayerId).PlayerWeapon.GetWeapon().BulletDamage;
+                    bulletHitIds.Add(bullet.Id);
                 }
             }
 
             GameState.Instance.Bullets.RemoveAll(b => bulletHitIds.Contains(b.Id));
+        }
+
+        private Player CheckAnyIntersectionWithPlayers(Bullet bullet)
+        {
+            foreach (var player in _gameState.Players)
+            {
+                if (bullet.PlayerId != player.Id && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
+                        new MapCircle(player.Position, player.Radius)))
+                {
+                    return player;
+                }
+            }
+            return null;
         }
 
         public bool AddPlayer(Player player)
