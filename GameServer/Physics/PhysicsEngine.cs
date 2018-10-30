@@ -19,7 +19,7 @@ namespace GameServer.Physics
         {
             foreach (Player player in GameState.Instance.Players)
             {
-                player.Speed *= 1 - _config.PlayerDecceleration;
+                player.Speed *= _config.PlayerDecceleration;
 
                 var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
 

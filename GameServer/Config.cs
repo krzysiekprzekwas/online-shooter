@@ -25,7 +25,7 @@ namespace GameServer
             PlayerSpeed = 50;
             Gravity = 10;
             JumpPower = 2;
-            PlayerDecceleration = 0.8;
+            PlayerDecceleration = 0.5;
             PlayerRadius = 16;
             IntersectionInterval = 0.01;
             MinBulletSpeed = 0.01;
