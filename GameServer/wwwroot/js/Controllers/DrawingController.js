@@ -37,8 +37,8 @@
     that.DrawBullets = function (bullets) {
 
         fill(204, 102, 0);
-        bullets.forEach((bullet, i) => {
-            that.DrawBullet(bullet.x, bullet.y, bullet.radius);
+        bullets.forEach(bullet => {
+            that.DrawBullet(bullet.GetX(), bullet.GetY(), bullet.GetRadius());
         });
     };
 
