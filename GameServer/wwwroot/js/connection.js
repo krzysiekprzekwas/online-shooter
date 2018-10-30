@@ -52,7 +52,7 @@ const connector = {
 
             console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
-            worldController.SetPlayerId(response.playerId);
+            worldController.PlayerId = response.playerId;
         });
 
         this.connection.start()
