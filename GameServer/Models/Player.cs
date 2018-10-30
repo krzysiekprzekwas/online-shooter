@@ -27,7 +27,7 @@ namespace GameServer.Models
         {
             Id = GameState.Instance.GeneratePlayerUniqueId();
             Keys = new List<KeyEnum>();
-            Health = config.MaxPlayerHealth; ;
+            Health = config.MaxPlayerHealth;
             Angle = 0;
             Position = new Vector2();
             Speed = new Vector2();
