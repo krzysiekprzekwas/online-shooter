@@ -30,13 +30,5 @@ namespace GameServer.Physics
             var sa = Math.Sin(angle);
             return new Vector2(ca * v.X - sa * v.Y, sa * v.X + ca * v.Y);
         }
-
-        public static float VectorToAngle(Vector2 vector)
-        {
-            if (vector.LengthSquared() != 1)
-                vector = Vector2.Normalize(vector);
-
-            return (float)Math.Asin(vector.X);
-        }
     }
 }

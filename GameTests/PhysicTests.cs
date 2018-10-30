@@ -216,19 +216,5 @@ namespace GameTests
             Assert.AreEqual(expectedVector.X, vector.X, 0.0001);
             Assert.AreEqual(expectedVector.Y, vector.Y, 0.0001);
         }
-
-        [TestMethod]
-        public void ShouldCalculateAngleFromVector()
-        {
-            // Arrange
-            var vector = new Vector2(-1, 1);
-
-            // Act
-            var angle = Physic.VectorToAngle(vector);
-
-            // Assert
-            var expectedAngle = Math.PI * -1 / 4;
-            Assert.AreEqual(expectedAngle, angle, 0.0001);
-        }
     }
 }
