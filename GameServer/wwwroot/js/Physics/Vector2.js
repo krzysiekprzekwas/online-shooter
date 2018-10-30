@@ -125,6 +125,16 @@ Vector2.Normalize = function (vector) {
     return vector.Normalize();
 };
 
+Vector2.RadianToVector2 = function (radian) {
+
+    return new Vector2(Math.cos(radian), Math.sin(radian));
+};
+
+Vector2.Vector2ToRadian = function (vector) {
+
+    return Math.asin(vector.Normalize().GetX());
+};
+
 Vector2.AngleBetweenVectors = function (vectorA, vectorB) {
 
     if (vectorA.IsDegenerated() || vectorB.IsDegenerated())
