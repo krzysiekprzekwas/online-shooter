@@ -1,8 +1,8 @@
-﻿using GameServer.Physics;
-using GameServer.MapObjects;
+﻿using GameServer.MapObjects;
+using GameServer.Models;
+using GameServer.Physics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using GameServer.Models;
 
 namespace GameTests
 {

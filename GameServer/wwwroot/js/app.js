@@ -17,9 +17,7 @@ function setup() {
 
     ellipseMode(CENTER);
     rectMode(CENTER);
-
-    world.initialize();
-    
+        
     vex.defaultOptions.className = 'vex-theme-top';
 
     var name = nameService.getRandomName();
@@ -43,7 +41,7 @@ function setup() {
 function draw() {
     drawingController.SetBackground(61);
 
-    world.draw();
+    worldController.Draw();
     
     var fps = frameRate();
     measurementController.UpdateFps(fps);

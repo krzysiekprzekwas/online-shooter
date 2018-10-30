@@ -37,7 +37,7 @@ const connector = {
 
         // Create a function that the hub can call to broadcast messages.
         this.connection.on('updateGameState', function (gameState) {
-            world.onGameStateReceived(gameState);
+            worldController.OnGameStateReceived(gameState);
         });
 
         this.connection.on('connectConfirmation', function (response) {
@@ -47,12 +47,12 @@ const connector = {
                 config[setting] = value;
             }
 
-            world.onMapStateReceived(response.mapState);
+            worldController.OnMapStateReceived(response.mapState);
             weaponService.onWeaponsReceived(response.weapons);
 
             console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
-            world.playerId = response.playerId;
+            worldController.PlayerId = response.playerId;
         });
 
         this.connection.start()

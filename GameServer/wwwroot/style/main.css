@@ -39,6 +39,10 @@ body {
     touch-action: none;
 }
 
+.no-select {
+    user-select: none;
+}
+
 .measurementLabel {
     position: absolute;
     right: 8px;

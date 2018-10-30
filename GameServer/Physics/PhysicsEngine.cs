@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GameServer.Game;
-using GameServer.MapObjects;
+﻿using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,22 +7,31 @@ namespace GameServer.Physics
 {
     public class PhysicsEngine
     {
+        private static IConfig _config;
+        private static IMapState _mapState;
+
+        public PhysicsEngine(IConfig config, IMapState mapState)
+        {
+            _config = config;
+            _mapState = mapState;
+        }
+
         public void ApplyPhysics()
         {
             foreach (Player player in GameState.Instance.Players)
             {
-                player.Speed *= 1 - Config.PLAYER_DECCELERATION;
+                player.Speed *= _config.PlayerDecceleration;
 
-                var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
+                var speedVector = player.Speed + GetSpeedFromPlayerInput(player, _config.ServerTick);
 
                 UpdatePlayerPosition(player, speedVector);
             }
 
-            GameState.Instance.Bullets.RemoveAll(b => b.Speed.Length() < Config.MIN_BULLET_SPEED);
+            GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
 
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
-                bullet.Speed *= 0.99;
+                bullet.Speed *=  _config.BulletDecceleraion;
 
                 bullet.Position += bullet.Speed;
                 
@@ -35,7 +41,12 @@ namespace GameServer.Physics
             
         }
 
-        public static Vector2 GetSpeedFromPlayerInput(Player player)
+        private static bool ShouldBulletBeRemoved(Bullet b)
+        {
+            return b.Speed.Length() < _config.MinBulletSpeed;
+        }
+
+        public Vector2 GetSpeedFromPlayerInput(Player player, int inputDuractionMiliseconds)
         {
             Vector2 calculatedSpeedVector = new Vector2();
 
@@ -53,7 +64,7 @@ namespace GameServer.Physics
             if (!calculatedSpeedVector.IsDegenerated())
             {
                 var normalizedSpeed = calculatedSpeedVector.Normalize();
-                var vectorLength = Config.PLAYER_SPEED / Config.SERVER_TICK;
+                var vectorLength = _config.PlayerSpeed / inputDuractionMiliseconds;
                 calculatedSpeedVector = normalizedSpeed * vectorLength;
             }
 
@@ -96,7 +107,6 @@ namespace GameServer.Physics
             var speedVectorLength = speedvector.Length();
             var speedVectorNormalized = speedvector.Normalize();
             var currentPrecision = speedVectorLength / 2d;
-            MapObject intersectionObject = null;
 
             do
             {
@@ -105,7 +115,7 @@ namespace GameServer.Physics
 
                 // Check for intersection
                 var validationObject = new MapCircle(checkPosition, player.Radius);
-                intersectionObject = CheckAnyIntersectionWithWorld(validationObject);
+                var intersectionObject = CheckAnyIntersectionWithWorld(validationObject);
 
                 // Update new position and offset
                 if (intersectionObject == null) // No object found, increase offset
@@ -114,7 +124,7 @@ namespace GameServer.Physics
                 currentPrecision /= 2.0;
 
             } // Do this as long as we reach desired precision
-            while (currentPrecision >= Config.INTERSECTION_INTERVAL);
+            while (currentPrecision >= _config.IntersectionInterval);
 
             spareLength = speedVectorLength - offset;
             return speedVectorNormalized * offset;
@@ -123,7 +133,7 @@ namespace GameServer.Physics
         public MapObject CheckAnyIntersectionWithWorld(MapCircle s)
         {
             // Check intersection with all map objects
-            foreach (MapObject obj in MapState.Instance.MapObjects)
+            foreach (MapObject obj in _mapState.MapObjects)
             {
                 bool intersects = false;
                 if (obj is MapRect)

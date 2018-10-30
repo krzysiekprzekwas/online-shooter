@@ -1,25 +1,24 @@
 ﻿using GameServer.Models;
-using System;
 
 namespace GameServer.MapObjects
 {
     public class MapRect : MapObject
     {
         public string Type = @"box";
-        public MapRect(double x, double y, double w, double h, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
-            : base(x, y, texture, parent)
+        public MapRect(double x, double y, double w, double h, TextureEnum texture = TextureEnum.Default)
+            : base(x, y, texture)
         {
             Width = w;
             Height = h;
         }
 
-        public MapRect(Vector2 pos, double w, double h, TextureEnum texture = TextureEnum.Default, MapObject parent = null)
-            : this(pos.X, pos.Y, w, h, texture, parent)
+        public MapRect(Vector2 pos, double w, double h, TextureEnum texture = TextureEnum.Default)
+            : this(pos.X, pos.Y, w, h, texture)
         {
         }
 
         public MapRect(MapRect r)
-            : this(r.Position.X, r.Position.Y, r.Width, r.Height, r.Texture, r.Parent)
+            : this(r.Position.X, r.Position.Y, r.Width, r.Height, r.Texture)
         {
         }
         

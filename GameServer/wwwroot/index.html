@@ -13,10 +13,10 @@
 </head>
 <body>
 
-    <span id="fpsLabel" class="measurementLabel">0.00 - FPS</span>
-    <span id="pingLabel" class="measurementLabel">0 - Ping</span>
-    <span id="healthLabel" class="measurementLabel">100/100</span>
-    <span id="fullscreenToggle">
+    <span id="fpsLabel" class="measurementLabel no-select">0.00 - FPS</span>
+    <span id="pingLabel" class="measurementLabel no-select">0 - Ping</span>
+<span id="healthLabel" class="measurementLabel no-select"></span>
+    <span id="fullscreenToggle" class="no-select">
         <img src="#" alt="" />
     </span>
 
@@ -25,7 +25,7 @@
     <script src="packages/pnotify/pnotify.js"></script>
     <script src="packages/vex-js/js/vex.combined.min.js"></script>
     <script src="packages/p5.js/p5.min.js"></script>
-    <script src="js/signalr.js"></script>
+    <script src="packages/@aspnet/signalr/dist/browser/signalr.min.js"></script>
 
     <!-- Controllers -->
     <script src="js/Controllers/DrawingController.js"></script>
@@ -35,6 +35,13 @@
     <script src="js/Controllers/KeyboardController.js"></script>
     <script src="js/Controllers/FullscreenController.js"></script>
 
+    <!-- Physics -->
+    <script src="js/Physics/Vector2.js"></script>
+    <script src="js/MapObjects/MapCircle.js"></script>
+    <script src="js/MapObjects/MapRect.js"></script>
+    <script src="js/Physics/Bullet.js"></script>
+    <script src="js/Physics/Player.js"></script>
+
     <!-- Services -->
     <script src="js/Services/texturesService.js"></script>
     <script src="js/Services/nameService.js"></script>
@@ -43,7 +50,7 @@
     <!-- Scripts -->
     <script src="js/config.js"></script>
     <script src="js/connection.js"></script>
-    <script src="js/world.js"></script>
+    <script src="js/Controllers/WorldController.js"></script>
 
     <!-- Application core -->
     <script src="js/app.js"></script>

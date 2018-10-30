@@ -29,17 +29,19 @@ namespace GameServer.Game
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
         private readonly IHubContext<GameHub> _hubContext;
+        private IConfig _config;
         private static int bulletId = 1;
 
         GameState IGameEngine.GameState { get => _gameState; }
 
-        public GameEngine(IHubContext<GameHub> hubContext)
+        public GameEngine(IHubContext<GameHub> hubContext, IConfig config, IWorldLoader worldLoader, IMapState mapState)
         {
             _hubContext = hubContext;
+            _config = config;
             GameEvents = new GameEvents(this);
-            PhysicsEngine = new PhysicsEngine();
-            WorldLoader.LoadMap();
-            Ticker = new Timer(Tick, null, 0, 1000 / Config.SERVER_TICK);
+            PhysicsEngine = new PhysicsEngine(config, mapState);
+            worldLoader.LoadMap();
+            Ticker = new Timer(Tick, null, 0, 1000 / _config.ServerTick);
         }
 
         private void ApplyShooting()
