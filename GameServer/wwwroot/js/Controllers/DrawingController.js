@@ -2,11 +2,6 @@
 
     const that = this;
 
-    that.myPlayer = {
-        id: -1,
-        radius: 16
-    };
-
     that.SetBackground = function (value) {
         background(value);
     };
@@ -14,18 +9,28 @@
     that.SetMyPlayer = function (player) {
         that.myPlayer = player;
     };
+
+    that.Draw = function (mapObjects, players, bullets) {
+
+        if (typeof that.myPlayer === "undefined")
+            return;
+
+        that.DrawMapObjects(mapObjects);
+        that.DrawBullets(bullets);
+        that.DrawPlayers(players);
+    };
     
-    that.drawMapObjects = function (mapObjects) {
+    that.DrawMapObjects = function (mapObjects) {
 
         noFill();
-        mapObjects.forEach((obj, i) => {
+        mapObjects.forEach(obj => {
 
             strokeWeight(2);
             stroke(243, 156, 18);
             fill(255, 255, 255);
 
             texture(texturesService.getTexture(obj.textureId));
-            rect(obj.x - that.myPlayer.x, obj.y - that.myPlayer.y, obj.width, obj.height);
+            rect(obj.GetX() - that.myPlayer.GetX(), obj.GetY() - that.myPlayer.GetY(), obj.GetWidth(), obj.GetHeight());
         });
     };
 
@@ -37,30 +42,28 @@
         });
     };
 
-    that.drawPlayers = function (players) {
+    that.DrawPlayers = function (players) {
 
         // Draw enemies
-
         fill(255, 190, 118);
-
         stroke(0);
 
-        players.filter(x => x.id !== that.myPlayer.id).forEach((player, i) => {
+        players.filter(x => x.GetId() !== that.myPlayer.GetId()).forEach(player => {
             
-            that.DrawPlayer(player.x, player.y, player.angle, player.radius);
+            that.DrawPlayer(player.GetX(), player.GetY(), player.GetAngle(), player.GetRadius());
         });
 
         // Draw myPlayer
 
         stroke(52, 152, 219);
 
-        that.DrawPlayer(that.myPlayer.x, that.myPlayer.y, mouseController.getCurrentAngle(), that.myPlayer.radius);
+        that.DrawPlayer(that.myPlayer.GetX(), that.myPlayer.GetY(), mouseController.getCurrentAngle(), that.myPlayer.GetRadius());
     };
 
     that.DrawPlayer = function (x, y, angle, radius) {
         push();
 
-        translate(x - that.myPlayer.x, y - that.myPlayer.y);
+        translate(x - that.myPlayer.GetX(), y - that.myPlayer.GetY());
 
         rotate(angle);
 
@@ -77,7 +80,7 @@
 
         push();
 
-        translate(x - that.myPlayer.x, y - that.myPlayer.y);
+        translate(x - that.myPlayer.GetX(), y - that.myPlayer.GetY());
         
         strokeWeight(4);
         ellipse(0, 0, radius * 2, radius * 2);

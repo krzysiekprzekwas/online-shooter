@@ -7,25 +7,22 @@
     that.bullets = Array();
     that.myPlayer = null;
 
-    that._playerId = -1;
-    that.SetPlayerId = (id) => that._playerId = id;
-    that.GetPlayerId = () => that._playerId;
+    that.PlayerId = -1;
 
     that.OnMapStateReceived = function (mapstate) {
 
         for (obj of mapstate.mapObjects) {
 
-            const mapObject = {
+            let mapObject;
 
-                width: obj.width,
-                height: obj.height,
-                x: obj.position.x,
-                y: obj.position.y,
-                textureId: obj.texture,
-                type: obj.type
-            };
+            if (obj.type === "box") {
+                mapObject = new MapRect(obj.position.x, obj.position.y, obj.width, obj.height);
+                mapObject.SetTextureId(obj.texture);
+            }
+            else {
+                console.error(`Unknown map object type ${obj.type}`);
+            }
 
-            // Add mesh to objects array
             that.mapObjects[obj.id] = mapObject;
         }
 
@@ -34,21 +31,20 @@
 
     // Update function is called when gamestate was received from server
     that.OnGameStateReceived = function (gamestate) {
-
-        // Load players
+        
         that.players = Array();
         for (player of gamestate.players) {
 
-            const playerObject = {
-                id: player.id,
-                x: player.position.x,
-                y: player.position.y,
-                radius: player.radius,
-                angle: player.angle
-            };
+            const playerObject = new Player(player.id);
+            playerObject.SetPosition(new Vector2(player.position.x, player.position.y));
+            playerObject.SetSpeed(new Vector2(player.speed.x, player.speed.y));
+            playerObject.SetRadius(player.radius);
+            playerObject.SetAngle(player.angle);
+            
+            if (playerObject.GetId() === that.PlayerId) {
 
-            if (playerObject.id === that.GetPlayerId())
-                that.myPlayer = playerObject;
+                drawingController.SetMyPlayer(playerObject);
+            }
 
             that.players.push(playerObject);
         }
@@ -56,13 +52,11 @@
         that.bullets = Array();
         for (bullet of gamestate.bullets) {
 
-            const bulletObject = {
-                playerId: bullet.playerId,
-                x: bullet.position.x,
-                y: bullet.position.y,
-                radius: bullet.radius,
-                angle: bullet.angle
-            };
+            const bulletObject = new Bullet(bullet.playerId);
+            bulletObject.SetPosition(new Vector2(bullet.position.x, bullet.position.y));
+            bulletObject.SetSpeed(new Vector2(bullet.speed.x, bullet.speed.y));
+            bulletObject.SetAngle(bullet.angle);
+            bulletObject.SetRadius(bullet.radius);
 
             that.bullets.push(bulletObject);
         }
@@ -73,14 +67,7 @@
         // Start a new drawing state
         push();
 
-        // myPlayer should be in the center
-        if (that.myPlayer !== null)
-            drawingController.SetMyPlayer(that.myPlayer);
-
-        // Draw map components
-        drawingController.drawMapObjects(that.mapObjects);
-        drawingController.DrawBullets(that.bullets);
-        drawingController.drawPlayers(that.players, that.myPlayer);
+        drawingController.Draw(that.mapObjects, that.players, that.bullets);
 
         // Restore original state
         pop();
