@@ -1,4 +1,6 @@
-﻿namespace GameServer
+﻿using GameServer.Models;
+
+namespace GameServer
 {
     public interface IConfig
     {
@@ -11,6 +13,7 @@
         double PlayerRadius { get; set; }
         double IntersectionInterval { get; set; }
         double MinBulletSpeed { get; set; }
+        double BulletDecceleraion { get; set; }
     }
 
     public class Config : IConfig
@@ -26,6 +29,7 @@
             PlayerRadius = 16;
             IntersectionInterval = 0.01;
             MinBulletSpeed = 0.01;
+            BulletDecceleraion = 0.99;
         }
 
         public int BufferSize { get; set; }
@@ -37,5 +41,6 @@
         public double PlayerRadius { get; set; }
         public double IntersectionInterval { get; set; }
         public double MinBulletSpeed { get; set; }
+        public double BulletDecceleraion { get; set; }
     }
 }

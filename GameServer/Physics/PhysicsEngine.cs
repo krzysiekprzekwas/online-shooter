@@ -30,7 +30,7 @@ namespace GameServer.Physics
 
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
-                bullet.Speed *= 0.99;
+                bullet.Speed *=  _config.BulletDecceleraion;
 
                 bullet.Position += bullet.Speed;
             }
