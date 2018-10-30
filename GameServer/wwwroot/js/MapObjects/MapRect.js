@@ -22,6 +22,10 @@ function MapRect(x, y, width, height) {
     that.GetHeight = () => that._height;
     that.SetHeight = (value) => that._height = value;
 
+    that._textureId = 0;
+    that.GetTextureId = () => that._textureId;
+    that.SetTextureId = (value) => that._textureId = value;
+
     that.Equals = (otherRect) =>
         that.GetX() === otherRect.GetX() &&
         that.GetY() === otherRect.GetY() &&

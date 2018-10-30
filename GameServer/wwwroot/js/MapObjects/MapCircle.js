@@ -20,6 +20,10 @@ function MapCircle(x, y, radius) {
 
     that.RadiusSquared = () => Math.pow(that._radius, 2);
 
+    that._textureId = 0;
+    that.GetTextureId = () => that._textureId;
+    that.SetTextureId = (value) => that._textureId = value;
+
     that.Equals = (otherCircle) =>
         that.GetX() === otherCircle.GetX() &&
         that.GetY() === otherCircle.GetY() &&
