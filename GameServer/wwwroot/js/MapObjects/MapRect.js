@@ -1,4 +1,3 @@
-const Vector2 = require('../Physics/Vector2.js');
 
 function MapRect(x, y, width, height) {
 
@@ -24,10 +23,10 @@ function MapRect(x, y, width, height) {
     that.SetHeight = (value) => that._height = value;
 
     that.Equals = (otherRect) =>
-        that.GetX() == otherRect.GetX() &&
-        that.GetY() == otherRect.GetY() &&
-        that.GetWidth() == otherRect.GetWidth() &&
-        that.GetHeight() == otherRect.GetHeight();
+        that.GetX() === otherRect.GetX() &&
+        that.GetY() === otherRect.GetY() &&
+        that.GetWidth() === otherRect.GetWidth() &&
+        that.GetHeight() === otherRect.GetHeight();
 
     that.ToString = () => `Rect<x:${that.GetX()} y:${that.GetY()}, w:${that.GetWidth()}, h:${that.GetHeight()}>`;
 }

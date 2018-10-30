@@ -1,4 +1,3 @@
-const Vector2 = require('../Physics/Vector2.js');
 
 function MapCircle(x, y, radius) {
 
@@ -22,9 +21,9 @@ function MapCircle(x, y, radius) {
     that.RadiusSquared = () => Math.pow(that._radius, 2);
 
     that.Equals = (otherCircle) =>
-        that.GetX() == otherCircle.GetX() &&
-        that.GetY() == otherCircle.GetY() &&
-        that.GetRadius() == otherCircle.GetRadius();
+        that.GetX() === otherCircle.GetX() &&
+        that.GetY() === otherCircle.GetY() &&
+        that.GetRadius() === otherCircle.GetRadius();
 
     that.ToString = () => `Circle<x:${that.GetX()} y:${that.GetY()}, r:${that.GetRadius()}>`;
 }
