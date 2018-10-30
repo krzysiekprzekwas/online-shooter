@@ -1,19 +1,11 @@
-﻿const Vector2 = require('./Vector2.js');
-const Intersection = require('./Intersection.js');
-const MapCircle = require('../MapObjects/MapCircle.js');
-const MapRect = require('../MapObjects/MapRect.js');
-
 function PhysicsEngine() {
 
     const that = this;
 
-    that.players = new Array();
-    that.bullets = new Array();
-    that.mapObjects = new Array();
+    that.ApplyPhysics = function() {
 
-    that.ApplyPhysics = function(players) {
-
-        that.players.forEach(player => {
+        const players = world.GetPlayers();
+        players.forEach(player => {
 
             player.SetSpeed(Vector2.Multiply(player.Speed, config.playerDecceleration));
 
@@ -22,9 +14,10 @@ function PhysicsEngine() {
             that.UpdatePlayerPosition(player, speedVector);
         });
 
-        that.bullets.filter(b => b.GetSpeed().Length() < config.minBulletspeed);
+        const bullets = world.GetBullets();
+        bullets.filter(b => b.GetSpeed().Length() < config.minBulletspeed);
 
-        that.bullets.forEach(bullet => {
+        bullets.forEach(bullet => {
 
             bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), 0.99));
             bullet.SetPosition(Vector2.Add(bullet.GetPosition(), bullet.GetSpeed()));
@@ -69,7 +62,7 @@ function PhysicsEngine() {
     that.CheckAnyIntersectionWithWorld = function (mapCircle) {
 
         // Check intersection with all map objects
-        that.MapObjects.forEach(obj => {
+        world.GetMapObjects.forEach(obj => {
 
             if (Intersection.CheckIntersection(obj, mapCircle))
                 return obj;
@@ -77,10 +70,10 @@ function PhysicsEngine() {
 
         return null;
     };
+
 }
 
-
-PhysicsEngine.GetSpeedFromPlayerInput = function(player, timePassed) {
+PhysicsEngine.GetSpeedFromPlayerInput = function(timePassed) {
 
     let calculatedSpeedVector = new Vector2();
 
