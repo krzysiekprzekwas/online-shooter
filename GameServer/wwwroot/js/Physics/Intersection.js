@@ -1,4 +1,11 @@
 
+if (typeof require !== "undefined") {
+    Vector2 = require('./Vector2.js');
+    MapCircle = require('../MapObjects/MapCircle.js');
+    MapRect = require('../MapObjects/MapCircle.js');
+}
+
+
 function Intersection() {
 
     const that = this;
@@ -7,13 +14,13 @@ function Intersection() {
 
 Intersection.CheckIntersection = function(mapObjectA, mapObjectB) {
 
-    if(mapObjectA instanceof MapCircle && mapObjectB instanceof MapCircle)
+    if (mapObjectA.constructor.name === "MapCircle" && mapObjectB.constructor.name === "MapCircle")
         return Intersection.CheckCircleCircleIntersection(mapObjectA, mapObjectB);
-    else if(mapObjectA instanceof MapRect && mapObjectB instanceof MapCircle)
+    else if (mapObjectA.constructor.name === "MapRect" && mapObjectB.constructor.name === "MapCircle")
         return Intersection.CheckRectCircleIntersection(mapObjectA, mapObjectB);
-    else if(mapObjectA instanceof MapCircle && mapObjectB instanceof MapRect)
+    else if (mapObjectA.constructor.name === "MapCircle" && mapObjectB.constructor.name === "MapRect")
         return Intersection.CheckRectCircleIntersection(mapObjectB, mapObjectA);
-    else if(mapObjectA instanceof MapRect && mapObjectB instanceof MapRect)
+    else if (mapObjectA.constructor.name === "MapRect" && mapObjectB.constructor.name === "MapRect")
         return Intersection.CheckRectRectIntersection(mapObjectA, mapObjectB);
     
     throw `Cannot check intersection for ${mapObjectA.constructor.name} and ${mapObjectB.constructor.name}`;

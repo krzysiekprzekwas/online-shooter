@@ -357,7 +357,7 @@ describe('Vectors', function () {
         const angle = Vector2.Vector2ToRadian(vector);
 
         // Assert
-        const expectedAngle = Math.PI * 3 / 2;
+        const expectedAngle = 0;
         expect(angle).toBeCloseTo(expectedAngle, 4);
     });
 
@@ -370,7 +370,7 @@ describe('Vectors', function () {
         const vector = Vector2.RadianToVector2(angle);
 
         // Assert
-        const expectedVector = new Vector2(-1, 0);
+        const expectedVector = new Vector2(0, 1);
         expect(vector.GetX()).toBeCloseTo(expectedVector.GetX(), 4);
         expect(vector.GetY()).toBeCloseTo(expectedVector.GetY(), 4);
     });
