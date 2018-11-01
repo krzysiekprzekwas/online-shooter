@@ -1,39 +1,40 @@
 
-const Intersection = require('./Intersection.js');
+if (typeof require !== "undefined") {
+    Intersection = require('./Intersection.js');
+    config = require('../config.js');
+}
 
 function PhysicsEngine(worldController) {
 
     const that = this;
     that.worldController = worldController;
+    that.LastExtrapolationDate = new Date();
 
-    that.ApplyPhysics = function() {
+    that.ExtrapolatePhysics = function() {
 
-        const players = world.GetPlayers();
-        players.forEach(player => {
+        const now = new Date();
+        const millisecondsPassed = now - that.LastExtrapolationDate;
+        that.LastExtrapolationDate = now;
 
-            player.SetSpeed(Vector2.Multiply(player.Speed, config.playerDecceleration));
+        const tickPercentage = 1000 / config.serverTick / millisecondsPassed;
 
-            const speedVector = Vector2.Add(player.Speed, that.GetSpeedFromPlayerInput(player, timePassed));
-
+        that.worldController.players.forEach(player => {
+            
+            const speedVector = Vector2.Multiply(player.GetSpeed(), tickPercentage);
             that.UpdatePlayerPosition(player, speedVector);
         });
+        
+        that.worldController.bullets.forEach(bullet => {
 
-        const bullets = world.GetBullets();
-        bullets.filter(b => b.GetSpeed().Length() < config.minBulletspeed);
-
-        bullets.forEach(bullet => {
-
-            bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), 0.99));
-            bullet.SetPosition(Vector2.Add(bullet.GetPosition(), bullet.GetSpeed()));
+            const speedVector = Vector2.Multiply(bullet.GetSpeed(), tickPercentage);
+            bullet.SetPosition(Vector2.Add(bullet.GetPosition(), speedVector));
         });
-
-        that.bullets.filter(b => that.CheckAnyIntersectionWithWorld(new MapCircle(b.GetPosition(), b.GetRadius()) !== null));
     };
 
-    that.CalculatePossibleMovementVector = function (player, speedVector) {
+    that.CalculatePossibleMovement = function (player, speedVector) {
     
         if (speedVector.IsDegenerated())
-            return Vector2.ZERO_VECTOR();
+            return [ Vector2.ZERO_VECTOR(), 0 ];
     
         // Variables used to calculate speed vector
         let offset = 0;
@@ -41,26 +42,26 @@ function PhysicsEngine(worldController) {
         const speedVectorNormalized = speedVector.Normalize();
         let currentPrecision = speedVectorLength / 2;
         let intersectionObject;
-    
+
         do {
             // Create moved sphere
             const speedVectorScaled = Vector2.Multiply(speedVectorNormalized, offset + currentPrecision);
             const checkPosition = Vector2.Add(player.GetPosition(), speedVectorScaled);
     
             // Check for intersection
-            const validationObject = new MapCircle(checkPosition, player.Radius);
+            const validationObject = new MapCircle(checkPosition.GetX(), checkPosition.GetY(), player.GetRadius());
             intersectionObject = that.CheckAnyIntersectionWithWorld(validationObject);
     
             // Update new position and offset
-            if (intersectionObject !== null) // No object found, increase offset
+            if (intersectionObject === null) // No object found, increase offset
                 offset += currentPrecision;
-    
+            
             currentPrecision /= 2.0;
     
         } // Do this as long as we reach desired precision
-        while (currentPrecision >= config.intersectionInterval);
+        while (currentPrecision * 2 >= config.intersectionInterval);
     
-        return Vector2.Multiply(speedVectorNormalized, offset);
+        return [ Vector2.Multiply(speedVectorNormalized, offset), speedVectorLength - offset ];
     };
     
     that.CheckAnyIntersectionWithWorld = function (mapCircle) {
@@ -68,6 +69,32 @@ function PhysicsEngine(worldController) {
         return that.worldController.mapObjects.filter(o => Intersection.CheckIntersection(o, mapCircle))[0] || null;
     };
 
+    that.UpdatePlayerPosition = function (player, speedVector) {
+
+        const [movementVector, spareLength] = that.CalculatePossibleMovement(player, speedVector);
+        player.SetPosition(Vector2.Add(player.GetPosition(), movementVector));
+        player.SetSpeed(movementVector);
+
+        if (spareLength > 0) {
+            var spareSpeedVector = Vector2.Multiply(speedVector.Normalize(), spareLength);
+
+            var horizontalVector = Physic.ProjectVector(spareSpeedVector, Vector2.LEFT_VECTOR());
+            var verticalVector = Physic.ProjectVector(spareSpeedVector, Vector2.UP_VECTOR());
+
+            const [parallelHorizontalMovementVector, horizontalSpareLength] =
+                that.CalculatePossibleMovement(player, horizontalVector);
+
+            const [parallelVerticalMovementVector, verticalSpareLength] =
+                that.CalculatePossibleMovement(player, verticalVector);
+
+            const parallelMovementVector = horizontalSpareLength < verticalSpareLength
+                ? parallelHorizontalMovementVector
+                : parallelVerticalMovementVector;
+
+            player.SetPosition(Vector2.Add(player.GetPosition(), parallelMovementVector));
+            player.SetSpeed(parallelMovementVector);
+        }
+    };
 }
 
 PhysicsEngine.GetSpeedFromPlayerInput = function(timePassed) {

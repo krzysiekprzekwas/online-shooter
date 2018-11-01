@@ -57,12 +57,12 @@ describe('PhysicsEngine', function () {
         const speedVector = new Vector2(0, 16);
 
         // Act
-        const possibleMovement = physicsEngine.CalculatePossibleMovementVector(player, speedVector);
+        const [possibleMovementVector, spareLength] = physicsEngine.CalculatePossibleMovement(player, speedVector);
 
         // Assert
         const expectedPossibleMovement = new Vector2(0, 16);
-        expect(Math.abs(possibleMovement.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
-        expect(Math.abs(possibleMovement.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(possibleMovementVector.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(possibleMovementVector.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
     });
 
     it('should calculate possible movement vector when one obstacle in front', () => {
@@ -77,12 +77,12 @@ describe('PhysicsEngine', function () {
         const speedVector = new Vector2(0, 16);
 
         // Act
-        const possibleMovement = physicsEngine.CalculatePossibleMovementVector(player, speedVector);
+        const [possibleMovementVector, spareLength] = physicsEngine.CalculatePossibleMovement(player, speedVector);
 
         // Assert
         const expectedPossibleMovement = new Vector2(0, 3);
-        expect(Math.abs(possibleMovement.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
-        expect(Math.abs(possibleMovement.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(possibleMovementVector.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(possibleMovementVector.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
     });
     
     
