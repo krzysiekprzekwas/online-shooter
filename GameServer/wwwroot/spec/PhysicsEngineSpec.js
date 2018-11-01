@@ -61,6 +61,8 @@ describe('PhysicsEngine', function () {
 
         // Assert
         const expectedPossibleMovement = new Vector2(0, 16);
+        const expectedSpareLength = 0;
+        expect(Math.abs(spareLength - expectedSpareLength)).toBeLessThan(config.intersectionInterval);
         expect(Math.abs(possibleMovementVector.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
         expect(Math.abs(possibleMovementVector.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
     });
@@ -81,9 +83,28 @@ describe('PhysicsEngine', function () {
 
         // Assert
         const expectedPossibleMovement = new Vector2(0, 3);
+        const expectedSpareLength = 13;
+        expect(Math.abs(spareLength - expectedSpareLength)).toBeLessThan(config.intersectionInterval);
         expect(Math.abs(possibleMovementVector.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
         expect(Math.abs(possibleMovementVector.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
     });
-    
-    
+
+    it('should update player position including parellel movement', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+        worldController.mapObjects = [new MapRect(0, 17, 2, 2)];
+
+        const player = new Player();
+        player.SetPosition(new Vector2(0, 0));
+        player.SetSpeed(new Vector2(15, 15));
+
+        // Act
+        physicsEngine.UpdatePlayerPosition(player, player.GetSpeed());
+
+        // Assert
+        const expectedXPosition = 15;
+        expect(Math.abs(player.GetPosition().GetX() - expectedXPosition)).toBeLessThan(config.intersectionInterval);
+    });
+        
 });
