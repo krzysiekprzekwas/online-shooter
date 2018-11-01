@@ -2,6 +2,7 @@
 const PhysicsEngine = require('../js/Physics/PhysicsEngine.js');
 const worldController = require('../js/Controllers/WorldController.js');
 const Player = require('../js/Physics/Player.js');
+const config = require('../js/config.js');
 
 describe('PhysicsEngine', function () {
 
@@ -48,19 +49,41 @@ describe('PhysicsEngine', function () {
 
         // Arrange
         const physicsEngine = new PhysicsEngine(worldController);
-        worldController.mapObjects = [new MapRect(0, -3, 3, 3)];
+        worldController.mapObjects = [new MapRect(0, -20, 2, 2)];
 
         const player = new Player();
         player.SetPosition(new Vector2(0, 0));
 
-        const speedVector = new Vector2(0, 15);
+        const speedVector = new Vector2(0, 16);
 
         // Act
         const possibleMovement = physicsEngine.CalculatePossibleMovementVector(player, speedVector);
 
         // Assert
-        const expectedPossibleMovement = new Vector(0, 15);
-        expect(possibleMovement.Equals(expectedPossibleMovement)).toBe(true);
+        const expectedPossibleMovement = new Vector2(0, 16);
+        expect(Math.abs(possibleMovement.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(possibleMovement.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
     });
+
+    it('should calculate possible movement vector when one obstacle in front', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+        worldController.mapObjects = [new MapRect(0, 20, 2, 2)];
+
+        const player = new Player();
+        player.SetPosition(new Vector2(0, 0));
+
+        const speedVector = new Vector2(0, 16);
+
+        // Act
+        const possibleMovement = physicsEngine.CalculatePossibleMovementVector(player, speedVector);
+
+        // Assert
+        const expectedPossibleMovement = new Vector2(0, 3);
+        expect(Math.abs(possibleMovement.GetX() - expectedPossibleMovement.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(possibleMovement.GetY() - expectedPossibleMovement.GetY())).toBeLessThan(config.intersectionInterval);
+    });
+    
     
 });
