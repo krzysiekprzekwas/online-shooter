@@ -44,9 +44,17 @@
             playerObject.SetMaxHealth(player.maxHealth);
             
             if (playerObject.GetId() === that.PlayerId) {
+                if (!player.isAlive) {
+                    $('#killScreen').addClass('overlay');
+                    $('#killScreen').removeClass('hidden');
 
-                drawingController.SetMyPlayer(playerObject);
-                $('#healthLabel').html(`${player.health}/${player.maxHealth}`);
+                    $('resurectionTime').html(playerObject.milisecondsToResurect / 1000 + " seconds");
+                } else {
+                    $('#killScreen').removeClass('overlay');
+                    $('#killScreen').addClass('hidden');
+                    drawingController.SetMyPlayer(playerObject);
+                    $('#healthLabel').html(`${player.health}/${player.maxHealth}`);
+                }
             }
 
             that.players.push(playerObject);

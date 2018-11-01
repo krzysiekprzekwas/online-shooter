@@ -63,12 +63,12 @@ namespace GameServer.Hubs
 
             var player = _gameEngine.GameState.Players.Find(x => x.ConnectionId == Context.ConnectionId);
 
-            if (player==null)
+            // Ignore update from dead
+            if (!player.IsAlive)
             {
-                // Invalid Player - wrong connection Id
                 return;
             }
-
+            
             // Process state
 
             player.Keys = new List<KeyEnum>();

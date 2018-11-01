@@ -30,6 +30,13 @@
         });
     };
 
+    that.PlayerKilledNotification = function(killer, victim) {
+        new PNotify({
+            text: victim + " killed by " + killer,
+            addclass: "stack-bottomleft",
+            stack: that.stack
+        });
+    };
 }
 
 // KeyCode from js to backend enum (KeyEnum.cs)

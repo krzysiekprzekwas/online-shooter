@@ -20,6 +20,10 @@ namespace GameServer.Game
 
             var weaponEnum = WeaponService.GetDefaultWeaponEnum();
             player.PlayerWeapon = new PlayerWeapon(weaponEnum);
+            
+            player.IsAlive = true;
+            player.MilisecondsToResurect = 0;
+            
         }
 
         public static SpawnPoint GetRandomSpawnPoint()

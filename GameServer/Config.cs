@@ -15,6 +15,7 @@ namespace GameServer
         double MinBulletSpeed { get; set; }
         double BulletDecceleraion { get; set; }
         int MaxPlayerHealth { get; set; }
+        int MilisecondsToResurect { get; set; }
     }
 
     public class Config : IConfig
@@ -32,8 +33,10 @@ namespace GameServer
             MinBulletSpeed = 0.01;
             BulletDecceleraion = 0.99;
             MaxPlayerHealth = 100;
+            MilisecondsToResurect = 5000;
         }
 
+        public int MilisecondsToResurect { get; set; }
         public int BufferSize { get; set; }
         public int ServerTick { get; set; }
         public double PlayerSpeed { get; set; }
