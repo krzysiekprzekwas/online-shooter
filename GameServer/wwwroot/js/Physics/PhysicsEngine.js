@@ -1,6 +1,10 @@
-function PhysicsEngine() {
+
+const Intersection = require('./Intersection.js');
+
+function PhysicsEngine(worldController) {
 
     const that = this;
+    that.worldController = worldController;
 
     that.ApplyPhysics = function() {
 
@@ -26,22 +30,22 @@ function PhysicsEngine() {
         that.bullets.filter(b => that.CheckAnyIntersectionWithWorld(new MapCircle(b.GetPosition(), b.GetRadius()) !== null));
     };
 
-    PhysicsEngine.CalculatePossibleMovementVector = function (player, speedVector) {
+    that.CalculatePossibleMovementVector = function (player, speedVector) {
     
         if (speedVector.IsDegenerated())
             return Vector2.ZERO_VECTOR();
     
         // Variables used to calculate speed vector
         let offset = 0;
-        const speedVectorLength = speedvector.Length();
-        const speedVectorNormalized = speedvector.Normalize();
-        let currentPrecision = Vector2.Divide(speedVectorLength, 2);
+        const speedVectorLength = speedVector.Length();
+        const speedVectorNormalized = speedVector.Normalize();
+        let currentPrecision = speedVectorLength / 2;
         let intersectionObject;
     
         do {
             // Create moved sphere
             const speedVectorScaled = Vector2.Multiply(speedVectorNormalized, offset + currentPrecision);
-            const checkPosition = Vector2.Add(player.Position, speedVectorScaled);
+            const checkPosition = Vector2.Add(player.GetPosition(), speedVectorScaled);
     
             // Check for intersection
             const validationObject = new MapCircle(checkPosition, player.Radius);
@@ -61,14 +65,7 @@ function PhysicsEngine() {
     
     that.CheckAnyIntersectionWithWorld = function (mapCircle) {
 
-        // Check intersection with all map objects
-        world.GetMapObjects.forEach(obj => {
-
-            if (Intersection.CheckIntersection(obj, mapCircle))
-                return obj;
-        });
-
-        return null;
+        return that.worldController.mapObjects.filter(o => Intersection.CheckIntersection(o, mapCircle))[0] || null;
     };
 
 }
