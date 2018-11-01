@@ -124,7 +124,7 @@ namespace GameServer.Physics
                 currentPrecision /= 2.0;
 
             } // Do this as long as we reach desired precision
-            while (currentPrecision >= _config.IntersectionInterval);
+            while (currentPrecision * 2 >= _config.IntersectionInterval);
 
             spareLength = speedVectorLength - offset;
             return speedVectorNormalized * offset;
