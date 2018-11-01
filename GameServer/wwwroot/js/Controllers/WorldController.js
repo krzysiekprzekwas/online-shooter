@@ -42,13 +42,14 @@
             playerObject.SetAngle(player.angle);
             playerObject.SetHealth(player.health);
             playerObject.SetMaxHealth(player.maxHealth);
+            playerObject.SetAlive(player.isAlive);
             
             if (playerObject.GetId() === that.PlayerId) {
-                if (!player.isAlive) {
+                if (!playerObject.IsAlive()) {
                     $('#killScreen').addClass('overlay');
                     $('#killScreen').removeClass('hidden');
 
-                    $('resurectionTime').html(playerObject.milisecondsToResurect / 1000 + " seconds");
+                    $('#resurectionTime').html(Math.round(player.milisecondsToResurect / 1000) + " seconds");
                 } else {
                     $('#killScreen').removeClass('overlay');
                     $('#killScreen').addClass('hidden');

@@ -133,7 +133,7 @@ namespace GameServer.Game
         {
             foreach (var player in _gameState.Players)
             {
-                if (bullet.PlayerId != player.Id && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
+                if (bullet.PlayerId != player.Id && player.IsAlive && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
                         new MapCircle(player.Position, player.Radius)))
                 {
                     return player;

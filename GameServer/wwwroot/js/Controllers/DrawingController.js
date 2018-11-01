@@ -48,7 +48,7 @@
         fill(255, 190, 118);
         stroke(0);
 
-        players.filter(x => x.GetId() !== that.myPlayer.GetId()).forEach(player => {
+        players.filter(x => x.GetId() !== that.myPlayer.GetId() && x.IsAlive()).forEach(player => {
             
             that.DrawPlayer(player.GetX(), player.GetY(), player.GetAngle(), player.GetRadius());
         });
@@ -57,7 +57,9 @@
 
         stroke(52, 152, 219);
 
-        that.DrawPlayer(that.myPlayer.GetX(), that.myPlayer.GetY(), mouseController.getCurrentAngle(), that.myPlayer.GetRadius());
+        if (that.myPlayer.IsAlive()) {
+            that.DrawPlayer(that.myPlayer.GetX(), that.myPlayer.GetY(), mouseController.getCurrentAngle(), that.myPlayer.GetRadius());
+        };
     };
 
     that.DrawPlayer = function (x, y, angle, radius) {
