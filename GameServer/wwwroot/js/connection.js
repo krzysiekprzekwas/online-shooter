@@ -43,7 +43,6 @@ const connector = {
         this.connection.on('connectConfirmation', function (response) {
 
             config = { ...config, ...response.config };
-            console.log(config);
 
             worldController.OnMapStateReceived(response.mapState);
             weaponService.onWeaponsReceived(response.weapons);
