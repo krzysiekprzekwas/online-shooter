@@ -17,3 +17,8 @@
     playerSpeed: 50,
     serverTick: 64,
 };
+
+// Export module
+if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
+    module.exports = config;
+}
