@@ -78,3 +78,8 @@
 }
 
 const worldController = new WorldController();
+
+// Export module
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+    module.exports = worldController;
+}
