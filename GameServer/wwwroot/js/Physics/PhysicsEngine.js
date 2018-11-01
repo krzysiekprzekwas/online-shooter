@@ -1,6 +1,7 @@
 
 if (typeof require !== "undefined") {
     Intersection = require('./Intersection.js');
+    Physic = require('./Physic.js');
     config = require('../config.js');
 }
 
@@ -16,14 +17,15 @@ function PhysicsEngine(worldController) {
         const millisecondsPassed = now - that.LastExtrapolationDate;
         that.LastExtrapolationDate = now;
 
-        const tickPercentage = 1000 / config.serverTick / millisecondsPassed;
+        const tickDuration = 1000 / config.serverTick;
+        const tickPercentage = millisecondsPassed / tickDuration;
 
         that.worldController.players.forEach(player => {
             
             const speedVector = Vector2.Multiply(player.GetSpeed(), tickPercentage);
             that.UpdatePlayerPosition(player, speedVector);
         });
-        
+
         that.worldController.bullets.forEach(bullet => {
 
             const speedVector = Vector2.Multiply(bullet.GetSpeed(), tickPercentage);
@@ -73,7 +75,7 @@ function PhysicsEngine(worldController) {
 
         const [movementVector, spareLength] = that.CalculatePossibleMovement(player, speedVector);
         player.SetPosition(Vector2.Add(player.GetPosition(), movementVector));
-        player.SetSpeed(movementVector);
+        // player.SetSpeed(movementVector);
 
         if (spareLength > 0) {
             var spareSpeedVector = Vector2.Multiply(speedVector.Normalize(), spareLength);
@@ -92,7 +94,7 @@ function PhysicsEngine(worldController) {
                 : parallelVerticalMovementVector;
 
             player.SetPosition(Vector2.Add(player.GetPosition(), parallelMovementVector));
-            player.SetSpeed(parallelMovementVector);
+            // player.SetSpeed(parallelMovementVector);
         }
     };
 }
