@@ -134,6 +134,19 @@ describe('Intersection', function () {
         expect(intersects).toBe(true);
     });
 
+    it('should detect intersection between rect and circle when they intersect 2', () => {
+
+        // Arrange
+        const c = new MapCircle(1, 1, 2);
+        const r = new MapRect(1, 1, 3, 3);
+
+        // Act
+        const intersects = Intersection.CheckIntersection(r, c);
+
+        // Assert
+        expect(intersects).toBe(true);
+    });
+
     it('should not detect intersection between rect and circle when they dont intersect', () => {
         
         // Arrange
