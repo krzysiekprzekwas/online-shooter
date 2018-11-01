@@ -42,10 +42,8 @@ const connector = {
 
         this.connection.on('connectConfirmation', function (response) {
 
-            for (setting in response.config) {
-                const value = response.config[setting.toUpperCase()];
-                config[setting] = value;
-            }
+            config = { ...config, ...response.config };
+            console.log(config);
 
             worldController.OnMapStateReceived(response.mapState);
             weaponService.onWeaponsReceived(response.weapons);
