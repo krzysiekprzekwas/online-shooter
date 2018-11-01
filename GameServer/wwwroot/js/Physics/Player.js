@@ -1,4 +1,5 @@
-﻿function Player(id = 0) {
+﻿
+function Player(id = 0) {
 
     const that = this;
 
@@ -41,4 +42,9 @@
     that.SetMaxHealth = (value) => that._MaxHealth = value;
 
     that.ToString = () => `Player<Id:${that.GetId()} Name:${that.GetName()}, Pos:${that.GetPosition().ToString()} R:${that.GetRadius()}>`;
+}
+
+// Export module
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+    module.exports = Player;
 }
