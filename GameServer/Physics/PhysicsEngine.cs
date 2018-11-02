@@ -1,6 +1,7 @@
 ﻿using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
+using System;
 
 namespace GameServer.Physics
 {
@@ -25,11 +26,10 @@ namespace GameServer.Physics
 
                 UpdatePlayerPosition(player, speedVector);
             }
-
-
+            
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
-                bullet.Speed *=  _config.BulletDecceleraion;
+                bullet.Speed *= _config.BulletDecceleraion;
 
                 bullet.Position += bullet.Speed;
             }
@@ -37,7 +37,7 @@ namespace GameServer.Physics
             GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
         }
 
-        private static bool ShouldBulletBeRemoved(Bullet bullet)
+        private bool ShouldBulletBeRemoved(Bullet bullet)
         {
             if (bullet.Speed.LengthSquared() < Math.Pow(_config.MinBulletSpeed, 2))
                 return true;
