@@ -26,23 +26,26 @@ namespace GameServer.Physics
                 UpdatePlayerPosition(player, speedVector);
             }
 
-            GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
 
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
                 bullet.Speed *=  _config.BulletDecceleraion;
 
                 bullet.Position += bullet.Speed;
-                
             }
 
-            GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);
-            
+            GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
         }
 
-        private static bool ShouldBulletBeRemoved(Bullet b)
+        private static bool ShouldBulletBeRemoved(Bullet bullet)
         {
-            return b.Speed.Length() < _config.MinBulletSpeed;
+            if (bullet.Speed.LengthSquared() < Math.Pow(_config.MinBulletSpeed, 2))
+                return true;
+
+            if (CheckAnyIntersectionWithWorld(new MapCircle(bullet.Position, bullet.Radius)) != null)
+                return true;
+
+            return false;
         }
 
         public Vector2 GetSpeedFromPlayerInput(Player player, int durationMilliseconds)
@@ -76,7 +79,7 @@ namespace GameServer.Physics
             player.Position += movementVector;
             player.Speed = movementVector;
 
-            if (spareLength > 0)
+            if (spareLength > _config.IntersectionInterval)
             {
                 var spareSpeedVector = speedVector.Normalize() * spareLength;
 

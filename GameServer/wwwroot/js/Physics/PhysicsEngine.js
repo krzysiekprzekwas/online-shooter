@@ -1,4 +1,4 @@
-
+﻿
 if (typeof require !== "undefined") {
     Intersection = require('./Intersection.js');
     Physic = require('./Physic.js');
@@ -11,14 +11,19 @@ function PhysicsEngine(worldController) {
     that.worldController = worldController;
     that.LastExtrapolationDate = new Date();
 
-    that.ExtrapolatePhysics = function() {
+    that.GetMillisecondsPassed = function() {
 
         const now = new Date();
         const millisecondsPassed = now - that.LastExtrapolationDate;
         that.LastExtrapolationDate = now;
 
-        const tickDuration = 1000 / config.serverTick;
-        const tickPercentage = millisecondsPassed / tickDuration;
+        return millisecondsPassed;
+    };
+
+    that.ExtrapolatePhysics = function() {
+
+        const millisecondsPassed = that.GetMillisecondsPassed();
+        const tickPercentage = millisecondsPassed / 1000;
 
         that.worldController.players.forEach(player => {
             
@@ -30,7 +35,20 @@ function PhysicsEngine(worldController) {
 
             const speedVector = Vector2.Multiply(bullet.GetSpeed(), tickPercentage);
             bullet.SetPosition(Vector2.Add(bullet.GetPosition(), speedVector));
+            bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), config.bulletDecceleraion));
         });
+        that.worldController.bullets = that.worldController.bullets.filter(b => !that.ShouldBulletBeRemoved(b));
+    };
+
+    that.ShouldBulletBeRemoved = function(bullet) {
+
+        if (bullet.GetSpeed().LengthSquared() < Math.pow(config.minBulletSpeed, 2))
+            return true;
+
+        if (that.CheckAnyIntersectionWithWorld(new MapCircle(bullet.GetPosition(), bullet.GetRadius())) != null)
+            return true;
+
+        return false;
     };
 
     that.CalculatePossibleMovement = function (player, speedVector) {
@@ -76,7 +94,7 @@ function PhysicsEngine(worldController) {
         const [movementVector, spareLength] = that.CalculatePossibleMovement(player, speedVector);
         player.SetPosition(Vector2.Add(player.GetPosition(), movementVector));
 
-        if (spareLength > 0) {
+        if (spareLength > config.intersectionInterval) {
             var spareSpeedVector = Vector2.Multiply(speedVector.Normalize(), spareLength);
 
             var horizontalVector = Physic.ProjectVector(spareSpeedVector, Vector2.LEFT_VECTOR());
