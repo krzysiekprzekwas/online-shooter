@@ -75,7 +75,6 @@ function PhysicsEngine(worldController) {
 
         const [movementVector, spareLength] = that.CalculatePossibleMovement(player, speedVector);
         player.SetPosition(Vector2.Add(player.GetPosition(), movementVector));
-        // player.SetSpeed(movementVector);
 
         if (spareLength > 0) {
             var spareSpeedVector = Vector2.Multiply(speedVector.Normalize(), spareLength);
@@ -94,7 +93,6 @@ function PhysicsEngine(worldController) {
                 : parallelVerticalMovementVector;
 
             player.SetPosition(Vector2.Add(player.GetPosition(), parallelMovementVector));
-            // player.SetSpeed(parallelMovementVector);
         }
     };
 }
