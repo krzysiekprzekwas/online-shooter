@@ -2,9 +2,17 @@
 const PhysicsEngine = require('../js/Physics/PhysicsEngine.js');
 const worldController = require('../js/Controllers/WorldController.js');
 const Player = require('../js/Physics/Player.js');
+const Bullet = require('../js/Physics/Bullet.js');
 const config = require('../js/config.js');
 
 describe('PhysicsEngine', function () {
+
+    afterEach(() => {
+
+        worldController.players = [];
+        worldController.bullets = [];
+        worldController.mapObjects = [];
+    });
 
     it('should correctly check intersection with map objects', () => {
 
@@ -106,5 +114,151 @@ describe('PhysicsEngine', function () {
         const expectedXPosition = 15;
         expect(Math.abs(player.GetPosition().GetX() - expectedXPosition)).toBeLessThan(config.intersectionInterval);
     });
-        
+    
+    it('should correctly extrapolate bullet physics', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+
+        const bullet = new Bullet();
+        bullet.SetPosition(new Vector2(0, 0));
+        bullet.SetSpeed(new Vector2(20, 20));
+        worldController.bullets = [bullet];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        expect(bullet.GetX()).toBe(10);
+    });
+
+    it('should correctly remove too slow bullets', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+
+        const bullet = new Bullet();
+        bullet.SetPosition(new Vector2(0, 0));
+        bullet.SetSpeed(Vector2.Multiply(new Vector2(20, 20).Normalize(), config.minBulletSpeed));
+        worldController.bullets = [bullet];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        expect(worldController.bullets.length).toBe(0);
+    });
+
+    it('should correctly remove bullets that hit wall', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+        worldController.mapObjects = [new MapRect(0, 2, 2, 2)];
+
+        const bullet = new Bullet();
+        bullet.SetPosition(new Vector2(0, 0));
+        bullet.SetSpeed(new Vector2(0, 1));
+        bullet.SetRadius(1);
+        worldController.bullets = [bullet];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        expect(worldController.bullets.length).toBe(0);
+        expect(bullet.GetSpeed().Length()).toBeGreaterThan(config.minBulletSpeed);
+    });
+
+    it('should correctly deccelerate bullet', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+
+        const bullet = new Bullet();
+        bullet.SetPosition(new Vector2(0, 0));
+        bullet.SetSpeed(new Vector2(10, 0));
+        worldController.bullets = [bullet];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        expect("Discuss decceleration calc").toBe(false); // TODO
+    });
+
+    it('should correctly extrapolate players', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+
+        const player = new Player();
+        player.SetPosition(new Vector2(0, 0));
+        player.SetSpeed(new Vector2(10, -10));
+        worldController.players = [player];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        const expectedPosition = new Vector2(5, -5);
+        expect(Math.abs(player.GetX() - expectedPosition.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(player.GetY() - expectedPosition.GetY())).toBeLessThan(config.intersectionInterval);
+    });
+
+    it('should not allow players to enter wall during extrapolation', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+        worldController.mapObjects = [new MapRect(0, 15, 10, 10)];
+
+        const player = new Player();
+        player.SetPosition(new Vector2(0, -0.0000001));
+        player.SetSpeed(new Vector2(0, 10));
+        player.SetRadius(10);
+        worldController.players = [player];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        const expectedPosition = new Vector2(0, 0);
+        expect(Math.abs(player.GetX() - expectedPosition.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(player.GetY() - expectedPosition.GetY())).toBeLessThan(config.intersectionInterval);
+    });
+
+    it('should calculate parallel movement for players at extrapolation', () => {
+
+        // Arrange
+        const physicsEngine = new PhysicsEngine(worldController);
+        worldController.mapObjects = [new MapRect(0, 15, 10, 10)];
+
+        const player = new Player();
+        player.SetPosition(new Vector2(0, -0.0000001));
+        player.SetSpeed(new Vector2(10, 10));
+        player.SetRadius(10);
+        worldController.players = [player];
+
+        physicsEngine.GetMillisecondsPassed = () => 500;
+
+        // Act
+        physicsEngine.ExtrapolatePhysics();
+
+        // Assert
+        const expectedPosition = new Vector2(5, 0);
+        expect(Math.abs(player.GetX() - expectedPosition.GetX())).toBeLessThan(config.intersectionInterval);
+        expect(Math.abs(player.GetY() - expectedPosition.GetY())).toBeLessThan(config.intersectionInterval);
+    });
 });
