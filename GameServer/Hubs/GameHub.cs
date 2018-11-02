@@ -63,8 +63,8 @@ namespace GameServer.Hubs
 
             var player = _gameEngine.GameState.Players.Find(x => x.ConnectionId == Context.ConnectionId);
 
-            // Ignore update from dead
-            if (!player.IsAlive)
+            // Ignore update from dead or untracked player
+            if ( player == null || !player.IsAlive)
             {
                 return;
             }
