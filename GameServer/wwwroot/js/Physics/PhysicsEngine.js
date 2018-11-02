@@ -45,7 +45,8 @@ function PhysicsEngine(worldController) {
         if (bullet.GetSpeed().LengthSquared() < Math.pow(config.minBulletSpeed, 2))
             return true;
 
-        if (that.CheckAnyIntersectionWithWorld(new MapCircle(bullet.GetPosition(), bullet.GetRadius())) != null)
+        const bulletCircle = new MapCircle(bullet.GetX(), bullet.GetY(), bullet.GetRadius());
+        if (that.CheckAnyIntersectionWithWorld(bulletCircle) !== null)
             return true;
 
         return false;
