@@ -24,7 +24,7 @@ namespace GameServer
         {
             BufferSize = 4 * 1024;
             ServerTick = 64;
-            PlayerSpeed = 50;
+            PlayerSpeed = 100;
             Gravity = 10;
             JumpPower = 2;
             PlayerDecceleration = 0.5;
