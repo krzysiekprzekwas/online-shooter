@@ -1,4 +1,11 @@
 
+if (typeof require !== "undefined") {
+    Vector2 = require('./Vector2.js');
+    MapCircle = require('../MapObjects/MapCircle.js');
+    MapRect = require('../MapObjects/MapRect.js');
+}
+
+
 function Intersection() {
 
     const that = this;
@@ -7,13 +14,13 @@ function Intersection() {
 
 Intersection.CheckIntersection = function(mapObjectA, mapObjectB) {
 
-    if(mapObjectA instanceof MapCircle && mapObjectB instanceof MapCircle)
+    if (mapObjectA instanceof MapCircle && mapObjectB instanceof MapCircle)
         return Intersection.CheckCircleCircleIntersection(mapObjectA, mapObjectB);
-    else if(mapObjectA instanceof MapRect && mapObjectB instanceof MapCircle)
+    else if (mapObjectA instanceof MapRect && mapObjectB instanceof MapCircle)
         return Intersection.CheckRectCircleIntersection(mapObjectA, mapObjectB);
-    else if(mapObjectA instanceof MapCircle && mapObjectB instanceof MapRect)
+    else if (mapObjectA instanceof MapCircle && mapObjectB instanceof MapRect)
         return Intersection.CheckRectCircleIntersection(mapObjectB, mapObjectA);
-    else if(mapObjectA instanceof MapRect && mapObjectB instanceof MapRect)
+    else if (mapObjectA instanceof MapRect && mapObjectB instanceof MapRect)
         return Intersection.CheckRectRectIntersection(mapObjectA, mapObjectB);
     
     throw `Cannot check intersection for ${mapObjectA.constructor.name} and ${mapObjectB.constructor.name}`;
@@ -29,18 +36,18 @@ Intersection.CheckRectCircleIntersection = function(mapRect, mapCircle) {
 
     const x = Math.abs(mapCircle.GetX() - mapRect.GetX());
     const y = Math.abs(mapCircle.GetY() - mapRect.GetY());
-
+    
     if (x > mapRect.GetWidth() / 2 + mapCircle.GetRadius() ||
         y > mapRect.GetHeight() / 2 + mapCircle.GetRadius())
     {
         return false;
     }
-
+    
     if (x <= mapRect.GetWidth() / 2 || y <= mapRect.GetHeight() / 2)
     {
         return true;
     }
-
+    
     const cornerDistance_sq = Math.pow(x - mapRect.GetWidth() / 2, 2) + Math.pow(y - mapRect.GetHeight() / 2, 2);
     return cornerDistance_sq <= mapCircle.RadiusSquared();
 };
