@@ -14,13 +14,13 @@ function Intersection() {
 
 Intersection.CheckIntersection = function(mapObjectA, mapObjectB) {
 
-    if (mapObjectA.constructor.name === "MapCircle" && mapObjectB.constructor.name === "MapCircle")
+    if (mapObjectA instanceof MapCircle && mapObjectB instanceof MapCircle)
         return Intersection.CheckCircleCircleIntersection(mapObjectA, mapObjectB);
-    else if (mapObjectA.constructor.name === "MapRect" && mapObjectB.constructor.name === "MapCircle")
+    else if (mapObjectA instanceof MapRect && mapObjectB instanceof MapCircle)
         return Intersection.CheckRectCircleIntersection(mapObjectA, mapObjectB);
-    else if (mapObjectA.constructor.name === "MapCircle" && mapObjectB.constructor.name === "MapRect")
+    else if (mapObjectA instanceof MapCircle && mapObjectB instanceof MapRect)
         return Intersection.CheckRectCircleIntersection(mapObjectB, mapObjectA);
-    else if (mapObjectA.constructor.name === "MapRect" && mapObjectB.constructor.name === "MapRect")
+    else if (mapObjectA instanceof MapRect && mapObjectB instanceof MapRect)
         return Intersection.CheckRectRectIntersection(mapObjectA, mapObjectB);
     
     throw `Cannot check intersection for ${mapObjectA.constructor.name} and ${mapObjectB.constructor.name}`;
