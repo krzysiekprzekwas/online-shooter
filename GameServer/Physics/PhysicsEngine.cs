@@ -27,18 +27,21 @@ namespace GameServer.Physics
                 UpdatePlayerPosition(player, speedVector);
             }
 
-            GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
-
             foreach (Bullet bullet in GameState.Instance.Bullets)
             {
-                bullet.Speed *=  _config.BulletDecceleraion;
+                bullet.Speed *= _config.BulletDecceleraion;
 
-                bullet.Position += bullet.Speed;
+                var bulletObject = new MapCircle(bullet.Position, bullet.Radius);
+                var v = CalculatePossibleMovementVector(bulletObject, bullet.Speed, out double _);
+
+                if (v.IsDegenerated())
+                    bullet.Speed = new Vector2();
+
+                bullet.Position += v;
                 
             }
 
-            GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);
-            
+            GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
         }
 
         private static bool ShouldBulletBeRemoved(Bullet b)
@@ -73,7 +76,8 @@ namespace GameServer.Physics
 
         public void UpdatePlayerPosition(Player player, Vector2 speedVector)
         {
-            var movementVector = CalculatePossibleMovementVector(player, speedVector, out double spareLength);
+            var playerObject = new MapCircle(player.Position, player.Radius);
+            var movementVector = CalculatePossibleMovementVector(playerObject, speedVector, out double spareLength);
             player.Position += movementVector;
             player.Speed = movementVector;
 
@@ -84,8 +88,8 @@ namespace GameServer.Physics
                 var horizontalVector = Physic.ProjectVector(spareSpeedVector, Vector2.LEFT_VECTOR);
                 var verticalVector = Physic.ProjectVector(spareSpeedVector, Vector2.UP_VECTOR);
                 
-                var parallelHorizontalMovementVector = CalculatePossibleMovementVector(player, horizontalVector, out double horizontalSpareLength);
-                var parallelVerticalMovementVector = CalculatePossibleMovementVector(player, verticalVector, out double verticalSpareLength);
+                var parallelHorizontalMovementVector = CalculatePossibleMovementVector(playerObject, horizontalVector, out double horizontalSpareLength);
+                var parallelVerticalMovementVector = CalculatePossibleMovementVector(playerObject, verticalVector, out double verticalSpareLength);
 
                 var parallelMovementVector = parallelVerticalMovementVector;
                 if (horizontalSpareLength < verticalSpareLength)
@@ -96,7 +100,7 @@ namespace GameServer.Physics
             }
         }
 
-        public Vector2 CalculatePossibleMovementVector(Player player, Vector2 speedvector, out double spareLength)
+        public Vector2 CalculatePossibleMovementVector(MapCircle movingObject, Vector2 speedvector, out double spareLength)
         {
             spareLength = 0;
             if (speedvector.IsDegenerated())
@@ -111,10 +115,10 @@ namespace GameServer.Physics
             do
             {
                 // Create moved sphere
-                var checkPosition = player.Position + (speedVectorNormalized * (offset + currentPrecision));
+                var checkPosition = movingObject.Position + (speedVectorNormalized * (offset + currentPrecision));
 
                 // Check for intersection
-                var validationObject = new MapCircle(checkPosition, player.Radius);
+                var validationObject = new MapCircle(checkPosition, movingObject.Radius);
                 var intersectionObject = CheckAnyIntersectionWithWorld(validationObject);
 
                 // Update new position and offset
