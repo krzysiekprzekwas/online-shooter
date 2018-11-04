@@ -27,7 +27,7 @@ namespace GameTests
             // Act
             
 
-            var nromalizedSpeedVector = physicsEngine.GetSpeedFromPlayerInput(player,config.ServerTick).Normalize();
+            var nromalizedSpeedVector = physicsEngine.GetSpeedFromPlayerInput(player).Normalize();
 
             // Assert
             var expectedSpeedVectorDirection = Vector2.Normalize(new Vector2(-1, -1));
@@ -46,7 +46,7 @@ namespace GameTests
             player.Keys.Add(KeyEnum.Up);
 
             // Act
-            var speedVector = physicsEngine.GetSpeedFromPlayerInput(player, config.ServerTick);
+            var speedVector = physicsEngine.GetSpeedFromPlayerInput(player);
 
             // Assert
             var expectedSpeedVectorDirection = new Vector2(0, 0);

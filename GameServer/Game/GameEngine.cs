@@ -40,7 +40,7 @@ namespace GameServer.Game
             GameEvents = new GameEvents(this);
             PhysicsEngine = new PhysicsEngine(config, mapState);
             worldLoader.LoadMap();
-            Ticker = new Timer(Tick, null, 0, 1000 / _config.ServerTick);
+            Ticker = new Timer(Tick, null, 0, _config.ServerTickMilliseconds);
         }
 
         private void ApplyShooting()
@@ -62,7 +62,7 @@ namespace GameServer.Game
                         PlayerId = player.Id,
                         Position = player.Position,
                         Radius = weapon.BulletSize,
-                        Speed = player.Speed + (Vector2.RadianToVector2(player.Angle + Math.PI/2) * (weapon.BulletSpeed / _config.ServerTick))
+                        Speed = player.Speed + (Vector2.RadianToVector2(player.Angle + Math.PI/2) * weapon.BulletSpeed)
                     };
 
                     GameState.Instance.Bullets.Add(bullet);
