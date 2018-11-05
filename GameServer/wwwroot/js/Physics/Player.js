@@ -36,10 +36,14 @@ function Player(id = 0) {
     that._health = 0;
     that.GetHealth = () => that._health;
     that.SetHealth = (value) => that._health = value;
-    
-    that._MaxHealth = 0;
+
+    that._maxHealth = 0;
     that.GetMaxHealth = () => that._MaxHealth;
     that.SetMaxHealth = (value) => that._MaxHealth = value;
+
+    that._alive = false;
+    that.IsAlive = () => that._alive;
+    that.SetAlive = (value) => that._alive = value;
 
     that.ToString = () => `Player<Id:${that.GetId()} Name:${that.GetName()}, Pos:${that.GetPosition().ToString()} R:${that.GetRadius()}>`;
 }

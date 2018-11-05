@@ -22,6 +22,10 @@ const connector = {
 
         });
 
+        this.connection.on('playerKilled',function(killerAndvictim) {
+            notificationController.PlayerKilledNotification(killerAndvictim[0], killerAndvictim[1]);
+        });
+
         this.connection.on('playerDisconnected', function (name) {
 
             notificationController.PlayerLeftNotification(name);

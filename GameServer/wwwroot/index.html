@@ -10,15 +10,25 @@
     <link rel="stylesheet" type="text/css" href="style/main.css">
     <link href="packages/pnotify/pnotify.css" rel="stylesheet" />
     <link href="packages/pnotify/pnotify.brighttheme.css" rel="stylesheet" />
+    <script src="http://use.edgefonts.net/butcherman.js"></script>
 </head>
 <body>
 
     <span id="fpsLabel" class="measurementLabel no-select">0.00 - FPS</span>
     <span id="pingLabel" class="measurementLabel no-select">0 - Ping</span>
     <span id="healthLabel" class="measurementLabel no-select"></span>
+  
     <span id="fullscreenToggle" class="no-select">
         <img src="#" alt="" />
     </span>
+
+    <div id="killScreen" class="hidden">
+      <div class="center no-select">
+          <p class="killText">You  died!</p>
+          <p>You'll be revived in </p>
+          <p id="resurectionTime"></p>
+      </div>
+    </div>
 
     <!-- Packages -->
     <script src="packages/jquery/jquery.js"></script>

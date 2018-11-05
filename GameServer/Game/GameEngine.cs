@@ -24,7 +24,6 @@ namespace GameServer.Game
     public class GameEngine : IGameEngine
     {
         public Timer Ticker;
-        public List<Player> Players = new List<Player>();
         private GameState _gameState = GameState.Instance;
         public GameEvents GameEvents;
         public PhysicsEngine PhysicsEngine;
@@ -78,6 +77,19 @@ namespace GameServer.Game
 
         private void Tick(object state)
         {
+            foreach (var player in _gameState.Players)
+            {
+                if (!player.IsAlive)
+                {
+                    player.MilisecondsToResurect -= 1000/_config.ServerTick;
+                    if (player.MilisecondsToResurect <= 0)
+                    {
+                        SpawnService.SpawnPlayer(player);
+                        player.Health = _config.MaxPlayerHealth;
+                    }
+                }
+            }
+
             ApplyShooting();
 
             PhysicsEngine.ApplyPhysics();
@@ -100,6 +112,16 @@ namespace GameServer.Game
                 if (colidedPlayer!=null)
                 {
                     colidedPlayer.Health -= _gameState.Players.First(x => x.Id == bullet.PlayerId).PlayerWeapon.GetWeapon().BulletDamage;
+
+                    if (colidedPlayer.Health <= 0)
+                    {
+                        colidedPlayer.IsAlive = false;
+                        colidedPlayer.MilisecondsToResurect = _config.MilisecondsToResurect;
+
+                        var killer = _gameState.Players.First(x => x.Id == bullet.PlayerId);
+                        _hubContext.Clients.All.SendAsync("playerKilled",new object[]{ killer.Name, colidedPlayer.Name });
+                    }
+
                     bulletHitIds.Add(bullet.Id);
                 }
             }
@@ -111,7 +133,7 @@ namespace GameServer.Game
         {
             foreach (var player in _gameState.Players)
             {
-                if (bullet.PlayerId != player.Id && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
+                if (bullet.PlayerId != player.Id && player.IsAlive && Intersection.CheckIntersection(new MapCircle(bullet.Position, bullet.Radius),
                         new MapCircle(player.Position, player.Radius)))
                 {
                     return player;

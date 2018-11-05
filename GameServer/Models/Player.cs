@@ -14,6 +14,8 @@ namespace GameServer.Models
         public PlayerWeapon PlayerWeapon { get; set; }
         public int Health { get; set; }
         public int MaxHealth { get; set; }
+        public bool IsAlive { get; set; }
+        public int MilisecondsToResurect { get; set; }
 
         public double Angle { get; set; }
         [JsonIgnore]
@@ -34,6 +36,7 @@ namespace GameServer.Models
             MouseClicked = false;
             Radius = config.PlayerRadius;
             MaxHealth = config.MaxPlayerHealth;
+            IsAlive = true;
         }
 
         public override string ToString()

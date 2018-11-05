@@ -47,11 +47,20 @@ function WorldController() {
             playerObject.SetAngle(player.angle);
             playerObject.SetHealth(player.health);
             playerObject.SetMaxHealth(player.maxHealth);
+            playerObject.SetAlive(player.isAlive);
             
             if (playerObject.GetId() === that.PlayerId) {
+                if (!playerObject.IsAlive()) {
+                    $('#killScreen').addClass('overlay');
+                    $('#killScreen').removeClass('hidden');
 
-                drawingController.SetMyPlayer(playerObject);
-                $('#healthLabel').html(`${player.health}/${player.maxHealth}`);
+                    $('#resurectionTime').html(Math.round(player.milisecondsToResurect / 1000) + " seconds");
+                } else {
+                    $('#killScreen').removeClass('overlay');
+                    $('#killScreen').addClass('hidden');
+                    drawingController.SetMyPlayer(playerObject);
+                    $('#healthLabel').html(`${player.health}/${player.maxHealth}`);
+                }
             }
 
             that.players.push(playerObject);
