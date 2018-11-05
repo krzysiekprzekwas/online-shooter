@@ -1,4 +1,8 @@
-﻿function WorldController() {
+﻿if (typeof require !== "undefined") {
+    PhysicsEngine = require('../Physics/PhysicsEngine.js');
+}
+
+function WorldController() {
 
     const that = this;
 
@@ -8,6 +12,7 @@
     that.myPlayer = null;
 
     that.PlayerId = -1;
+    that.physicsEngine = new PhysicsEngine(that);
 
     that.OnMapStateReceived = function (mapstate) {
 
@@ -79,6 +84,7 @@
         // Start a new drawing state
         push();
 
+        that.physicsEngine.ExtrapolatePhysics();
         drawingController.Draw(that.mapObjects, that.players, that.bullets);
 
         // Restore original state
@@ -87,3 +93,8 @@
 }
 
 const worldController = new WorldController();
+
+// Export module
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+    module.exports = worldController;
+}

@@ -1,4 +1,5 @@
-﻿function Player(id = 0) {
+﻿
+function Player(id = 0) {
 
     const that = this;
 
@@ -45,4 +46,9 @@
     that.SetAlive = (value) => that._alive = value;
 
     that.ToString = () => `Player<Id:${that.GetId()} Name:${that.GetName()}, Pos:${that.GetPosition().ToString()} R:${that.GetRadius()}>`;
+}
+
+// Export module
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+    module.exports = Player;
 }

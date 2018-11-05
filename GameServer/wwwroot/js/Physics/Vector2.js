@@ -132,7 +132,7 @@ Vector2.RadianToVector2 = function (radian) {
 
 Vector2.Vector2ToRadian = function (vector) {
 
-    return Math.asin(vector.Normalize().GetX());
+    return Math.atan2(vector.GetY(), vector.GetX());
 };
 
 Vector2.AngleBetweenVectors = function (vectorA, vectorB) {

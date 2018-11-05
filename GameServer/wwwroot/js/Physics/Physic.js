@@ -1,4 +1,3 @@
-﻿const Vector2 = require('./Vector2.js');
 
 function Physic() {
 
