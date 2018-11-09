@@ -84,7 +84,9 @@ function WorldController() {
         // Start a new drawing state
         push();
 
-        that.physicsEngine.ExtrapolatePhysics();
+        if (config.extrapolation)
+            that.physicsEngine.ExtrapolatePhysics();
+
         drawingController.Draw(that.mapObjects, that.players, that.bullets);
 
         // Restore original state
