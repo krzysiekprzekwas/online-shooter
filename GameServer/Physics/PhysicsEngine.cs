@@ -18,20 +18,20 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
-            foreach (Player player in GameState.Instance.Players)
+            foreach (var player in GameState.Instance.Players)
             {
+                player.Speed += GetSpeedFromPlayerInput(player);
+
+                UpdatePlayerPosition(player, player.Speed);
+
                 player.Speed *= _config.PlayerDeccelerationPerTick;
-
-                var speedVector = player.Speed + GetSpeedFromPlayerInput(player);
-
-                UpdatePlayerPosition(player, speedVector);
             }
-            
-            foreach (Bullet bullet in GameState.Instance.Bullets)
-            {
-                bullet.Speed *= _config.BulletDecceleraionPerTick;
 
+            foreach (var bullet in GameState.Instance.Bullets)
+            {
                 bullet.Position += bullet.Speed;
+
+                bullet.Speed *= _config.BulletDecceleraionPerTick;
             }
 
             GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
@@ -76,7 +76,6 @@ namespace GameServer.Physics
         {
             var movementVector = CalculatePossibleMovementVector(player, speedVector, out double spareLength);
             player.Position += movementVector;
-            player.Speed = movementVector;
 
             if (spareLength > _config.IntersectionInterval)
             {
@@ -93,7 +92,6 @@ namespace GameServer.Physics
                     parallelMovementVector = parallelHorizontalMovementVector;
 
                 player.Position += parallelMovementVector;
-                player.Speed = parallelMovementVector;
             }
         }
 
