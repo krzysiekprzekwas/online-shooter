@@ -71,7 +71,10 @@ function ConnectionController() {
                 console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
                 worldController.PlayerId = response.playerId;
-            });
+
+                // Set up interval (sending player state to server)
+                setInterval(that.connectionInterval, config.clientStateIntervalMilliseconds);
+        });
 
         var frameSlider = document.getElementById("frameDropRange");
         that.FrameDropRate = frameSlider.value;
@@ -92,9 +95,7 @@ function ConnectionController() {
         that.connection.start()
             .then(function() {
                 console.log('connection started');
-                that.OnOpen(name);
-                // Set up interval (sending player state to server)
-                setInterval(that.ConnectionInterval, 50);
+                that.onOpen(name);
             });
     };
 
