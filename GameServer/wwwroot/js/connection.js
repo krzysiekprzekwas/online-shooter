@@ -64,7 +64,7 @@ const connector = {
                 worldController.PlayerId = response.playerId;
             });
 
-        var slider = document.getElementById("myRange");
+        var slider = document.getElementById("frameDropRange");
         connector.FrameDropRate = slider.value;
 
         slider.oninput = function() {
