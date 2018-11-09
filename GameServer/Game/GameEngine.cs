@@ -58,7 +58,6 @@ namespace GameServer.Game
                     var bullet = new Bullet()
                     {
                         Id = bulletId++,
-                        Angle = player.Angle,
                         PlayerId = player.Id,
                         Position = player.Position,
                         Radius = weapon.BulletSize,
