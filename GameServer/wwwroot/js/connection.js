@@ -7,6 +7,7 @@ function ConnectionController() {
         .build();
 
     that.FrameDropRate = 0;
+    that.Delay = 0;
 
     that.Initialize = function (name) {
 
@@ -39,17 +40,23 @@ function ConnectionController() {
             });
 
         that.connection.on('updateLatency',
-            function(sendTime) {
-                var d = new Date();
-                var n = d.getTime();
-                measurementController.UpdatePing(n - sendTime);
+            function (sendTime) {
+                setTimeout(function() {
+                        var d = new Date();
+                        var n = d.getTime();
+                        measurementController.UpdatePing(n - sendTime);
+                    },
+                    that.Delay);
             });
 
         // Create a function that the hub can call to broadcast messages.
         that.connection.on('updateGameState',
             function(gameState) {
                 if (Math.random() * 100 > that.FrameDropRate) {
-                    worldController.OnGameStateReceived(gameState);
+                    setTimeout(function () {
+                            worldController.OnGameStateReceived(gameState);
+                        },
+                        that.Delay);
                 };
             });
 
@@ -66,12 +73,20 @@ function ConnectionController() {
                 worldController.PlayerId = response.playerId;
             });
 
-        var slider = document.getElementById("frameDropRange");
-        that.FrameDropRate = slider.value;
+        var frameSlider = document.getElementById("frameDropRange");
+        that.FrameDropRate = frameSlider.value;
 
-        slider.oninput = function() {
+        frameSlider.oninput = function() {
             that.FrameDropRate = this.value;
             measurementController.UpdateFrameDropRate(that.FrameDropRate);
+        };
+
+        var delaySlider = document.getElementById("delayRange");
+        that.Delay = delaySlider.value;
+
+        delaySlider.oninput = function () {
+            that.Delay = this.value;
+            measurementController.UpdateDelay(that.Delay);
         };
 
         that.connection.start()
@@ -101,8 +116,11 @@ function ConnectionController() {
         var d = new Date();
 
         if (Math.random() * 100 > that.FrameDropRate) {
-            that.connection.invoke('clientStateUpdate', playerStateString);
-            that.connection.invoke('measureLatency', d.getTime());
+            setTimeout(function () {
+                    that.connection.invoke('clientStateUpdate', playerStateString);
+                    that.connection.invoke('measureLatency', d.getTime());
+                },
+                that.Delay);
         };
     };
 }

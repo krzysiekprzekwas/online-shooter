@@ -11,9 +11,13 @@
 
         $('#fpsLabel').text(fps.toFixed(2) + " - FPS");
     };
-
-    that.UpdateFrameDropRate = function(frameDropRate) {
+    
+    that.UpdateFrameDropRate = function (frameDropRate) {
         $('#frameDropLabel').text(frameDropRate + "% - Framedrop");
+    };
+
+    that.UpdateDelay = function (delay) {
+        $('#delayValueLabel').text(delay + " ms - Delay");
     };
 }
 
