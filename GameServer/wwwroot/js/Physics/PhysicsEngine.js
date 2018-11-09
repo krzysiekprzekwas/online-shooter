@@ -10,6 +10,7 @@ function PhysicsEngine(worldController) {
     const that = this;
     that.worldController = worldController;
     that.LastExtrapolationDate = new Date();
+    that.LastTickDate = new Date();
 
     that.GetMillisecondsPassed = function() {
 
@@ -20,22 +21,42 @@ function PhysicsEngine(worldController) {
         return millisecondsPassed;
     };
 
+    that.HasTickPassed = function () {
+
+        const now = new Date();
+        const millisecondsPassed = now - that.LastTickDate;
+
+        if (millisecondsPassed < config.serverTickMilliseconds)
+            return false;
+
+        that.LastTickDate = now;
+        return true;
+    };
+
     that.ExtrapolatePhysics = function() {
 
         const millisecondsPassed = that.GetMillisecondsPassed();
         const tickPercentage = millisecondsPassed / 1000;
+        const isNewTick = that.HasTickPassed();
 
         that.worldController.players.forEach(player => {
+
+            let speedVector = Vector2.Multiply(player.GetSpeed(), tickPercentage);
             
-            const speedVector = Vector2.Multiply(player.GetSpeed(), tickPercentage);
             that.UpdatePlayerPosition(player, speedVector);
+
+            if (isNewTick)
+                player.SetSpeed(Vector2.Multiply(player.GetSpeed(), config.playerDeccelerationPerTick));
         });
 
         that.worldController.bullets.forEach(bullet => {
 
             const speedVector = Vector2.Multiply(bullet.GetSpeed(), tickPercentage);
+
             bullet.SetPosition(Vector2.Add(bullet.GetPosition(), speedVector));
-            bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), config.bulletDecceleraion));
+
+            if (isNewTick)
+                bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), config.bulletDecceleraionPerTick));
         });
         that.worldController.bullets = that.worldController.bullets.filter(b => !that.ShouldBulletBeRemoved(b));
     };
@@ -116,30 +137,30 @@ function PhysicsEngine(worldController) {
     };
 }
 
-PhysicsEngine.GetSpeedFromPlayerInput = function(timePassed) {
+//PhysicsEngine.GetSpeedFromPlayerInput = function(timePassed) {
 
-    let calculatedSpeedVector = new Vector2();
+//    let calculatedSpeedVector = new Vector2();
 
-    // First get direction
-    const keysState = KeyboardController.GetKeysState();
-    if (keysState.indexOf(1) !== -1) // Up
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.UP_VECTOR());
-    if (keysState.indexOf(2) !== -1) // Down
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.DOWN_VECTOR());
-    if (keysState.indexOf(3) !== -1) // Left
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.LEFT_VECTOR());
-    if (keysState.indexOf(4) !== -1) // Right
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.RIGHT_VECTOR());
+//    // First get direction
+//    const keysState = KeyboardController.GetKeysState();
+//    if (keysState.indexOf(1) !== -1) // Up
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.UP_VECTOR());
+//    if (keysState.indexOf(2) !== -1) // Down
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.DOWN_VECTOR());
+//    if (keysState.indexOf(3) !== -1) // Left
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.LEFT_VECTOR());
+//    if (keysState.indexOf(4) !== -1) // Right
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.RIGHT_VECTOR());
 
-    // Scale vector to be speed length
-    if (!calculatedSpeedVector.IsDegenerated()) {
-        const normalizedSpeed = calculatedSpeedVector.Normalize();
-        const vectorLength = config.player_speed * timePassed;
-        calculatedSpeedVector = normalizedSpeed * vectorLength;
-    }
+//    // Scale vector to be speed length
+//    if (!calculatedSpeedVector.IsDegenerated()) {
+//        const normalizedSpeed = calculatedSpeedVector.Normalize();
+//        const vectorLength = config.player_speed * timePassed;
+//        calculatedSpeedVector = normalizedSpeed * vectorLength;
+//    }
 
-    return calculatedSpeedVector;
-};
+//    return calculatedSpeedVector;
+//};
 
 // Export module
 if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
