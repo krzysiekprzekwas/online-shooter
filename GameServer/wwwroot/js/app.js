@@ -28,10 +28,10 @@ function setup() {
         callback: function (value) {
 
             if (value) {
-                connector.initialize(value);
+                connectionController.Initialize(value);
             }
             else {
-                connector.initialize(name);
+                connectionController.Initialize(name);
             }
         }
     });

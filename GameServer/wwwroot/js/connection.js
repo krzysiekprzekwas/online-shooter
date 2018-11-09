@@ -1,14 +1,16 @@
-const connector = {
-    FrameDropRate: 0,
+function ConnectionController() {
 
-    initialize: function(name) {
+    const that = this;
 
-        // Start the connection.
-        this.connection = new signalR.HubConnectionBuilder()
-            .withUrl('/game')
-            .build();
+    that.connection = new signalR.HubConnectionBuilder()
+        .withUrl('/game')
+        .build();
 
-        this.connection.onclose(function(e) {
+    that.FrameDropRate = 0;
+
+    that.Initialize = function (name) {
+
+        that.connection.onclose(function(e) {
             vex.dialog.alert({
                 message: 'Connection with server lost!',
                 callback: function() {
@@ -17,26 +19,26 @@ const connector = {
             });
         });
 
-        this.connection.on('newPlayerConnected',
+        that.connection.on('newPlayerConnected',
             function(name) {
 
                 notificationController.PlayerJoinedNotification(name);
 
             });
 
-        this.connection.on('playerKilled',
+        that.connection.on('playerKilled',
             function(killerAndvictim) {
                 notificationController.PlayerKilledNotification(killerAndvictim[0], killerAndvictim[1]);
             });
 
-        this.connection.on('playerDisconnected',
+        that.connection.on('playerDisconnected',
             function(name) {
 
                 notificationController.PlayerLeftNotification(name);
 
             });
 
-        this.connection.on('updateLatency',
+        that.connection.on('updateLatency',
             function(sendTime) {
                 var d = new Date();
                 var n = d.getTime();
@@ -44,14 +46,14 @@ const connector = {
             });
 
         // Create a function that the hub can call to broadcast messages.
-        this.connection.on('updateGameState',
-            function (gameState) {
-                if (Math.random() * 100 > connector.FrameDropRate) {
+        that.connection.on('updateGameState',
+            function(gameState) {
+                if (Math.random() * 100 > that.FrameDropRate) {
                     worldController.OnGameStateReceived(gameState);
                 };
             });
 
-        this.connection.on('connectConfirmation',
+        that.connection.on('connectConfirmation',
             function(response) {
 
                 config = { ...config, ...response.config };
@@ -65,28 +67,28 @@ const connector = {
             });
 
         var slider = document.getElementById("frameDropRange");
-        connector.FrameDropRate = slider.value;
+        that.FrameDropRate = slider.value;
 
         slider.oninput = function() {
-            connector.FrameDropRate = this.value;
-            measurementController.UpdateFrameDropRate(connector.FrameDropRate);
+            that.FrameDropRate = this.value;
+            measurementController.UpdateFrameDropRate(that.FrameDropRate);
         };
 
-        this.connection.start()
+        that.connection.start()
             .then(function() {
                 console.log('connection started');
-                connector.onOpen(name);
+                that.OnOpen(name);
                 // Set up interval (sending player state to server)
-                setInterval(connector.connectionInterval, 50);
+                setInterval(that.ConnectionInterval, 50);
             });
-    },
+    };
 
-    onOpen: function(name) {
+    that.OnOpen = function(name) {
 
-        connector.connection.invoke('onOpen', name);
-    },
+        that.connection.invoke('onOpen', name);
+    };
 
-    connectionInterval: function() {
+    that.ConnectionInterval = function() {
 
         const playerStateString = JSON.stringify({
             Type: "playerstate",
@@ -98,9 +100,11 @@ const connector = {
 
         var d = new Date();
 
-        if (Math.random() * 100 > connector.FrameDropRate) {
-            connector.connection.invoke('clientStateUpdate', playerStateString);
-            connector.connection.invoke('measureLatency', d.getTime());
+        if (Math.random() * 100 > that.FrameDropRate) {
+            that.connection.invoke('clientStateUpdate', playerStateString);
+            that.connection.invoke('measureLatency', d.getTime());
         };
-    }
-};
+    };
+}
+
+const connectionController = new ConnectionController();
