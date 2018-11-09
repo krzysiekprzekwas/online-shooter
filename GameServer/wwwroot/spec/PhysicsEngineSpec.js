@@ -145,6 +145,7 @@ describe('PhysicsEngine', function () {
         worldController.bullets = [bullet];
 
         physicsEngine.GetMillisecondsPassed = () => 500;
+        physicsEngine.HasTickPassed = () => true;
 
         // Act
         physicsEngine.ExtrapolatePhysics();
@@ -166,6 +167,7 @@ describe('PhysicsEngine', function () {
         worldController.bullets = [bullet];
 
         physicsEngine.GetMillisecondsPassed = () => 500;
+        physicsEngine.HasTickPassed = () => true;
 
         // Act
         physicsEngine.ExtrapolatePhysics();
@@ -185,14 +187,34 @@ describe('PhysicsEngine', function () {
         bullet.SetSpeed(new Vector2(10, 0));
         worldController.bullets = [bullet];
 
-        physicsEngine.GetMillisecondsPassed = () => 500;
+        // Ticks mock
+        const serverTickMilliseconds = 200;
+        const simulationServerTicksCount = 2;
+        const simulationClientTicksCount = 4;
+
+        config.serverTickMilliseconds = serverTickMilliseconds;
+        config.bulletDecceleraionPerTick = 0.5;
+        physicsEngine.GetMillisecondsPassed = () => serverTickMilliseconds / simulationClientTicksCount;
 
         // Act
-        physicsEngine.ExtrapolatePhysics();
-        physicsEngine.ExtrapolatePhysics();
+        for(let serverTick = 1; serverTick <= simulationServerTicksCount; serverTick += 1) {
+            for(let clientTick = 1; clientTick <= simulationClientTicksCount; clientTick += 1) {
+
+                physicsEngine.ExtrapolatePhysics();
+                physicsEngine.HasTickPassed = () => false;
+            }
+
+            if(serverTick === 1) {
+                expect(bullet.GetPosition().GetX()).toBe(2.25);
+                expect(bullet.GetSpeed().GetX()).toBe(5);
+            }
+
+            physicsEngine.HasTickPassed = () => true;
+        }
 
         // Assert
-        expect("Discuss decceleration calc").toBe(false); // TODO
+        expect(bullet.GetPosition().GetX()).toBe(3);
+        expect(bullet.GetSpeed().GetX()).toBe(2.5);
     });
 
     it('should correctly extrapolate players', () => {
@@ -261,4 +283,5 @@ describe('PhysicsEngine', function () {
         expect(Math.abs(player.GetX() - expectedPosition.GetX())).toBeLessThan(config.intersectionInterval);
         expect(Math.abs(player.GetY() - expectedPosition.GetY())).toBeLessThan(config.intersectionInterval);
     });
+
 });
