@@ -63,6 +63,10 @@ body {
     top: calc(8px + 2rem);
 }
 
+#frameDropLabel {
+    top: calc(8px + 3rem);
+}
+
 .overlay {
     background-color: rgba(234, 32, 39,0.5);
     position: absolute;
@@ -92,4 +96,27 @@ body {
 .killText {
     font-family: Butcherman;
     font-size: 2em;
+}
+
+/* Sliders */
+
+.slidecontainer {
+    position: absolute;
+    right: 8px;
+    width: 100px;
+    top: calc(8px + 4rem);
+}
+
+.slider {
+    -webkit-appearance: none; 
+    width: 100%;
+    height: 10px; 
+    background: #d3d3d3; 
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    width: 15px; 
+    height: 15px; 
+    cursor: pointer;
 }

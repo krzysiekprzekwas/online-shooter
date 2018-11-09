@@ -1,63 +1,79 @@
 const connector = {
+    FrameDropRate: 0,
 
-    initialize: function (name) {
+    initialize: function(name) {
 
         // Start the connection.
         this.connection = new signalR.HubConnectionBuilder()
             .withUrl('/game')
             .build();
 
-        this.connection.onclose(function (e) {
+        this.connection.onclose(function(e) {
             vex.dialog.alert({
                 message: 'Connection with server lost!',
-                callback: function () {
+                callback: function() {
                     location.reload();
                 }
             });
         });
 
-        this.connection.on('newPlayerConnected', function (name) {
+        this.connection.on('newPlayerConnected',
+            function(name) {
 
-            notificationController.PlayerJoinedNotification(name);
+                notificationController.PlayerJoinedNotification(name);
 
-        });
+            });
 
-        this.connection.on('playerKilled',function(killerAndvictim) {
-            notificationController.PlayerKilledNotification(killerAndvictim[0], killerAndvictim[1]);
-        });
+        this.connection.on('playerKilled',
+            function(killerAndvictim) {
+                notificationController.PlayerKilledNotification(killerAndvictim[0], killerAndvictim[1]);
+            });
 
-        this.connection.on('playerDisconnected', function (name) {
+        this.connection.on('playerDisconnected',
+            function(name) {
 
-            notificationController.PlayerLeftNotification(name);
+                notificationController.PlayerLeftNotification(name);
 
-        });
+            });
 
-        this.connection.on('updateLatency', function (sendTime) {
-
-            var d = new Date();
-            var n = d.getTime();
-            measurementController.UpdatePing(n - sendTime);
-        });
+        this.connection.on('updateLatency',
+            function(sendTime) {
+                var d = new Date();
+                var n = d.getTime();
+                measurementController.UpdatePing(n - sendTime);
+            });
 
         // Create a function that the hub can call to broadcast messages.
-        this.connection.on('updateGameState', function (gameState) {
-            worldController.OnGameStateReceived(gameState);
-        });
+        this.connection.on('updateGameState',
+            function (gameState) {
+                if (Math.random() * 100 > connector.FrameDropRate) {
+                    worldController.OnGameStateReceived(gameState);
+                };
+            });
 
-        this.connection.on('connectConfirmation', function (response) {
+        this.connection.on('connectConfirmation',
+            function(response) {
 
-            config = { ...config, ...response.config };
+                config = { ...config, ...response.config };
 
-            worldController.OnMapStateReceived(response.mapState);
-            weaponService.onWeaponsReceived(response.weapons);
+                worldController.OnMapStateReceived(response.mapState);
+                weaponService.onWeaponsReceived(response.weapons);
 
-            console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
+                console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
 
-            worldController.PlayerId = response.playerId;
-        });
+                worldController.PlayerId = response.playerId;
+            });
+
+        var slider = document.getElementById("myRange");
+        connector.FrameDropRate = slider.value;
+
+        slider.oninput = function() {
+            connector.FrameDropRate = this.value;
+            measurementController.UpdateFrameDropRate(connector.FrameDropRate);
+        };
 
         this.connection.start()
-            .then(function () {
+            .then(function() {
                 console.log('connection started');
                 connector.onOpen(name);
                 // Set up interval (sending player state to server)
@@ -65,12 +81,12 @@ const connector = {
             });
     },
 
-    onOpen: function (name) {
+    onOpen: function(name) {
 
         connector.connection.invoke('onOpen', name);
     },
 
-    connectionInterval: function () {
+    connectionInterval: function() {
 
         const playerStateString = JSON.stringify({
             Type: "playerstate",
@@ -80,10 +96,11 @@ const connector = {
             PingStart: new Date().getTime()
         });
 
-        connector.connection.invoke('clientStateUpdate', playerStateString);
-
-
         var d = new Date();
-        connector.connection.invoke('measureLatency', d.getTime());
+
+        if (Math.random() * 100 > connector.FrameDropRate) {
+            connector.connection.invoke('clientStateUpdate', playerStateString);
+            connector.connection.invoke('measureLatency', d.getTime());
+        };
     }
 };

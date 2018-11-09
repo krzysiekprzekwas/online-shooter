@@ -1,7 +1,6 @@
 ﻿using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GameServer.Physics
 {
