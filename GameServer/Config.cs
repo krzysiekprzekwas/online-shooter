@@ -1,6 +1,4 @@
-﻿using GameServer.Models;
-
-namespace GameServer
+﻿namespace GameServer
 {
     public interface IConfig
     {

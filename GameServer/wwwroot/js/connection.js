@@ -1,76 +1,109 @@
-const connector = {
+function ConnectionController() {
 
-    initialize: function (name) {
+    const that = this;
 
-        // Start the connection.
-        this.connection = new signalR.HubConnectionBuilder()
-            .withUrl('/game')
-            .build();
+    that.connection = new signalR.HubConnectionBuilder()
+        .withUrl('/game')
+        .build();
 
-        this.connection.onclose(function (e) {
+    that.FrameDropRate = 0;
+    that.Delay = 0;
+
+    that.Initialize = function (name) {
+
+        that.connection.onclose(function(e) {
             vex.dialog.alert({
                 message: 'Connection with server lost!',
-                callback: function () {
+                callback: function() {
                     location.reload();
                 }
             });
         });
 
-        this.connection.on('newPlayerConnected', function (name) {
+        that.connection.on('newPlayerConnected',
+            function(name) {
 
-            notificationController.PlayerJoinedNotification(name);
+                notificationController.PlayerJoinedNotification(name);
 
-        });
+            });
 
-        this.connection.on('playerKilled',function(killerAndvictim) {
-            notificationController.PlayerKilledNotification(killerAndvictim[0], killerAndvictim[1]);
-        });
+        that.connection.on('playerKilled',
+            function(killerAndvictim) {
+                notificationController.PlayerKilledNotification(killerAndvictim[0], killerAndvictim[1]);
+            });
 
-        this.connection.on('playerDisconnected', function (name) {
+        that.connection.on('playerDisconnected',
+            function(name) {
 
-            notificationController.PlayerLeftNotification(name);
+                notificationController.PlayerLeftNotification(name);
 
-        });
+            });
 
-        this.connection.on('updateLatency', function (sendTime) {
-
-            var d = new Date();
-            var n = d.getTime();
-            measurementController.UpdatePing(n - sendTime);
-        });
+        that.connection.on('updateLatency',
+            function (sendTime) {
+                setTimeout(function() {
+                        var d = new Date();
+                        var n = d.getTime();
+                        measurementController.UpdatePing(n - sendTime);
+                    },
+                    that.Delay);
+            });
 
         // Create a function that the hub can call to broadcast messages.
-        this.connection.on('updateGameState', function (gameState) {
-            worldController.OnGameStateReceived(gameState);
-        });
-
-        this.connection.on('connectConfirmation', function (response) {
-
-            config = { ...config, ...response.config };
-
-            worldController.OnMapStateReceived(response.mapState);
-            weaponService.onWeaponsReceived(response.weapons);
-
-            console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
-
-            worldController.PlayerId = response.playerId;
-        });
-
-        this.connection.start()
-            .then(function () {
-                console.log('connection started');
-                connector.onOpen(name);
-                // Set up interval (sending player state to server)
-                setInterval(connector.connectionInterval, 50);
+        that.connection.on('updateGameState',
+            function(gameState) {
+                if (Math.random() * 100 > that.FrameDropRate) {
+                    setTimeout(function () {
+                            worldController.OnGameStateReceived(gameState);
+                        },
+                        that.Delay);
+                };
             });
-    },
 
-    onOpen: function (name) {
+        that.connection.on('connectConfirmation',
+            function(response) {
 
-        connector.connection.invoke('onOpen', name);
-    },
+                config = { ...config, ...response.config };
 
-    connectionInterval: function () {
+                worldController.OnMapStateReceived(response.mapState);
+                weaponService.onWeaponsReceived(response.weapons);
+
+                console.log(`Loaded server configuration (${Object.keys(response.config).length} variables)`);
+
+                worldController.PlayerId = response.playerId;
+            });
+
+        var frameSlider = document.getElementById("frameDropRange");
+        that.FrameDropRate = frameSlider.value;
+
+        frameSlider.oninput = function() {
+            that.FrameDropRate = this.value;
+            measurementController.UpdateFrameDropRate(that.FrameDropRate);
+        };
+
+        var delaySlider = document.getElementById("delayRange");
+        that.Delay = delaySlider.value;
+
+        delaySlider.oninput = function () {
+            that.Delay = this.value;
+            measurementController.UpdateDelay(that.Delay);
+        };
+
+        that.connection.start()
+            .then(function() {
+                console.log('connection started');
+                that.OnOpen(name);
+                // Set up interval (sending player state to server)
+                setInterval(that.ConnectionInterval, 50);
+            });
+    };
+
+    that.OnOpen = function(name) {
+
+        that.connection.invoke('onOpen', name);
+    };
+
+    that.ConnectionInterval = function() {
 
         const playerStateString = JSON.stringify({
             Type: "playerstate",
@@ -80,10 +113,16 @@ const connector = {
             PingStart: new Date().getTime()
         });
 
-        connector.connection.invoke('clientStateUpdate', playerStateString);
-
-
         var d = new Date();
-        connector.connection.invoke('measureLatency', d.getTime());
-    }
-};
+
+        if (Math.random() * 100 > that.FrameDropRate) {
+            setTimeout(function () {
+                    that.connection.invoke('clientStateUpdate', playerStateString);
+                    that.connection.invoke('measureLatency', d.getTime());
+                },
+                that.Delay);
+        };
+    };
+}
+
+const connectionController = new ConnectionController();
