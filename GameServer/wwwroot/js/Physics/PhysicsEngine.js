@@ -36,7 +36,7 @@ function PhysicsEngine(worldController) {
     that.ExtrapolatePhysics = function() {
 
         const millisecondsPassed = that.GetMillisecondsPassed();
-        const tickPercentage = millisecondsPassed / 1000;
+        const tickPercentage = millisecondsPassed / config.serverTickMilliseconds;
         const isNewTick = that.HasTickPassed();
 
         that.worldController.players.forEach(player => {

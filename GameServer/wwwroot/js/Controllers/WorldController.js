@@ -36,7 +36,9 @@ function WorldController() {
 
     // Update function is called when gamestate was received from server
     that.OnGameStateReceived = function (gamestate) {
-        
+
+        that.physicsEngine.LastTickDate = new Date();
+
         that.players = Array();
         for (player of gamestate.players) {
 
