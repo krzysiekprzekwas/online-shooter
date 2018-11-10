@@ -20,18 +20,16 @@ namespace GameServer.Physics
         {
             foreach (var player in GameState.Instance.Players)
             {
-                player.Speed += GetSpeedFromPlayerInput(player);
-
                 UpdatePlayerPosition(player, player.Speed);
 
-                player.Speed *= _config.PlayerDeccelerationPerTick;
+                player.Speed += GetSpeedFromPlayerInput(player);
+                player.Speed *= _config.PlayerDeccelerationFactorPerTick;
             }
 
             foreach (var bullet in GameState.Instance.Bullets)
             {
                 bullet.Position += bullet.Speed;
-
-                bullet.Speed *= _config.BulletDecceleraionPerTick;
+                bullet.Speed *= _config.BulletDecceleraionFactorPerTick;
             }
 
             GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);

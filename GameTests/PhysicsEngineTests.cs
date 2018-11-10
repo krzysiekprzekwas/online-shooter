@@ -155,8 +155,8 @@ namespace GameTests
             var expectedY = mapRect1.Position.Y - (mapRect1.Height / 2) - _player.Radius;
             var expectedX = mapRect2.Position.X - (mapRect2.Width / 2) - _player.Radius;
 
-            Assert.AreEqual(_player.Position.Y, expectedY, _config.IntersectionInterval);
-            Assert.AreEqual(_player.Position.X, expectedX, _config.IntersectionInterval);
+            Assert.AreEqual(expectedY, _player.Position.Y, _config.IntersectionInterval);
+            Assert.AreEqual(expectedX, _player.Position.X, _config.IntersectionInterval);
         }
 
         [TestMethod]
@@ -201,10 +201,10 @@ namespace GameTests
             var bullet = new Bullet
             {
                 Position = new Vector2(0, 0),
-                Speed = new Vector2(0, 10)
+                Speed = new Vector2(0, 16)
             };
             GameState.Instance.Bullets.Add(bullet);
-            _config.BulletDecceleraionPerTick = 0.5;
+            _config.BulletDecceleraionFactorPerTick = 0.5;
 
             // Act
             _gameEngine.PhysicsEngine.ApplyPhysics();
@@ -212,8 +212,8 @@ namespace GameTests
             _gameEngine.PhysicsEngine.ApplyPhysics();
 
             // Assert
-            Assert.AreEqual(1.25, bullet.Speed.Y);
-            Assert.AreEqual(17.5, bullet.Position.Y);
+            Assert.AreEqual(2, bullet.Speed.Y);
+            Assert.AreEqual(28, bullet.Position.Y);
         }
 
         [TestMethod]
@@ -222,7 +222,7 @@ namespace GameTests
             // Arrange
             var serverTicks = 3;
             _player.Speed = new Vector2(128, 128);
-            _config.PlayerDeccelerationPerTick = 0.5;
+            _config.PlayerDeccelerationFactorPerTick = 0.5;
 
             // Act
             for(var i = 0; i < serverTicks; i++)
@@ -240,18 +240,18 @@ namespace GameTests
         {
             // Arrange
             var serverTicks = 2;
-            _player.Speed = Vector2.LEFT_VECTOR * 100;
+            _player.Speed = Vector2.LEFT_VECTOR * 64;
             _player.Keys.Add(KeyEnum.Right);
-            _config.PlayerDeccelerationPerTick = 0.8;
-            _config.PlayerSpeedPerTick = 10;
+            _config.PlayerDeccelerationFactorPerTick = 0.5;
+            _config.PlayerSpeedPerTick = 32;
 
             // Act
             for (var i = 0; i < serverTicks; i++)
                 _gameEngine.PhysicsEngine.ApplyPhysics();
 
             // Assert
-            Assert.AreEqual(-49.6, _player.Speed.X);
-            Assert.AreEqual(-152, _player.Position.X, serverTicks * _config.IntersectionInterval);
+            Assert.AreEqual(8, _player.Speed.X);
+            Assert.AreEqual(-80, _player.Position.X, serverTicks * _config.IntersectionInterval);
         }
 
         [TestMethod]
@@ -259,18 +259,18 @@ namespace GameTests
         {
             // Arrange
             var serverTicks = 3;
-            _player.Speed = Vector2.RIGHT_VECTOR * 100;
+            _player.Speed = Vector2.RIGHT_VECTOR * 64;
             _player.Keys.Add(KeyEnum.Right);
-            _config.PlayerDeccelerationPerTick = 0.5;
-            _config.PlayerSpeedPerTick = 50;
+            _config.PlayerDeccelerationFactorPerTick = 0.5;
+            _config.PlayerSpeedPerTick = 64;
 
             // Act
             for (var i = 0; i < serverTicks; i++)
                 _gameEngine.PhysicsEngine.ApplyPhysics();
 
             // Assert
-            Assert.AreEqual(56.25, _player.Speed.X);
-            Assert.AreEqual(387.5, _player.Position.X, serverTicks * _config.IntersectionInterval);
+            Assert.AreEqual(64, _player.Speed.X);
+            Assert.AreEqual(192, _player.Position.X, serverTicks * _config.IntersectionInterval);
         }
     }
 }
