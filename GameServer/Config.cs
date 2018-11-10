@@ -14,9 +14,10 @@ namespace GameServer
         bool Extrapolation { get; set; }
         int ServerTickMilliseconds { get; set; }
         double ServerTicksPerSecond { get; set; }
-        double PlayerDeccelerationPerTick { get; set; }
+        double PlayerMaxSpeedPerTick { get; set; }
+        double PlayerDeccelerationFactorPerTick { get; set; }
         double PlayerSpeedPerTick { get; set; }
-        double BulletDecceleraionPerTick { get; set; }
+        double BulletDecceleraionFactorPerTick { get; set; }
         int MilisecondsToResurect { get; set; }
     }
 
@@ -32,24 +33,14 @@ namespace GameServer
             MaxPlayerHealth = 100;
             Extrapolation = true;
 
-            ServerTickMilliseconds = 250;
+            ServerTickMilliseconds = 200;
             ServerTicksPerSecond = 1000.0 / ServerTickMilliseconds;
-
-            _playerDeccelerationPerSecond = 0.001;
-            PlayerDeccelerationPerTick = Math.Pow(_playerDeccelerationPerSecond, 1.0 / ServerTicksPerSecond);
-
-            _playerSpeedPerSecond = 50;
-            PlayerSpeedPerTick = _playerSpeedPerSecond / ServerTicksPerSecond;
-
-            _bulletDeccelerationPerSecond = 0.1;
-            BulletDecceleraionPerTick = Math.Pow(_bulletDeccelerationPerSecond, 1.0 / ServerTicksPerSecond);
+            
+            PlayerSpeedPerTick = 150.0 / ServerTicksPerSecond;
+            PlayerDeccelerationFactorPerTick = Math.Pow(0.04, 1.0 / ServerTicksPerSecond);
+            BulletDecceleraionFactorPerTick = Math.Pow(0.5, 1.0 / ServerTicksPerSecond);
         }
 
-        private double _playerDeccelerationPerSecond { get; set; }
-        private double _playerSpeedPerSecond { get; set; }
-        private double _bulletDeccelerationPerSecond { get; set; }
-
-        public int MilisecondsToResurect { get; set; }
         public int BufferSize { get; set; }
         public int ClientStateIntervalMilliseconds { get; set; }
         public double PlayerRadius { get; set; }
@@ -60,8 +51,9 @@ namespace GameServer
 
         public int ServerTickMilliseconds { get; set; }
         public double ServerTicksPerSecond { get; set; }
-        public double PlayerDeccelerationPerTick { get; set; }
+        public double PlayerMaxSpeedPerTick { get; set; }
+        public double PlayerDeccelerationFactorPerTick { get; set; }
         public double PlayerSpeedPerTick { get; set; }
-        public double BulletDecceleraionPerTick { get; set; }
+        public double BulletDecceleraionFactorPerTick { get; set; }
     }
 }
