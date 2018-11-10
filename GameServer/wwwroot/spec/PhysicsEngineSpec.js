@@ -125,13 +125,18 @@ describe('PhysicsEngine', function () {
         bullet.SetSpeed(new Vector2(20, 20));
         worldController.bullets = [bullet];
 
+        config.bulletDecceleraionFactorPerTick = 0.5;
+        config.serverTickMilliseconds = 500;
+
+        physicsEngine.HasTickPassed = () => true;
         physicsEngine.GetMillisecondsPassed = () => 500;
 
         // Act
         physicsEngine.ExtrapolatePhysics();
 
         // Assert
-        expect(bullet.GetX()).toBe(10);
+        expect(bullet.GetSpeed().GetX()).toBe(10);
+        expect(bullet.GetX()).toBe(20);
     });
 
     it('should correctly remove too slow bullets', () => {
@@ -184,7 +189,7 @@ describe('PhysicsEngine', function () {
 
         const bullet = new Bullet();
         bullet.SetPosition(new Vector2(0, 0));
-        bullet.SetSpeed(new Vector2(10, 0));
+        bullet.SetSpeed(new Vector2(32, 0));
         worldController.bullets = [bullet];
 
         // Ticks mock
@@ -193,28 +198,29 @@ describe('PhysicsEngine', function () {
         const simulationClientTicksCount = 4;
 
         config.serverTickMilliseconds = serverTickMilliseconds;
-        config.bulletDecceleraionPerTick = 0.5;
+        config.playerDeccelerationFactorPerTick = 0.5;
         physicsEngine.GetMillisecondsPassed = () => serverTickMilliseconds / simulationClientTicksCount;
 
         // Act
         for(let serverTick = 1; serverTick <= simulationServerTicksCount; serverTick += 1) {
             for(let clientTick = 1; clientTick <= simulationClientTicksCount; clientTick += 1) {
 
-                physicsEngine.ExtrapolatePhysics();
                 physicsEngine.HasTickPassed = () => false;
+                if(clientTick == simulationClientTicksCount)
+                    physicsEngine.HasTickPassed = () => true;
+
+                physicsEngine.ExtrapolatePhysics();
             }
 
             if(serverTick === 1) {
-                expect(bullet.GetPosition().GetX()).toBe(2.25);
-                expect(bullet.GetSpeed().GetX()).toBe(5);
+                expect(bullet.GetPosition().GetX()).toBe(32);
+                expect(bullet.GetSpeed().GetX()).toBe(16);
             }
-
-            physicsEngine.HasTickPassed = () => true;
         }
 
         // Assert
-        expect(bullet.GetPosition().GetX()).toBe(3);
-        expect(bullet.GetSpeed().GetX()).toBe(2.5);
+        expect(bullet.GetPosition().GetX()).toBe(48);
+        expect(bullet.GetSpeed().GetX()).toBe(8);
     });
 
     it('should correctly extrapolate players', () => {
@@ -227,6 +233,8 @@ describe('PhysicsEngine', function () {
         player.SetSpeed(new Vector2(10, -10));
         worldController.players = [player];
 
+        config.serverTickMilliseconds = 1000;
+        
         physicsEngine.GetMillisecondsPassed = () => 500;
 
         // Act
@@ -272,6 +280,8 @@ describe('PhysicsEngine', function () {
         player.SetSpeed(new Vector2(10, 10));
         player.SetRadius(10);
         worldController.players = [player];
+
+        config.serverTickMilliseconds = 1000;
 
         physicsEngine.GetMillisecondsPassed = () => 500;
 

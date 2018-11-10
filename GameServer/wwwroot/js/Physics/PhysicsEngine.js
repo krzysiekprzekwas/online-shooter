@@ -46,7 +46,7 @@ function PhysicsEngine(worldController) {
             that.UpdatePlayerPosition(player, speedVector);
 
             if (isNewTick)
-                player.SetSpeed(Vector2.Multiply(player.GetSpeed(), config.playerDeccelerationPerTick));
+                player.SetSpeed(Vector2.Multiply(player.GetSpeed(), config.playerDeccelerationFactorPerTick));
         });
 
         that.worldController.bullets.forEach(bullet => {
@@ -56,7 +56,7 @@ function PhysicsEngine(worldController) {
             bullet.SetPosition(Vector2.Add(bullet.GetPosition(), speedVector));
 
             if (isNewTick)
-                bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), config.bulletDecceleraionPerTick));
+                bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), config.bulletDecceleraionFactorPerTick));
         });
         that.worldController.bullets = that.worldController.bullets.filter(b => !that.ShouldBulletBeRemoved(b));
     };

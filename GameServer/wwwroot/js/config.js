@@ -11,9 +11,9 @@
     serverTickMilliseconds: 250,
     serverTicksPerSecond: 4,
 
-    playerDeccelerationPerTick: 0.9,
-    playerSpeedPerTick: 50,
-    bulletDecceleraionPerTick: 0.9
+    playerDeccelerationFactorPerTick: Math.pow(0.04, 1.0 / 4),
+    playerSpeedPerTick: 150 / 4,
+    bulletDecceleraionFactorPerTick: Math.pow(0.5, 1.0 / 4)
 };
 
 // Export module
