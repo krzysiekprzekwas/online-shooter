@@ -1,6 +1,7 @@
 ﻿using GameServer.MapObjects;
 using GameServer.Models;
 using GameServer.States;
+using System;
 
 namespace GameServer.Physics
 {
@@ -17,35 +18,35 @@ namespace GameServer.Physics
 
         public void ApplyPhysics()
         {
-            foreach (Player player in GameState.Instance.Players)
+            foreach (var player in GameState.Instance.Players)
             {
-                player.Speed *= _config.PlayerDecceleration;
+                UpdatePlayerPosition(player, player.Speed);
 
-                var speedVector = player.Speed + GetSpeedFromPlayerInput(player, (int)(1000.0 / _config.ServerTick));
+                player.Speed += GetSpeedFromPlayerInput(player);
+                player.Speed *= _config.PlayerDeccelerationFactorPerTick;
+            }
 
-                UpdatePlayerPosition(player, speedVector);
+            foreach (var bullet in GameState.Instance.Bullets)
+            {
+                bullet.Position += bullet.Speed;
+                bullet.Speed *= _config.BulletDecceleraionFactorPerTick;
             }
 
             GameState.Instance.Bullets.RemoveAll(ShouldBulletBeRemoved);
-
-            foreach (Bullet bullet in GameState.Instance.Bullets)
-            {
-                bullet.Speed *=  _config.BulletDecceleraion;
-
-                bullet.Position += bullet.Speed;
-                
-            }
-
-            GameState.Instance.Bullets.RemoveAll(b => CheckAnyIntersectionWithWorld(new MapCircle(b.Position, b.Radius)) != null);
-            
         }
 
-        private static bool ShouldBulletBeRemoved(Bullet b)
+        private bool ShouldBulletBeRemoved(Bullet bullet)
         {
-            return b.Speed.Length() < _config.MinBulletSpeed;
+            if (bullet.Speed.LengthSquared() < Math.Pow(_config.MinBulletSpeed, 2))
+                return true;
+
+            if (CheckAnyIntersectionWithWorld(new MapCircle(bullet.Position, bullet.Radius)) != null)
+                return true;
+
+            return false;
         }
 
-        public Vector2 GetSpeedFromPlayerInput(Player player, int durationMilliseconds)
+        public Vector2 GetSpeedFromPlayerInput(Player player)
         {
             Vector2 calculatedSpeedVector = new Vector2();
 
@@ -63,8 +64,7 @@ namespace GameServer.Physics
             if (!calculatedSpeedVector.IsDegenerated())
             {
                 var normalizedSpeed = calculatedSpeedVector.Normalize();
-                var vectorLength = _config.PlayerSpeed * durationMilliseconds / 1000.0;
-                calculatedSpeedVector = normalizedSpeed * vectorLength;
+                calculatedSpeedVector = normalizedSpeed * _config.PlayerSpeedPerTick;
             }
 
             return calculatedSpeedVector;
@@ -74,9 +74,8 @@ namespace GameServer.Physics
         {
             var movementVector = CalculatePossibleMovementVector(player, speedVector, out double spareLength);
             player.Position += movementVector;
-            player.Speed = movementVector;
 
-            if (spareLength > 0)
+            if (spareLength > _config.IntersectionInterval)
             {
                 var spareSpeedVector = speedVector.Normalize() * spareLength;
 
@@ -91,7 +90,6 @@ namespace GameServer.Physics
                     parallelMovementVector = parallelHorizontalMovementVector;
 
                 player.Position += parallelMovementVector;
-                player.Speed = parallelMovementVector;
             }
         }
 

@@ -1,21 +1,19 @@
 ﻿let config = {
 
-    // Client side config
-    SENSITIVITY: 3,
-    EXTRAPOLATION: true,
-
-    // There also will be loaded server-side settings
-    bufferSize: 1,
-    bulletDecceleraion: 0.99,
-    gravity: 10,
-    intersectionInterval: 0.01,
-    jumpPower: 2,
-    maxPlayerHealth: 100,
-    minBulletSpeed: 0.01,
-    playerDecceleration: 0.5,
+    // These values will be overwritten by server configuration
+    clientStateIntervalMilliseconds: 50,
     playerRadius: 16,
-    playerSpeed: 50,
-    serverTick: 64,
+    intersectionInterval: 0.01,
+    minBulletSpeed: 0.1,
+    maxPlayerHealth: 100,
+    extrapolation: true,
+
+    serverTickMilliseconds: 250,
+    serverTicksPerSecond: 4,
+
+    playerDeccelerationFactorPerTick: Math.pow(0.04, 1.0 / 4),
+    playerSpeedPerTick: 150 / 4,
+    bulletDecceleraionFactorPerTick: Math.pow(0.5, 1.0 / 4)
 };
 
 // Export module

@@ -1,4 +1,4 @@
-
+﻿
 if (typeof require !== "undefined") {
     Intersection = require('./Intersection.js');
     Physic = require('./Physic.js');
@@ -10,27 +10,67 @@ function PhysicsEngine(worldController) {
     const that = this;
     that.worldController = worldController;
     that.LastExtrapolationDate = new Date();
+    that.LastTickDate = new Date();
 
-    that.ExtrapolatePhysics = function() {
+    that.GetMillisecondsPassed = function() {
 
         const now = new Date();
         const millisecondsPassed = now - that.LastExtrapolationDate;
         that.LastExtrapolationDate = now;
 
-        const tickDuration = 1000 / config.serverTick;
-        const tickPercentage = millisecondsPassed / tickDuration;
+        return millisecondsPassed;
+    };
+
+    that.HasTickPassed = function () {
+
+        const now = new Date();
+        const millisecondsPassed = now - that.LastTickDate;
+
+        if (millisecondsPassed < config.serverTickMilliseconds)
+            return false;
+
+        that.LastTickDate = now;
+        return true;
+    };
+
+    that.ExtrapolatePhysics = function() {
+
+        const millisecondsPassed = that.GetMillisecondsPassed();
+        const tickPercentage = millisecondsPassed / config.serverTickMilliseconds;
+        const isNewTick = that.HasTickPassed();
 
         that.worldController.players.forEach(player => {
+
+            let speedVector = Vector2.Multiply(player.GetSpeed(), tickPercentage);
             
-            const speedVector = Vector2.Multiply(player.GetSpeed(), tickPercentage);
             that.UpdatePlayerPosition(player, speedVector);
+
+            if (isNewTick)
+                player.SetSpeed(Vector2.Multiply(player.GetSpeed(), config.playerDeccelerationFactorPerTick));
         });
 
         that.worldController.bullets.forEach(bullet => {
 
             const speedVector = Vector2.Multiply(bullet.GetSpeed(), tickPercentage);
+
             bullet.SetPosition(Vector2.Add(bullet.GetPosition(), speedVector));
+
+            if (isNewTick)
+                bullet.SetSpeed(Vector2.Multiply(bullet.GetSpeed(), config.bulletDecceleraionFactorPerTick));
         });
+        that.worldController.bullets = that.worldController.bullets.filter(b => !that.ShouldBulletBeRemoved(b));
+    };
+
+    that.ShouldBulletBeRemoved = function(bullet) {
+
+        if (bullet.GetSpeed().LengthSquared() < Math.pow(config.minBulletSpeed, 2))
+            return true;
+
+        const bulletCircle = new MapCircle(bullet.GetX(), bullet.GetY(), bullet.GetRadius());
+        if (that.CheckAnyIntersectionWithWorld(bulletCircle) !== null)
+            return true;
+
+        return false;
     };
 
     that.CalculatePossibleMovement = function (player, speedVector) {
@@ -76,7 +116,7 @@ function PhysicsEngine(worldController) {
         const [movementVector, spareLength] = that.CalculatePossibleMovement(player, speedVector);
         player.SetPosition(Vector2.Add(player.GetPosition(), movementVector));
 
-        if (spareLength > 0) {
+        if (spareLength > config.intersectionInterval) {
             var spareSpeedVector = Vector2.Multiply(speedVector.Normalize(), spareLength);
 
             var horizontalVector = Physic.ProjectVector(spareSpeedVector, Vector2.LEFT_VECTOR());
@@ -97,30 +137,30 @@ function PhysicsEngine(worldController) {
     };
 }
 
-PhysicsEngine.GetSpeedFromPlayerInput = function(timePassed) {
+//PhysicsEngine.GetSpeedFromPlayerInput = function(timePassed) {
 
-    let calculatedSpeedVector = new Vector2();
+//    let calculatedSpeedVector = new Vector2();
 
-    // First get direction
-    const keysState = KeyboardController.GetKeysState();
-    if (keysState.indexOf(1) !== -1) // Up
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.UP_VECTOR());
-    if (keysState.indexOf(2) !== -1) // Down
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.DOWN_VECTOR());
-    if (keysState.indexOf(3) !== -1) // Left
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.LEFT_VECTOR());
-    if (keysState.indexOf(4) !== -1) // Right
-        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.RIGHT_VECTOR());
+//    // First get direction
+//    const keysState = KeyboardController.GetKeysState();
+//    if (keysState.indexOf(1) !== -1) // Up
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.UP_VECTOR());
+//    if (keysState.indexOf(2) !== -1) // Down
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.DOWN_VECTOR());
+//    if (keysState.indexOf(3) !== -1) // Left
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.LEFT_VECTOR());
+//    if (keysState.indexOf(4) !== -1) // Right
+//        calculatedSpeedVector = Vector2.Add(calculatedSpeedVector, Vector2.RIGHT_VECTOR());
 
-    // Scale vector to be speed length
-    if (!calculatedSpeedVector.IsDegenerated()) {
-        const normalizedSpeed = calculatedSpeedVector.Normalize();
-        const vectorLength = config.player_speed * timePassed;
-        calculatedSpeedVector = normalizedSpeed * vectorLength;
-    }
+//    // Scale vector to be speed length
+//    if (!calculatedSpeedVector.IsDegenerated()) {
+//        const normalizedSpeed = calculatedSpeedVector.Normalize();
+//        const vectorLength = config.player_speed * timePassed;
+//        calculatedSpeedVector = normalizedSpeed * vectorLength;
+//    }
 
-    return calculatedSpeedVector;
-};
+//    return calculatedSpeedVector;
+//};
 
 // Export module
 if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {

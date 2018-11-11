@@ -40,14 +40,13 @@ namespace GameServer.Game
             GameEvents = new GameEvents(this);
             PhysicsEngine = new PhysicsEngine(config, mapState);
             worldLoader.LoadMap();
-            Ticker = new Timer(Tick, null, 0, 1000 / _config.ServerTick);
+            Ticker = new Timer(Tick, null, 0, _config.ServerTickMilliseconds);
         }
 
         private void ApplyShooting()
         {
             foreach (Player player in GameState.Instance.Players)
             {
-
                 var weapon = WeaponService.GetWeaponFromWeaponEnumOrNull(player.PlayerWeapon.WeaponEnum);
 
                 if (player.MouseClicked && MilisecondsSince(player.PlayerWeapon.LastShotDate) > weapon.ShootTime)
@@ -58,11 +57,10 @@ namespace GameServer.Game
                     var bullet = new Bullet()
                     {
                         Id = bulletId++,
-                        Angle = player.Angle,
                         PlayerId = player.Id,
                         Position = player.Position,
                         Radius = weapon.BulletSize,
-                        Speed = player.Speed + (Vector2.RadianToVector2(player.Angle + Math.PI/2) * (weapon.BulletSpeed / _config.ServerTick))
+                        Speed = player.Speed + (Vector2.RadianToVector2(player.Angle + Math.PI/2) * (weapon.BulletSpeed / _config.ServerTicksPerSecond))
                     };
 
                     GameState.Instance.Bullets.Add(bullet);
@@ -81,7 +79,7 @@ namespace GameServer.Game
             {
                 if (!player.IsAlive)
                 {
-                    player.MilisecondsToResurect -= 1000/_config.ServerTick;
+                    player.MilisecondsToResurect -= _config.ServerTickMilliseconds;
                     if (player.MilisecondsToResurect <= 0)
                     {
                         SpawnService.SpawnPlayer(player);
@@ -100,7 +98,7 @@ namespace GameServer.Game
             ApplyDamage();
 
             // Send game state for every connected client
-             _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
+            _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
         private void ApplyDamage()

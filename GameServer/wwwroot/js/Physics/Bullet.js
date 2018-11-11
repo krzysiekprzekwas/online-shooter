@@ -26,5 +26,9 @@
     that._angle = 0;
     that.GetAngle = () => that._angle;
     that.SetAngle = (value) => that._angle = value;
+}
 
+// Export module
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+    module.exports = Bullet;
 }

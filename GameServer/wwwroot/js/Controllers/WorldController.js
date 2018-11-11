@@ -36,7 +36,9 @@ function WorldController() {
 
     // Update function is called when gamestate was received from server
     that.OnGameStateReceived = function (gamestate) {
-        
+
+        that.physicsEngine.LastTickDate = new Date();
+
         that.players = Array();
         for (player of gamestate.players) {
 
@@ -84,7 +86,9 @@ function WorldController() {
         // Start a new drawing state
         push();
 
-        that.physicsEngine.ExtrapolatePhysics();
+        if (config.extrapolation)
+            that.physicsEngine.ExtrapolatePhysics();
+
         drawingController.Draw(that.mapObjects, that.players, that.bullets);
 
         // Restore original state
