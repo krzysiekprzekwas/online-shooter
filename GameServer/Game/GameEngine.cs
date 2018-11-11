@@ -73,6 +73,11 @@ namespace GameServer.Game
             return (DateTime.Now - time).TotalMilliseconds;
         }
 
+        public void PerformSingleTick()
+        {
+            Tick(null);
+        }
+
         private void Tick(object state)
         {
             foreach (var player in _gameState.Players)
@@ -92,13 +97,10 @@ namespace GameServer.Game
 
             PhysicsEngine.ApplyPhysics();
 
-            var currentPlayers = new Player[GameState.Instance.Players.Count];
-            GameState.Instance.Players.CopyTo(currentPlayers);
-
             ApplyDamage();
 
             // Send game state for every connected client
-            _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
+            _hubContext?.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
         private void ApplyDamage()
@@ -106,25 +108,69 @@ namespace GameServer.Game
             var bulletHitIds = new List<int>();
             foreach (var bullet in _gameState.Bullets)
             {
-                var colidedPlayer = CheckAnyIntersectionWithPlayers(bullet);
-                if (colidedPlayer!=null)
+                var hit = false;
+                if (_config.Interpolation)
                 {
-                    colidedPlayer.Health -= _gameState.Players.First(x => x.Id == bullet.PlayerId).PlayerWeapon.GetWeapon().BulletDamage;
-
-                    if (colidedPlayer.Health <= 0)
-                    {
-                        colidedPlayer.IsAlive = false;
-                        colidedPlayer.MilisecondsToResurect = _config.MilisecondsToResurect;
-
-                        var killer = _gameState.Players.First(x => x.Id == bullet.PlayerId);
-                        _hubContext.Clients.All.SendAsync("playerKilled",new object[]{ killer.Name, colidedPlayer.Name });
-                    }
-
-                    bulletHitIds.Add(bullet.Id);
+                    var previousPosition = bullet.Position - (bullet.Speed * (1.0 / _config.BulletDecceleraionFactorPerTick));
+                    hit = CheckBulletInterpolatedHit(bullet, previousPosition);
                 }
+                else
+                    hit = CheckBulletHitAtPosition(bullet, bullet.Position);
+
+                if(hit)
+                    bulletHitIds.Add(bullet.Id);
             }
 
             GameState.Instance.Bullets.RemoveAll(b => bulletHitIds.Contains(b.Id));
+        }
+
+        private bool CheckBulletInterpolatedHit(Bullet bullet, Vector2 previousPosition)
+        {
+            var shiftVector = bullet.Position - previousPosition;
+            var length = shiftVector.Length();
+
+            for (var i = 0.0; i < length; i += _config.IntersectionInterval)
+            {
+                var interpolatedPosition = previousPosition + (shiftVector.Normalize() * i);
+
+                if (CheckBulletHitAtPosition(bullet, interpolatedPosition))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckBulletHitAtPosition(Bullet bullet, Vector2 position)
+        {
+            var bulletCopy = new Bullet(bullet)
+            {
+                Position = position
+            };
+
+            var colidedPlayer = CheckAnyIntersectionWithPlayers(bulletCopy);
+            if (colidedPlayer != null)
+            {
+                var attacker = _gameState.Players.First(x => x.Id == bulletCopy.PlayerId);
+                var damage = attacker.PlayerWeapon.GetWeapon().BulletDamage;
+                DamagePlayer(attacker, colidedPlayer, damage);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void DamagePlayer(Player attacker, Player victim, int damage)
+        {
+            victim.Health -= damage;
+
+            if(victim.Health <= 0)
+            {
+                victim.IsAlive = false;
+                victim.MilisecondsToResurect = _config.MilisecondsToResurect;
+                
+                _hubContext.Clients.All.SendAsync("playerKilled", new object[] { attacker.Name, victim.Name });
+            }
         }
 
         private Player CheckAnyIntersectionWithPlayers(Bullet bullet)
