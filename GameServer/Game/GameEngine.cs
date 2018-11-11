@@ -47,7 +47,6 @@ namespace GameServer.Game
         {
             foreach (Player player in GameState.Instance.Players)
             {
-
                 var weapon = WeaponService.GetWeaponFromWeaponEnumOrNull(player.PlayerWeapon.WeaponEnum);
 
                 if (player.MouseClicked && MilisecondsSince(player.PlayerWeapon.LastShotDate) > weapon.ShootTime)
@@ -80,7 +79,7 @@ namespace GameServer.Game
             {
                 if (!player.IsAlive)
                 {
-                    player.MilisecondsToResurect -= 1000/_config.ServerTick;
+                    player.MilisecondsToResurect -= _config.ServerTickMilliseconds;
                     if (player.MilisecondsToResurect <= 0)
                     {
                         SpawnService.SpawnPlayer(player);
@@ -99,7 +98,7 @@ namespace GameServer.Game
             ApplyDamage();
 
             // Send game state for every connected client
-             _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
+            _hubContext.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
         private void ApplyDamage()

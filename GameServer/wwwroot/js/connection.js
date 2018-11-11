@@ -73,7 +73,7 @@ function ConnectionController() {
                 worldController.PlayerId = response.playerId;
 
                 // Set up interval (sending player state to server)
-                setInterval(that.connectionInterval, config.clientStateIntervalMilliseconds);
+                setInterval(that.ConnectionInterval, config.clientStateIntervalMilliseconds);
         });
 
         var frameSlider = document.getElementById("frameDropRange");
@@ -95,7 +95,7 @@ function ConnectionController() {
         that.connection.start()
             .then(function() {
                 console.log('connection started');
-                that.onOpen(name);
+                that.OnOpen(name);
             });
     };
 

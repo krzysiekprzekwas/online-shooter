@@ -32,6 +32,7 @@ namespace GameServer
             MinBulletSpeed = 0.1;
             MaxPlayerHealth = 100;
             Extrapolation = true;
+            MilisecondsToResurect = 2000;
 
             ServerTickMilliseconds = 200;
             ServerTicksPerSecond = 1000.0 / ServerTickMilliseconds;
@@ -48,6 +49,7 @@ namespace GameServer
         public double MinBulletSpeed { get; set; }
         public int MaxPlayerHealth { get; set; }
         public bool Extrapolation { get; set; }
+        public int MilisecondsToResurect { get; set; }
 
         public int ServerTickMilliseconds { get; set; }
         public double ServerTicksPerSecond { get; set; }
