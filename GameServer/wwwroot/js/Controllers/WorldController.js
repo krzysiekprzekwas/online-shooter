@@ -1,6 +1,12 @@
 ﻿if (typeof require !== "undefined") {
     PhysicsEngine = require('../Physics/PhysicsEngine.js');
 }
+let drawExecutionNumber = 0;
+let extrapolationTime = 0;
+let drawTime = 0;
+
+let drawTimes = [];
+let extrapolationTimes = [];
 
 function WorldController() {
 
@@ -83,16 +89,35 @@ function WorldController() {
 
     that.Draw = function () {
 
+        const drawStart = new Date();
+        drawExecutionNumber += 1;
+
         // Start a new drawing state
         push();
 
-        if (config.extrapolation)
+        if (config.extrapolation) {
+            const start = new Date();
+
             that.physicsEngine.ExtrapolatePhysics();
+
+            extrapolationTime += (new Date() - start);
+        }
 
         drawingController.Draw(that.mapObjects, that.players, that.bullets);
 
         // Restore original state
         pop();
+
+        drawTime += new Date() - drawStart;
+        if (drawExecutionNumber === 1000) {
+            drawExecutionNumber = 0;
+
+            drawTimes.push(drawTime);
+            extrapolationTimes.push(extrapolationTime);
+
+            extrapolationTime = 0;
+            drawTime = 0;
+        }
     };
 }
 
