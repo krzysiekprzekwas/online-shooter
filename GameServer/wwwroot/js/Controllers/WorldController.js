@@ -7,6 +7,7 @@ let drawTime = 0;
 
 let drawTimes = [];
 let extrapolationTimes = [];
+let extrapolationVectorSimilarities = [];
 
 function WorldController() {
 
@@ -45,7 +46,7 @@ function WorldController() {
 
         that.physicsEngine.LastTickDate = new Date();
 
-        that.players = Array();
+        let players = Array();
         for (player of gamestate.players) {
 
             const playerObject = new Player(player.id);
@@ -56,7 +57,19 @@ function WorldController() {
             playerObject.SetHealth(player.health);
             playerObject.SetMaxHealth(player.maxHealth);
             playerObject.SetAlive(player.isAlive);
-            
+
+            const foundPlayer = that.players.find(x => x.GetId() === playerObject.GetId());
+            if (typeof foundPlayer !== "undefined") {
+
+                const speedVector = playerObject.GetSpeed();
+
+                const previousPosition = Vector2.Subtract(playerObject.GetPosition(), speedVector);
+                const extrapolationVector = Vector2.Subtract(foundPlayer.GetPosition(), previousPosition);
+
+                const similarity = Vector2.Similarity(extrapolationVector, speedVector);
+                extrapolationVectorSimilarities.push(similarity);
+            }
+
             if (playerObject.GetId() === that.PlayerId) {
                 if (!playerObject.IsAlive()) {
                     $('#killScreen').addClass('overlay');
@@ -71,8 +84,9 @@ function WorldController() {
                 }
             }
 
-            that.players.push(playerObject);
+            players.push(playerObject);
         }
+        that.players = players;
 
         that.bullets = Array();
         for (bullet of gamestate.bullets) {
