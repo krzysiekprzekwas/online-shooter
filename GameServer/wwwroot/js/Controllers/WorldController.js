@@ -61,7 +61,7 @@ function WorldController() {
                     $('#killScreen').removeClass('overlay');
                     $('#killScreen').addClass('hidden');
                     drawingController.SetMyPlayer(playerObject);
-                    $('#healthLabel').html(`${player.health}/${player.maxHealth}`);
+                    $('#healthLabel').html(`Health: ${player.health}`);
                 }
             }
 

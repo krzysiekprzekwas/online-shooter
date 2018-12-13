@@ -4,20 +4,20 @@
 
     that.UpdatePing = function (ping) {
 
-        $('#pingLabel').text(ping + " - Ping");
+        $('#pingLabel').text(`Ping: ${ping} ms`);
     };
 
     that.UpdateFps = function (fps) {
 
-        $('#fpsLabel').text(fps.toFixed(2) + " - FPS");
+        $('#fpsLabel').text(`FPS: ${fps.toFixed(2)}`);
     };
     
     that.UpdateFrameDropRate = function (frameDropRate) {
-        $('#frameDropLabel').text(frameDropRate + "% - Framedrop");
+        $('#frameDropLabel').text(`Framedrop: ${frameDropRate}%`);
     };
 
     that.UpdateDelay = function (delay) {
-        $('#delayValueLabel').text(delay + " ms - Delay");
+        $('#delayValueLabel').text(`Delay: ${delay} ms`);
     };
 }
 

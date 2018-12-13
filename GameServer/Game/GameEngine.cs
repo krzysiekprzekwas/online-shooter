@@ -80,6 +80,28 @@ namespace GameServer.Game
 
         private void Tick(object state)
         {
+            // Check if dead players are aplicable
+            // for resurection
+            ResurectDeadPlayers();
+
+            // Check players input and create
+            // bullets if shooting available
+            ApplyShooting();
+
+            // Apply physics calculations
+            PhysicsEngine.ApplyPhysics();
+
+            // Detect collisions of bullets
+            // and players and apply damage
+            ApplyDamage();
+
+            // Send new game state for 
+            // every connected client
+            _hubContext?.Clients.All.SendAsync("updateGameState", GameState.Instance);
+        }
+
+        private void ResurectDeadPlayers()
+        {
             foreach (var player in _gameState.Players)
             {
                 if (!player.IsAlive)
@@ -92,15 +114,6 @@ namespace GameServer.Game
                     }
                 }
             }
-
-            ApplyShooting();
-
-            PhysicsEngine.ApplyPhysics();
-
-            ApplyDamage();
-
-            // Send game state for every connected client
-            _hubContext?.Clients.All.SendAsync("updateGameState", GameState.Instance);
         }
 
         private void ApplyDamage()
@@ -128,16 +141,25 @@ namespace GameServer.Game
         {
             var shiftVector = bullet.Position - previousPosition;
             var length = shiftVector.Length();
+            return InterpolateBulletCollisionCheck(bullet, previousPosition, shiftVector, length);
+        }
 
-            for (var i = 0.0; i < length; i += _config.IntersectionInterval)
+        private bool InterpolateBulletCollisionCheck(Bullet bullet, Vector2 previousPosition, Vector2 currentPosition, double lastTickLength)
+        {
+            for (var i = 0.0; i < lastTickLength; i += _config.IntersectionInterval)
             {
-                var interpolatedPosition = previousPosition + (shiftVector.Normalize() * i);
+                var interpolatedPosition = previousPosition + InterpolatePlayerPositionInPast(currentPosition, i);
 
                 if (CheckBulletHitAtPosition(bullet, interpolatedPosition))
                     return true;
             }
 
             return false;
+        }
+
+        private static Vector2 InterpolatePlayerPositionInPast(Vector2 shiftVector, double i)
+        {
+            return (shiftVector.Normalize() * i);
         }
 
         private bool CheckBulletHitAtPosition(Bullet bullet, Vector2 position)
@@ -153,11 +175,17 @@ namespace GameServer.Game
                 var attacker = _gameState.Players.First(x => x.Id == bulletCopy.PlayerId);
                 var damage = attacker.PlayerWeapon.GetWeapon().BulletDamage;
                 DamagePlayer(attacker, colidedPlayer, damage);
+                NotifyAttacket(attacker, position);
 
                 return true;
             }
 
             return false;
+        }
+
+        private void NotifyAttacket(Player attacker, Vector2 position)
+        {
+            _hubContext.Clients.Client(attacker.ConnectionId).SendAsync("bulletHit", position);
         }
 
         private void DamagePlayer(Player attacker, Player victim, int damage)
