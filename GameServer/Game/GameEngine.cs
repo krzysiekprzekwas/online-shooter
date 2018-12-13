@@ -175,17 +175,11 @@ namespace GameServer.Game
                 var attacker = _gameState.Players.First(x => x.Id == bulletCopy.PlayerId);
                 var damage = attacker.PlayerWeapon.GetWeapon().BulletDamage;
                 DamagePlayer(attacker, colidedPlayer, damage);
-                NotifyAttacket(attacker, position);
 
                 return true;
             }
 
             return false;
-        }
-
-        private void NotifyAttacket(Player attacker, Vector2 position)
-        {
-            _hubContext.Clients.Client(attacker.ConnectionId).SendAsync("bulletHit", position);
         }
 
         private void DamagePlayer(Player attacker, Player victim, int damage)
