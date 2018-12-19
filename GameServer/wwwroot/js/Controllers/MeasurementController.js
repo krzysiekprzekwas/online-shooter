@@ -1,6 +1,21 @@
 ﻿function MeasurementController() {
 
     const that = this;
+    
+    that.ToggleExtrapolation = function () {
+
+        if ($('#extrapolationRange')[0].value == 0) {
+            config.extrapolation = false;
+            $('#extrapolationValueLabel').text("Extrapolation - OFF");
+
+        } else {
+            config.extrapolation = true;
+            $('#extrapolationValueLabel').text("Extrapolation - ON");
+
+        }
+    };
+
+    $('#extrapolationRange').bind("input", that.ToggleExtrapolation);
 
     that.UpdatePing = function (ping) {
 
